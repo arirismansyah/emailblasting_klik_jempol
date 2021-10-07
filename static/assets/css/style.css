@@ -27,6 +27,164 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Jost", sans-serif;
 }
 
+
+
+/*--------------------------------------------------------------
+# Nav
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# Loading Form
+--------------------------------------------------------------*/
+.loading-form {
+  display: none;
+  background: #fff;
+  text-align: center;
+  padding: 15px;
+}
+.loading-form:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid #18d26e;
+  border-top-color: #eee;
+  -webkit-animation: animate-loading 1s linear infinite;
+  animation: animate-loading 1s linear infinite;
+}
+
+/*--------------------------------------------------------------
+# Progress
+--------------------------------------------------------------*/
+
+.progress {
+  width: 150px;
+  height: 150px;
+  background: none;
+  position: relative;
+}
+
+.progress::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress>span {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.progress .progress-left {
+  left: 0;
+}
+
+.progress .progress-bar {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-width: 6px;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+}
+
+.progress .progress-left .progress-bar {
+  left: 100%;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 80px;
+  border-left: 0;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.progress .progress-right {
+  right: 0;
+}
+
+.progress .progress-right .progress-bar {
+  left: -100%;
+  border-top-left-radius: 80px;
+  border-bottom-left-radius: 80px;
+  border-right: 0;
+  -webkit-transform-origin: center right;
+  transform-origin: center right;
+}
+
+.progress .progress-value {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/*--------------------------------------------------------------
+# Button
+--------------------------------------------------------------*/
+.button-primary{
+  background: #47b2e4;
+  border: 0;
+  padding: 12px 34px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.button-primary:hover {
+  background: #209dd8;
+}
+
+.btn.btn-rounded {
+  border-radius: 50px; }
+.btn.btn-fw {
+  min-width: 150px; }
+.btn.btn-sm, .btn-group-sm > .btn {
+  font-size: 0.875rem; }
+.btn.btn-lg, .btn-group-lg > .btn {
+  font-size: 0.875rem; }
+.btn.btn-xs {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.625rem; }
+.btn.btn-icon {
+  width: 42px;
+  height: 42px;
+  padding: 0; }
+.btn.btn-icon-text .btn-icon-prepend {
+  margin-right: .5rem; }
+.btn.btn-icon-text .btn-icon-append {
+  margin-left: .5rem; }
+.btn.btn-social-icon {
+  width: 50px;
+  height: 50px;
+  padding: 0; }
+
+.btn-group .btn + .btn {
+border-left: 0; }
+
+
+/*--------------------------------------------------------------
+# Card
+--------------------------------------------------------------*/
+.card {
+  border-top: 3px solid #47b2e4;
+  border-bottom: 3px solid #47b2e4;
+  padding: 30px;
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.1);
+}
+
+
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
