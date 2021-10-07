@@ -30,6 +30,9 @@
     <!-- Template Main CSS File -->
     <link href="../static/assets/css/style.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="../static/assets/css/richtext.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
     <!-- =======================================================
   * Template Name: Arsha - v4.5.0
   * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
@@ -208,6 +211,9 @@
                             </div>
                             <!-- end table customer -->
 
+                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
+
+
                             <!-- add customer -->
                             <div class="row" id="add-customer">
                                 <h3>Add Customer Data</h3>
@@ -332,28 +338,65 @@
                     <!-- template email -->
                     <div class="tab-pane fade" id="pills-template" role="tabpanel" aria-labelledby="pills-template-tab">
                         <div class="card">
-                            <div class="form-group">
-                                <label for="name">Subject</label>
-                                <input type="text" class="form-control" name="subject" id="subject" required>
-                            </div>
-                            <div class="row d-flex align-items-stretch">
-                                <div class="form-group col-md-6">
-                                    <label for="name">Nama Produk</label>
-                                    <input type="text" name="name" class="form-control" id="name" required>
+                            <div class="row d-flex justify-content-center" id="formTemplateEmail">
+                                <h3>Add Template</h3>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group">
+                                        <label for="name">Subject</label>
+                                        <input type="text" class="form-control" name="subject" id="subject" required>
+                                    </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="name">Link Lampiran</label>
-                                    <input type="email" class="form-control" name="email" id="email" required>
+                                <div class="row d-flex align-items-stretch">
+                                    <div class="form-group col-md-6">
+                                        <label for="name">Nama Produk</label>
+                                        <input type="text" name="name" class="form-control" id="name" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="name">Link Lampiran</label>
+                                        <input type="email" class="form-control" name="email" id="email" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Body</label>
-                                <textarea class="form-control" name="message" rows="10" required></textarea>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group">
+                                        <label for="name">Body</label>
+                                        <textarea id="body-email" class="form-control" name="message" rows="10" required></textarea>
+                                    </div>
+                                </div>
+    
+                                <div class="text-center mt-4">
+                                    <button class="button-primary" type="submit">Save Template</button>
+                                </div>
                             </div>
 
-                            <div class="text-center mt-4">
-                                <button class="button-primary" type="submit">Save Template</button>
+                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
+
+                            <div class="row mb-4">
+                                <h3>Data Template Email</h3>
+                                <table class="table table-striped" id="table-templates">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Produk</th>
+                                            <th scope="col">Lampiran</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
                             </div>
+
                         </div>
                     </div>
 
@@ -738,7 +781,14 @@
 
     <!-- Template Main JS File -->
     <script src="../static/assets/js/main.js"></script>
+    <script src="../static/assets/js/jquery.richtext.min.js"></script>
 
+    <script>
+        $(document).ready(function () {
+           $('#body-email').richText(); 
+        });
+    </script>
+        
     <script>
         $(document).ready(function () {
             var table_all = $('#table-customers').DataTable({
@@ -759,6 +809,32 @@
 
             table_all.on('order.dt search.dt', function () {
                 table_all.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        });
+        $(document).ready(function () {
+            var table_templates = $('#table-templates').DataTable({
+                dom: 'Bfrtip',
+                pageLength: 17,
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [1, 'asc']
+                ]
+            });
+
+            table_templates.on('order.dt search.dt', function () {
+                table_templates.column(0, {
                     search: 'applied',
                     order: 'applied'
                 }).nodes().each(function (cell, i) {
