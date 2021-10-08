@@ -237,18 +237,16 @@
                                 <div id="uploadCustomer" class="row d-flex justify-content-center mb-4">
 
                                     <div class="col-auto d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success btn-icon-text">
-                                            <!-- <i class="fa fa-facebook-square"></i> -->
+                                        <button id="downloadexcel" type="button" class="btn btn-success btn-icon-text">
                                             <i class="fa fa-download btn-icon-prepend"></i>
                                             Download Template .xlsx
                                         </button>
                                     </div>
                                     <div class="col-4 d-flex justify-content-center">
-                                        <!-- <label for="formFile" class="form-label">Upload file</label> -->
-                                        <input class="form-control form-control-lg" type="file" id="formFile">
+                                        <input class="form-control form-control-lg" type="file" id="file_customers" name="file_cutomers">
                                     </div>
-                                    <div class="col-auto">
-                                        <button class="btn button-primary">
+                                    <div class="col-3">
+                                        <button id="uploadData" class="btn button-primary" type="button">
                                             Submit
                                         </button>
                                     </div>
@@ -824,7 +822,6 @@
     <script src="../static/assets/js/jquery.richtext.min.js"></script>
     <script src="../static/assets/js/datedropper.pro.min.js"></script>
 
-
     <script>
         $(document).ready(function () {
             var selected_template = $('#template').val();
@@ -927,6 +924,28 @@
                 } else {
                     $('#registerCustomer').remove();
                     $('#add-customer').append(uploadCustomer_clone);
+                }
+            });
+
+            $('#add-customer').on('click', '#uploadData',function(){
+                var form_data = new FormData();
+                var file_customers = $('#file_customers')[0].files;
+    
+                if(file_customers.length>0){
+                    form_data.append('file_customers', file_customers[0]);
+    
+                    $.ajax({
+                        url:'/upload_customers',
+                        type:'POST',
+                        data:form_data,
+                        contentType:false,
+                        processData:false,
+                        success:function(response){
+                            console.log(response);
+                            document.getElementById('file_customers').value = null;
+                            
+                        },
+                    })
                 }
             });
 
