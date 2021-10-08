@@ -35,7 +35,7 @@ def landing():
 
 @app.route('/tools')
 def home():
-    return render_template('home.html', title='Tools')
+    return render_template('landing.html', title='Tools')
 
 if __name__ == '__main__':
     app.run(host='localhost', debug=True, threaded=True)
