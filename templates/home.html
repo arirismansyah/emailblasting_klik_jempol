@@ -328,6 +328,7 @@
                                                 </span>
                                                 <input type="text" name="phone" class="form-control" id="phone"
                                                     required>
+                                                <input type="text" name="phone-val" class="form-control" id="phone-val" style="display: none;">
                                             </div>
                                         </div>
                                     </div>
@@ -880,6 +881,20 @@
         });
     </script>
 
+    <script>
+        $('#phone').on("input", function () {
+            $("#phone-val").val(destroyMask(this.value));
+            this.value = createMask($("#phone-val").val());
+        });
+
+        function createMask(string) {
+            return string.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
+        }
+
+        function destroyMask(string) {
+            return string.replace(/\D/g, '').substring(0, 12);
+        }
+    </script>
 
     <script>
         $(document).ready(function () {
