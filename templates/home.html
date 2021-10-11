@@ -303,16 +303,13 @@
                                             <select class="form-control form-select" name="pendidikan" id="pendidikan"
                                                 required>
                                                 <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
-                                                <option value="">SD / sederajat</option>
-                                                <option value="">SMP / sederajat</option>
-                                                <option value="">SMA / sederajat</option>
-                                                <option value="">Diploma</option>
-                                                <option value="">S1 / DIV</option>
-                                                <option value="">S2</option>
-                                                <option value="">S3</option>
+                                                {% for p in pendidikan %}
+                                                <option value="{{ p.id_pendidikan }}">{{ p.tingkat_pendidikan }}
+                                                </option>
+                                                {% endfor %}
                                             </select>
                                         </div>
-                                        
+
                                         <div class="form-group col-md-4">
                                             <label class="text-muted" for="name">Jenis Pekerjaan</label>
                                             <select class="form-control form-select" name="j-pekerjaan" id="j-pekerjaan"
@@ -327,7 +324,7 @@
                                             <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
                                                 required>
                                         </div>
-                                        
+
                                     </div>
 
                                     <div class="row d-flex align-items-stretch mb-2">
@@ -362,7 +359,9 @@
                                             <label class="text-muted" for="name">Provinsi</label>
                                             <select class="form-control form-select" name="dom-prov" id="dom-prov">
                                                 <option value="" selected disabled>Pilih Provinsi</option>
-                                                <option value="">Prov 1</option>
+                                                {% for prov in provinsi %}
+                                                <option value="{{ prov.kode_prov }}">{{ prov.nama_prov }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
@@ -1043,6 +1042,21 @@
                 });
             });
 
+            $('#dom-prov').change(function () {
+                kode_prov = $('#dom-prov').val();
+                console.log(kode_prov);
+                $.ajax({
+                    url: '/kabkot',
+                    type: 'POST',
+                    data: { 'kode_prov': kode_prov },
+                    success: function (response) {
+                        console.log(response);
+
+                    },
+                })
+
+            });
+
         });
     </script>
 
@@ -1051,7 +1065,6 @@
         $(function () {
 
             $(".progress").each(function () {
-
                 var value = $(this).attr('data-value');
                 var left = $(this).find('.progress-left .progress-bar');
                 var right = $(this).find('.progress-right .progress-bar');
