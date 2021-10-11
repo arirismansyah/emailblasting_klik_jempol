@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Klik Jempol</title>
+    <title>{{title}}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -105,7 +105,9 @@
                     <div class="col-lg-6 text-justify">
                         <p style="text-align: justify;">
                             <strong>KLIK JEMPOL</strong>
-                            merupakan bentuk Inovasi BPS Provinsi Sumatera Selatan untuk meningkatkan kualitas pelayanan dengan memberikan informasi terkini mengenai produk BPS Provinsi Sumatera Selatan kepada para konsumen data.
+                            merupakan bentuk Inovasi BPS Provinsi Sumatera Selatan untuk meningkatkan kualitas pelayanan
+                            dengan memberikan informasi terkini mengenai produk BPS Provinsi Sumatera Selatan kepada
+                            para konsumen data.
                         </p>
                         <p>
                             Data/informasi yang akan diterima dari layanan KLIK JEMPOL antara lain:
@@ -120,7 +122,10 @@
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0">
                         <p style="text-align: justify;">
-                            Untuk menerima layanan KLIK JEMPOL dari kami Bapak/Ibu harus bersedia menerima dan memperoleh secara terus-menerus informasi terkini terkait data statistik, dengan melakukan pendaftaran dengan mengisi form yang disediakan. <strong>Layanan ini tidak dipungut biaya (gratis).</strong>
+                            Untuk menerima layanan KLIK JEMPOL dari kami Bapak/Ibu harus bersedia menerima dan
+                            memperoleh secara terus-menerus informasi terkini terkait data statistik, dengan melakukan
+                            pendaftaran dengan mengisi form yang disediakan. <strong>Layanan ini tidak dipungut biaya
+                                (gratis).</strong>
                         </p>
                         <a href="#tools" class="btn-learn-more">Get Started</a>
                     </div>
@@ -222,10 +227,13 @@
                                                 Upload data customer mengikuti format template di bawah ini.
                                             </p>
                                             <div class="col-auto d-flex justify-content-center">
-                                                <button id="downloadexcel" type="button" class="btn btn-success btn-icon-text">
-                                                    <i class="fa fa-download btn-icon-prepend"></i>
-                                                    Download Template .xlsx
-                                                </button>
+                                                <a href="download_template">
+                                                    <button id="downloadexcel" type="button"
+                                                        class="btn btn-success btn-icon-text">
+                                                        <i class="fa fa-download btn-icon-prepend"></i>
+                                                        Download Template .xlsx
+                                                    </button>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -235,7 +243,8 @@
                                             Upload Data Customers
                                         </p>
                                         <div class="col-4 d-flex justify-content-center">
-                                            <input class="form-control form-control-lg" type="file" id="file_customers" name="file_cutomers">
+                                            <input class="form-control form-control-lg" type="file" id="file_customers"
+                                                name="file_cutomers">
                                         </div>
                                         <div class="col-auto">
                                             <button id="uploadData" class="btn button-primary" type="button">
@@ -247,17 +256,18 @@
 
                                 <!-- register -->
                                 <div class="row d-flex justify-content-center" id="registerCustomer">
+
                                     <div class="row d-flex align-items-stretch mb-2">
                                         <div class="form-group col-md-6">
                                             <label class="text-muted" for="name">Nama</label>
                                             <input type="text" name="name" class="form-control" id="name" required>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Jenis Kelamin</label>
+                                            <label class="text-muted" for="radioJk">Jenis Kelamin</label>
                                             <div class="form-control-plaintext align-middle">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="radioJk"
-                                                        id="radioJk1" value="L">
+                                                        id="radioJk1" value="L" required>
                                                     <label class="form-check-label" for="radioJk1">Laki-laki</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
@@ -281,9 +291,8 @@
                                                 <span class="input-group-text">
                                                     <i class="fa fa-calendar"></i>
                                                 </span>
-                                                <input  placeholder="yyyy-mm-dd"
-                                                    type="text" name="tgl-lahir" class="form-control datedropper" id="tgl-lahir"
-                                                    required>
+                                                <input placeholder="yyyy-mm-dd" type="text" name="tgl-lahir"
+                                                    class="form-control datedropper" id="tgl-lahir" required>
                                             </div>
                                         </div>
                                     </div>
@@ -291,22 +300,34 @@
                                     <div class="row d-flex align-items-stretch mb-2">
                                         <div class="form-group col-md-4">
                                             <label class="text-muted" for="name">Pendidikan</label>
-                                            <select class="form-control form-select" name="pendidikan" id="pendidikan">
+                                            <select class="form-control form-select" name="pendidikan" id="pendidikan"
+                                                required>
                                                 <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
+                                                <option value="">SD / sederajat</option>
+                                                <option value="">SMP / sederajat</option>
+                                                <option value="">SMA / sederajat</option>
+                                                <option value="">Diploma</option>
+                                                <option value="">S1 / DIV</option>
+                                                <option value="">S2</option>
+                                                <option value="">S3</option>
                                             </select>
                                         </div>
+                                        
+                                        <div class="form-group col-md-4">
+                                            <label class="text-muted" for="name">Jenis Pekerjaan</label>
+                                            <select class="form-control form-select" name="j-pekerjaan" id="j-pekerjaan"
+                                                required>
+                                                <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
+                                                <option value="">Jenis 1</option>
+                                            </select>
+                                        </div>
+
                                         <div class="form-group col-md-4">
                                             <label class="text-muted" for="name">Pekerjaan</label>
                                             <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
                                                 required>
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Jenis Pekerjaan</label>
-                                            <select class="form-control form-select" name="j-pekerjaan"
-                                                id="j-pekerjaan">
-                                                <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
-                                            </select>
-                                        </div>
+                                        
                                     </div>
 
                                     <div class="row d-flex align-items-stretch mb-2">
@@ -316,8 +337,8 @@
                                                 <span class="input-group-text">
                                                     <i class="fa fa-envelope"></i>
                                                 </span>
-                                                <input type="text" name="email" class="form-control"
-                                                    id="email" required>
+                                                <input type="text" name="email" class="form-control" id="email"
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
@@ -328,23 +349,27 @@
                                                 </span>
                                                 <input type="text" name="phone" class="form-control" id="phone"
                                                     required>
-                                                <input type="text" name="phone-val" class="form-control" id="phone-val" style="display: none;">
+                                                <input type="text" name="phone-val" class="form-control" id="phone-val"
+                                                    style="display: none;">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row d-flex align-items-stretch mb-2">
-                                        <label class="text-muted mt-2"><strong>Keterangan Domisili :</strong></label>
+                                        <label class="text-muted mt-2"><strong>Keterangan Domisili
+                                                :</strong></label>
                                         <div class="form-group col-md-6">
                                             <label class="text-muted" for="name">Provinsi</label>
                                             <select class="form-control form-select" name="dom-prov" id="dom-prov">
                                                 <option value="" selected disabled>Pilih Provinsi</option>
+                                                <option value="">Prov 1</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="text-muted" for="name">Kabupaten/Kota</label>
                                             <select class="form-control form-select" name="dom-kab" id="dom-kab">
                                                 <option value="" selected disabled>Pilih Kabupaten/Kota</option>
+                                                <option value="">Kab 1</option>
                                             </select>
                                         </div>
 
@@ -360,9 +385,12 @@
                                         <div class="col-md-12">
                                             <div class="alert alert-info" role="alert">
                                                 <h4 class="alert-heading">Persetujuan</h4>
-                                                <hr>                                            
+                                                <hr>
                                                 <p>
-                                                    Saya bersedia untuk menerima dan memperoleh secara terus-menerus informasi terkini terkait data statistik berupa softcopy publikasi, tabel data, unsur kegiatan, berita, dll. Layanan ini tidak dipungut biaya (gratis).
+                                                    Saya bersedia untuk menerima dan memperoleh secara terus-menerus
+                                                    informasi terkini terkait data statistik berupa softcopy
+                                                    publikasi, tabel data, unsur kegiatan, berita, dll. Layanan ini
+                                                    tidak dipungut biaya (gratis).
                                                 </p>
                                             </div>
                                         </div>
@@ -371,7 +399,7 @@
                                         <div class="col-auto">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value=""
-                                                    id="flexCheckDefault">
+                                                    id="persetujuan" name="persetujuan" required>
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     Saya setuju
                                                 </label>
@@ -380,9 +408,10 @@
                                     </div>
                                     <div class="row d-flex justify-content-center mb-2">
                                         <div class="col-auto">
-                                            <button class="button-primary">Submit</button>
+                                            <button class="button-primary" type="button">Submit</button>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -474,23 +503,24 @@
                                     </div>
                                 </div>
 
-                                <div id="container-detail" class="row d-flex justify-content-around mt-2">
-                                    <div id="detail-template" class="row d-flex align-items-stretch">
-                                        <div class="form-group col-md-4">
-                                            <label for="name">Subject</label>
-                                            <input readonly type="text" name="name" class="form-control" id="name"
-                                                required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="name">Nama Produk</label>
-                                            <input readonly type="text" name="name" class="form-control" id="name"
-                                                required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="name">Link Lampiran</label>
-                                            <input readonly type="text" class="form-control" name="email" id="email"
-                                                required>
-                                        </div>
+                                <div id="container-detail" class="row d-flex justify-content-center mt-2">
+                                    <div id="detail-template" class="col-lg-12 d-flex justify-content-center">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th>Product</th>
+                                                    <th>Link Lampiran</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
 
@@ -739,21 +769,24 @@
                             <div class="address">
                                 <i class="bi bi-geo-alt"></i>
                                 <h4>Location:</h4>
-                                <p>Jalan Kapten Anwar Sastro No. 1694/1131, Sungai Pangeran, Ilir Timur I, Sungai Pangeran, Kec. Ilir Tim. I, Kota Palembang, Sumatera Selatan 30114</p>
+                                <p>Jalan Kapten Anwar Sastro No. 1694/1131, Sungai Pangeran, Ilir Timur I, Sungai
+                                    Pangeran, Kec. Ilir Tim. I, Kota Palembang, Sumatera Selatan 30114</p>
                             </div>
 
                             <div class="email">
                                 <i class="bi bi-envelope"></i>
                                 <h4>Email:</h4>
                                 <p>bps1600@bps.go.id
-                                <br>diseminasi1600@bps.go.id</p>
+                                    <br>diseminasi1600@bps.go.id
+                                </p>
                             </div>
 
                             <div class="phone">
                                 <i class="bi bi-phone"></i>
                                 <h4>Call:</h4>
                                 <p>BPS Provinsi Sumatera Selatan : (0711) 351665
-                                <br>Diseminasi dan Layanan Statistik : (08128770725)</p>
+                                    <br>Diseminasi dan Layanan Statistik : (08128770725)
+                                </p>
                             </div>
 
                             <iframe
@@ -979,34 +1012,34 @@
                 }
             });
 
-            $('#add-customer').on('click', '#uploadData',function(){
+            $('#add-customer').on('click', '#uploadData', function () {
                 var form_data = new FormData();
                 var file_customers = $('#file_customers')[0].files;
-    
-                if(file_customers.length>0){
+
+                if (file_customers.length > 0) {
                     form_data.append('file_customers', file_customers[0]);
-    
+
                     $.ajax({
-                        url:'/upload_customers',
-                        type:'POST',
-                        data:form_data,
-                        contentType:false,
-                        processData:false,
-                        success:function(response){
+                        url: '/upload_customers',
+                        type: 'POST',
+                        data: form_data,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
                             document.getElementById('file_customers').value = null;
-                            
+
                         },
                     })
                 }
             });
-            $('#add-customer').on('focus', '.datedropper',function(){
+            $('#add-customer').on('focus', '.datedropper', function () {
                 console.log('clicked');
                 $('.datedropper').dateDropper('destroy');
                 $('.datedropper').dateDropper({
                     format: 'Y-m-d',
-                    theme:'blue',
-                    large:true,
-                    largeDefault:true,
+                    theme: 'blue',
+                    large: true,
+                    largeDefault: true,
                 });
             });
 
