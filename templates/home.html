@@ -143,8 +143,7 @@
                     <p>Berikut ini merupakan tools atau fitur yang dapat digunakan dalam aplikasi Klik Jempol.</p>
                 </div>
 
-                <ul class="nav nav-pills mb-3 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100"
-                    id="pills-tab" role="tablist">
+                <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="pills-customers-tab" data-bs-toggle="pill"
                             data-bs-target="#pills-customers" type="button" role="tab" aria-controls="pills-customers"
@@ -182,14 +181,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for customer in customers%}
                                         <tr>
                                             <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{customer.nama}}</td>
+                                            <td>{{customer.jenis_kelamin}}</td>
+                                            <td>{{customer.email}}</td>
+                                            <td>{{customer.phone}}</td>
                                             <td></td>
                                         </tr>
+                                        {% endfor %}
 
                                     </tbody>
                                 </table>
@@ -227,7 +228,7 @@
                                                 Upload data customer mengikuti format template di bawah ini.
                                             </p>
                                             <div class="col-auto d-flex justify-content-center">
-                                                <a href="download_template">
+                                                <a href="{{url_for('download_template')}}">
                                                     <button id="downloadexcel" type="button"
                                                         class="btn btn-success btn-icon-text">
                                                         <i class="fa fa-download btn-icon-prepend"></i>
@@ -257,159 +258,175 @@
                                 <!-- register -->
                                 <div class="row d-flex justify-content-center" id="registerCustomer">
 
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Nama</label>
-                                            <input type="text" name="name" class="form-control" id="name" required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="radioJk">Jenis Kelamin</label>
-                                            <div class="form-control-plaintext align-middle">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="radioJk"
-                                                        id="radioJk1" value="L" required>
-                                                    <label class="form-check-label" for="radioJk1">Laki-laki</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="radioJk"
-                                                        id="radioJk2" value="P">
-                                                    <label class="form-check-label" for="radioJk2">Perempuan</label>
+                                    <form id="register-form">
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="form-group col-md-6">
+                                                <label class="text-muted" for="name">Nama</label>
+                                                <input type="text" name="name" class="form-control" id="name" required>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="text-muted" for="radioJk">Jenis Kelamin</label>
+                                                <div class="form-control-plaintext align-middle">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="radioJk"
+                                                            id="radioJk1" value="L" required>
+                                                        <label class="form-check-label" for="radioJk1">Laki-laki</label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="radioJk"
+                                                            id="radioJk2" value="P">
+                                                        <label class="form-check-label" for="radioJk2">Perempuan</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="tempat-lahir">Tempat Lahir</label>
-                                            <input type="text" name="tempat-lahir" class="form-control"
-                                                id="tempat-lahir" required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Tanggal Lahir</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa fa-calendar"></i>
-                                                </span>
-                                                <input placeholder="yyyy-mm-dd" type="text" name="tgl-lahir"
-                                                    class="form-control datedropper" id="tgl-lahir" required>
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="form-group col-md-4">
+                                                <label class="text-muted" for="tempat-lahir">Tempat Lahir</label>
+                                                <input type="text" name="tempat_lahir" class="form-control"
+                                                    id="tempat_lahir" required>
                                             </div>
-                                        </div>
-                                    </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="text-muted" for="name">Tanggal Lahir</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input placeholder="yyyy-mm-dd" type="text" name="tgl_lahir"
+                                                        class="form-control datedropper" id="tgl_lahir" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="text-muted" for="name">Pendidikan</label>
+                                                <select class="form-control form-select" name="pendidikan"
+                                                    id="pendidikan" required>
+                                                    <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
+                                                    {% for p in pendidikan %}
+                                                    <option value="{{ p.id_pendidikan }}">{{ p.tingkat_pendidikan }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
 
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Pendidikan</label>
-                                            <select class="form-control form-select" name="pendidikan" id="pendidikan"
-                                                required>
-                                                <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
-                                                {% for p in pendidikan %}
-                                                <option value="{{ p.id_pendidikan }}">{{ p.tingkat_pendidikan }}
-                                                </option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Jenis Pekerjaan</label>
-                                            <select class="form-control form-select" name="j-pekerjaan" id="j-pekerjaan"
-                                                required>
-                                                <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
-                                                <option value="">Jenis 1</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Pekerjaan</label>
-                                            <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
-                                                required>
                                         </div>
 
-                                    </div>
+                                        <div class="row d-flex align-items-stretch mb-2">
 
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="tempat-lahir">Email</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa fa-envelope"></i>
-                                                </span>
-                                                <input type="text" name="email" class="form-control" id="email"
+                                            <div class="form-group col-md-4">
+                                                <label class="text-muted" for="name">Jenis Pekerjaan</label>
+                                                <select class="form-control form-select" name="j_pekerjaan"
+                                                    id="j_pekerjaan" required>
+                                                    <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
+                                                    {% for pekerjaan in jenis_pekerjaan %}
+                                                    <option value="{{pekerjaan.id_pekerjaan}}">
+                                                        {{pekerjaan.jenis_pekerjaan}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-md-4">
+                                                <label class="text-muted" for="name">Pekerjaan</label>
+                                                <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
                                                     required>
                                             </div>
+
+                                            <div class="form-group col-md-4">
+                                                <label class="text-muted" for="name">Instansi</label>
+                                                <input type="text" name="instansi" class="form-control" id="instansi">
+                                            </div>
+
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Nomor Hp/Whatsaap</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa fa-phone"></i>
-                                                </span>
-                                                <input type="text" name="phone" class="form-control" id="phone"
+
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="form-group col-md-6">
+                                                <label class="text-muted" for="email">Email</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                    <input type="text" name="email" class="form-control" id="email"
+                                                        required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="text-muted" for="name">Nomor Hp/Whatsaap</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-phone"></i>
+                                                    </span>
+                                                    <input type="text" name="phone" class="form-control" id="phone"
+                                                        required, minlength="10" , maxlength="14">
+                                                    <input type="text" name="phone-val" class="form-control"
+                                                        id="phone-val" style="display: none;">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <label class="text-muted mt-2"><strong>Keterangan Domisili
+                                                    :</strong></label>
+                                            <div class="form-group col-md-6">
+                                                <label class="text-muted" for="name">Provinsi</label>
+                                                <select class="form-control form-select" name="dom_prov" id="dom_prov"
                                                     required>
-                                                <input type="text" name="phone-val" class="form-control" id="phone-val"
-                                                    style="display: none;">
+                                                    <option value="" selected disabled>Pilih Provinsi</option>
+                                                    {% for prov in provinsi %}
+                                                    <option value="{{ prov.kode_prov }}">{{ prov.nama_prov }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
-                                        </div>
-                                    </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="text-muted" for="name">Kabupaten/Kota</label>
+                                                <select class="form-control form-select" name="dom_kab" id="dom_kab"
+                                                    required>
+                                                    <option value="" selected disabled>Pilih Kabupaten/Kota</option>
+                                                </select>
+                                            </div>
 
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <label class="text-muted mt-2"><strong>Keterangan Domisili
-                                                :</strong></label>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Provinsi</label>
-                                            <select class="form-control form-select" name="dom-prov" id="dom-prov">
-                                                <option value="" selected disabled>Pilih Provinsi</option>
-                                                {% for prov in provinsi %}
-                                                <option value="{{ prov.kode_prov }}">{{ prov.nama_prov }}</option>
-                                                {% endfor %}
-                                            </select>
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Kabupaten/Kota</label>
-                                            <select class="form-control form-select" name="dom-kab" id="dom-kab">
-                                                <option value="" selected disabled>Pilih Kabupaten/Kota</option>
-                                                <option value="">Kab 1</option>
-                                            </select>
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="text-muted" for="name">Alamat</label>
+                                                <textarea name="alamat" class="form-control" id="alamat" required
+                                                    rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="col-md-12">
+                                                <div class="alert alert-info" role="alert">
+                                                    <h4 class="alert-heading">Persetujuan</h4>
+                                                    <hr>
+                                                    <p>
+                                                        Saya bersedia untuk menerima dan memperoleh secara terus-menerus
+                                                        informasi terkini terkait data statistik berupa softcopy
+                                                        publikasi, tabel data, unsur kegiatan, berita, dll. Layanan ini
+                                                        tidak dipungut biaya (gratis).
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="col-auto">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                        id="persetujuan" name="persetujuan" required>
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        Saya setuju
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row d-flex justify-content-center mb-2">
+                                            <div class="col-auto">
+                                                <button id="btn-register" class="button-primary">Submit</button>
+                                            </div>
                                         </div>
 
-                                    </div>
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-12">
-                                            <label class="text-muted" for="name">Alamat</label>
-                                            <textarea name="alamat" class="form-control" id="alamat" required
-                                                rows="5"></textarea>
+                                        <div class="row d-flex justify-content-center mb-2" id="errorMsg">
+
                                         </div>
-                                    </div>
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="col-md-12">
-                                            <div class="alert alert-info" role="alert">
-                                                <h4 class="alert-heading">Persetujuan</h4>
-                                                <hr>
-                                                <p>
-                                                    Saya bersedia untuk menerima dan memperoleh secara terus-menerus
-                                                    informasi terkini terkait data statistik berupa softcopy
-                                                    publikasi, tabel data, unsur kegiatan, berita, dll. Layanan ini
-                                                    tidak dipungut biaya (gratis).
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="col-auto">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="persetujuan" name="persetujuan" required>
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Saya setuju
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <button class="button-primary" type="button">Submit</button>
-                                        </div>
-                                    </div>
+                                    </form>
 
                                 </div>
                             </div>
@@ -868,6 +885,8 @@
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- jquery validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
 
     <!-- datatables css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
@@ -883,7 +902,7 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 
     <!-- sweetalert -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
 
 
     <!-- Template Main JS File -->
@@ -913,6 +932,7 @@
         });
     </script>
 
+    <!-- Phone Number -->
     <script>
         $('#phone').on("input", function () {
             $("#phone-val").val(destroyMask(this.value));
@@ -928,12 +948,14 @@
         }
     </script>
 
+    <!-- Text Editor -->
     <script>
         $(document).ready(function () {
             $('#body-email').richText();
         });
     </script>
 
+    <!-- Datatables -->
     <script>
         $(document).ready(function () {
             var table_all = $('#table-customers').DataTable({
@@ -1011,6 +1033,7 @@
                 }
             });
 
+            // Upload Data Customer
             $('#add-customer').on('click', '#uploadData', function () {
                 var form_data = new FormData();
                 var file_customers = $('#file_customers')[0].files;
@@ -1019,7 +1042,7 @@
                     form_data.append('file_customers', file_customers[0]);
 
                     $.ajax({
-                        url: '/upload_customers',
+                        url: "{{url_for('upload_customers')}}",
                         type: 'POST',
                         data: form_data,
                         contentType: false,
@@ -1031,8 +1054,9 @@
                     })
                 }
             });
+
+            // Datedropper
             $('#add-customer').on('focus', '.datedropper', function () {
-                console.log('clicked');
                 $('.datedropper').dateDropper('destroy');
                 $('.datedropper').dateDropper({
                     format: 'Y-m-d',
@@ -1042,21 +1066,75 @@
                 });
             });
 
-            $('#dom-prov').change(function () {
-                kode_prov = $('#dom-prov').val();
-                console.log(kode_prov);
-                $.ajax({
-                    url: '/kabkot',
-                    type: 'POST',
-                    data: { 'kode_prov': kode_prov },
-                    success: function (response) {
-                        console.log(response);
+            // Fetching Kabupaten/Kota
+            $('#add-customer').on('change', '#dom_prov', function () {
+                var kode_prov = $('#dom_prov').val();
+                var kabkot = function () {
+                    var tmp = null;
 
-                    },
-                })
+                    if (kode_prov != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('kabkot')}}",
+                            data: {
+                                'kode_prov': kode_prov,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+                var options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
+                kabkot.forEach(element => {
+                    var op = '<option value="' + element['id_kabkot'] + '">' + element['nama_kabkot'] +
+                        '</option>';
+                    options += op;
+                });
 
+                $('#dom_kab').html(options);
             });
 
+            // register customer
+            $('#add-customer').on('submit', '#register-form', function (e) {
+                e.preventDefault();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-start',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("register_customer")}}',
+                    data: $('#register-form').serialize(),
+                    success: function (response) {
+                        if(response == 'success'){
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Registrasi berhasil'
+                            })
+                            document.getElementById('register-form').reset();
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Registrasi gagal'
+                            })
+                        }
+                        
+                    }
+                });
+
+
+            });
         });
     </script>
 
