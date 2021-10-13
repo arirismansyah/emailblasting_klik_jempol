@@ -188,12 +188,25 @@
                                             <td>{{customer.jenis_kelamin}}</td>
                                             <td>{{customer.email}}</td>
                                             <td>{{customer.phone}}</td>
-                                            <td></td>
+                                            <td class="d-flex justify-content-around">
+                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editCustomer_{{customer.id_customer}}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteCustomer_{{customer.id_customer}}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                         {% endfor %}
 
                                     </tbody>
                                 </table>
+
+
                             </div>
                             <!-- end table customer -->
 
@@ -581,6 +594,8 @@
                 </div>
 
             </div>
+
+
         </section><!-- End Tools Section -->
 
         <!-- ======= Team Section ======= -->
@@ -818,6 +833,235 @@
         </section>
         <!-- End Contact Section -->
 
+        <!-- Modal -->
+        {% for c in customers %}
+
+        <!-- Modals Delete -->
+        <div class="modal fade" id="deleteCustomer_{{c.id_customer}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete - {{c.nama}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex justify-content center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                            <p class="text-muted text-center">
+                                <strong>
+                                    Anda yakin ingin menghapus data customer?
+                                </strong>
+                            </p>
+                            <p class="text-muted text-center">Atas nama : {{c.nama}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="text" name="id-customer-delete" id="id-customer-delete" readonly
+                            style="display: none;" value="{{c.id_customer}}">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="delete-customer" type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals Edit -->
+        <div class="modal fade" id="editCustomer_{{c.id_customer}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit - {{c.nama}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex justify-content-center" id="registerCustomer">
+
+                            <form id="edit-customer-form">
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Nama</label>
+                                        <input type="text" name="name" class="form-control" id="name" value="{{c.nama}}"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="radioJk">Jenis Kelamin</label>
+                                        <div class="form-control-plaintext align-middle">
+                                            <div class="form-check form-check-inline">
+                                                {% if (c.jenis_kelamin=='L') %}
+                                                <input class="form-check-input" type="radio" name="radioJk"
+                                                    id="radioJk1" value="L" required checked>
+                                                {% else %}
+                                                <input class="form-check-input" type="radio" name="radioJk"
+                                                    id="radioJk1" value="L" required>
+                                                {% endif %}
+                                                <label class="form-check-label" for="radioJk1">Laki-laki</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                {% if(c.jenis_kelamin=='P') %}
+                                                <input class="form-check-input" type="radio" name="radioJk"
+                                                    id="radioJk2" value="P" checked>
+                                                {% else %}
+                                                <input class="form-check-input" type="radio" name="radioJk"
+                                                    id="radioJk2" value="P">
+                                                {% endif %}
+                                                <label class="form-check-label" for="radioJk2">Perempuan</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="tempat-lahir">Tempat Lahir</label>
+                                        <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir"
+                                            required value="{{c.tempat_lahir}}">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Tanggal Lahir</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input placeholder="yyyy-mm-dd" type="text" name="tgl_lahir"
+                                                class="form-control datedropper" id="tgl_lahir" required
+                                                value="{{c.tanggal_lahir}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Pendidikan</label>
+                                        <select class="form-control form-select" name="pendidikan" id="pendidikan"
+                                            required>
+                                            <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
+                                            {% for p in pendidikan %}
+                                            {% if(c.pendidikan == p.id_pendidikan) %}
+                                            <option value="{{ p.id_pendidikan }}" selected>{{ p.tingkat_pendidikan }}
+                                            </option>
+                                            {% else %}
+                                            <option value="{{ p.id_pendidikan }}">{{ p.tingkat_pendidikan }}
+                                            </option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Jenis Pekerjaan</label>
+                                        <select class="form-control form-select" name="j_pekerjaan" id="j_pekerjaan"
+                                            required>
+                                            <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
+                                            {% for pekerjaan in jenis_pekerjaan %}
+                                            {% if(c.jenis_pekerjaan==pekerjaan.id_pekerjaan) %}
+                                            <option value="{{pekerjaan.id_pekerjaan}}" selected>
+                                                {{pekerjaan.jenis_pekerjaan}}</option>
+                                            {% else %}
+                                            <option value="{{pekerjaan.id_pekerjaan}}">
+                                                {{pekerjaan.jenis_pekerjaan}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Pekerjaan</label>
+                                        <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
+                                            required value="{{c.pekerjaan}}">
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Instansi</label>
+                                        <input type="text" name="instansi" class="form-control" id="instansi" value="{{c.instansi}}">
+                                    </div>
+
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="email">Email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-envelope"></i>
+                                            </span>
+                                            <input type="text" name="email" class="form-control" id="email" required value="{{c.email}}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Nomor Hp/Whatsaap</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-phone"></i>
+                                            </span>
+                                            <input type="text" name="phone" class="form-control" id="phone" required,
+                                                minlength="10" , maxlength="14" value="{{c.phone}}">
+                                            <input type="text" name="phone-val" class="form-control" id="phone-val"
+                                                style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <label class="text-muted mt-2"><strong>Keterangan Domisili
+                                            :</strong></label>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Provinsi</label>
+                                        <select class="form-control form-select" name="dom_prov" id="dom_prov" required>
+                                            <option value="" selected disabled>Pilih Provinsi</option>
+                                            {% for prov in provinsi %}
+                                            {% if(c.prov_domisili == prov.kode_prov) %}
+                                            <option value="{{ prov.kode_prov }}" selected>{{ prov.nama_prov }}</option>
+                                            {% else %}
+                                            <option value="{{ prov.kode_prov }}">{{ prov.nama_prov }}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Kabupaten/Kota</label>
+                                        <select class="form-control form-select" name="dom_kab" id="dom_kab" required>
+                                            <option value="" selected disabled>Pilih Kabupaten/Kota</option>
+                                            {% for k in all_kabkot %}
+                                            {% if(k.id_kabkot == c.kab_domisili) %}
+                                            <option value="{{k.id_kabkot}}" selected>{{k.nama_kabkot}}</option>
+                                            {% else %}
+                                            <option value="{{k.id_kabkot}}">{{k.nama_kabkot}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-12">
+                                        <label class="text-muted" for="name">Alamat</label>
+                                        <textarea name="alamat" class="form-control" id="alamat" required
+                                            rows="5">{{c.alamat_domisili}}</textarea>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
     </main><!-- End #main -->
 
     <!-- ======= Footer ======= -->
@@ -869,6 +1113,7 @@
             </div>
         </div>
     </footer><!-- End Footer -->
+
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
@@ -934,6 +1179,10 @@
 
     <!-- Phone Number -->
     <script>
+        $('.modal').on("input", "#phone", function () {
+            $("#phone-val").val(destroyMask(this.value));
+            this.value = createMask($("#phone-val").val());
+        });
         $('#phone').on("input", function () {
             $("#phone-val").val(destroyMask(this.value));
             this.value = createMask($("#phone-val").val());
@@ -1097,6 +1346,39 @@
                 $('#dom_kab').html(options);
             });
 
+            // Fetching Kabupaten/Kota Modals
+            $('.modal').on('change', '#dom_prov', function () {
+                var kode_prov = $(this).closest('#dom_prov').val();
+                console.log(kode_prov);
+                var kabkot = function () {
+                    var tmp = null;
+
+                    if (kode_prov != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('kabkot')}}",
+                            data: {
+                                'kode_prov': kode_prov,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+                console.log(kabkot);
+                var options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
+                kabkot.forEach(element => {
+                    var op = '<option value="' + element['id_kabkot'] + '">' + element['nama_kabkot'] +
+                        '</option>';
+                    options += op;
+                });
+                $(this).parents('.modal').find('#dom_kab').html(options);
+                console.log($(this).parents('.modal').find('#dom_kab'));
+            });
+
             // register customer
             $('#add-customer').on('submit', '#register-form', function (e) {
                 e.preventDefault();
@@ -1117,7 +1399,7 @@
                     url: '{{url_for("register_customer")}}',
                     data: $('#register-form').serialize(),
                     success: function (response) {
-                        if(response == 'success'){
+                        if (response == 'success') {
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Registrasi berhasil'
@@ -1129,7 +1411,7 @@
                                 title: 'Registrasi gagal'
                             })
                         }
-                        
+
                     }
                 });
 

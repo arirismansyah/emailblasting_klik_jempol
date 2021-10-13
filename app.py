@@ -156,7 +156,7 @@ def home():
     pendidikan = Pendidikan.query.all()
     jenis_pekerjaan = Pekerjaan.query.all()
     provinsi = Prov.query.all()
-    return render_template('landing.html', title='KLIK JEMPOL', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan)
+    return render_template('landing.html', title='KLIK JEMPOL', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot)
 
 
 @app.route('/admin')
@@ -165,7 +165,9 @@ def landing():
     jenis_pekerjaan = Pekerjaan.query.all()
     provinsi = Prov.query.all()
     customers = Customer.query.all()
-    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers = customers)
+    all_kabkot = Kabkot.query.all()
+    print(all_kabkot)
+    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers = customers, all_kabkot=all_kabkot)
 
 
 @app.route('/login', methods=['GET', 'POST'])
