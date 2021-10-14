@@ -310,9 +310,32 @@ def register_customer():
         return make_response('register failed', 200)
 
 
-@app.route('/edit_customer', methods=['POST'])
-def edit_customer():
-    pass
+@app.route('/update_customer', methods=['POST'])
+def update_customer():
+    id_customer = request.form['id_customer']
+    customer = Customer.query.get_or_404(id_customer)
+
+    try :
+        customer.nama=request.form['name']
+        customer.jenis_kelamin=request.form['radioJk']
+        customer.tempat_lahir=request.form['tempat_lahir']
+        customer.tanggal_lahir=request.form['tgl_lahir']
+        customer.pendidikan=request.form['pendidikan']
+        customer.jenis_pekerjaan=request.form['j_pekerjaan']
+        customer.pekerjaan=request.form['pekerjaan']
+        customer.instansi=request.form['instansi']
+        customer.email=request.form['email']
+        customer.phone=request.form['phone-val']
+        customer.prov_domisili=request.form['dom_prov']
+        customer.kab_domisili=request.form['dom_kab']
+        customer.alamat_domisili=request.form['alamat']
+        db.session.commit()
+        return make_response('success', 200)
+    except:
+        return make_response('failed', 200)
+
+
+
 
 
 @app.route('/delete_customer', methods=['POST'])
