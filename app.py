@@ -15,8 +15,12 @@ import numpy as np
 import xlsxwriter
 import base64
 import json
-from datetime import datetime, time
+from datetime import datetime
+import time
 import json
+import threading
+import random
+from decimal import Decimal
 
 from flask import Flask, app, redirect, url_for, stream_with_context, render_template, Response, jsonify, request, make_response, send_file, send_from_directory, session
 from flask_ngrok import run_with_ngrok
@@ -34,11 +38,54 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 app.config.from_object(Config)
 
+exporting_threads = {}
+
 # Database
 db = SQLAlchemy(app)
 
 # Migration
 migrate = Migrate(app, db)
+
+# Exporting Thread
+
+
+class ExportingThread(threading.Thread):
+    def __init__(self, df_customers):
+        self.progress = 0
+        self.df_customers = df_customers
+        super().__init__()
+
+    def run(self):
+        total = len(self.df_customers)
+        success_input = 0
+        failed_input = 0
+        for index, customer in self.df_customers.iterrows():
+            input_customer = Customer(
+                nama=customer['nama'],
+                jenis_kelamin=customer['jenis_kelamin'],
+                tempat_lahir=customer['tempat_lahir'],
+                tanggal_lahir=customer['tanggal_lahir'].strftime(
+                    '%Y-%m-%d'),
+                pendidikan=customer['pendidikan'],
+                jenis_pekerjaan=customer['jenis_pekerjaan'],
+                pekerjaan=customer['pekerjaan'],
+                instansi=customer['instansi'],
+                email=customer['email'],
+                phone=customer['phone'],
+                prov_domisili=customer['prov_domisili'],
+                kab_domisili=customer['kab_domisili'],
+                alamat_domisili=customer['alamat_domisili'],
+            )
+
+            try:
+                db.session.add(input_customer)
+                db.session.commit()
+                success_input += 1
+            except:
+                failed_input += 1
+
+            self.progress =+ (success_input/total)*100
+
 
 # Serialize Class
 class Serializer(object):
@@ -52,7 +99,7 @@ class Serializer(object):
 
 
 # Models for Database
-# # Model Pendidikan 
+# # Model Pendidikan
 class Pendidikan(db.Model, Serializer):
     id_pendidikan = db.Column(db.Integer, primary_key=True)
     tingkat_pendidikan = db.Column(db.String(50), nullable=False)
@@ -61,6 +108,8 @@ class Pendidikan(db.Model, Serializer):
         return '<Pendidikan {}>'.format(self.tingkat_pendidikan)
 
 # # Model Pekerjaan
+
+
 class Pekerjaan(db.Model, Serializer):
     id_pekerjaan = db.Column(db.Integer, primary_key=True)
     jenis_pekerjaan = db.Column(db.String(200), nullable=False)
@@ -69,6 +118,8 @@ class Pekerjaan(db.Model, Serializer):
         return '<Pekerjaan {}>'.format(self.jenis_pekerjaan)
 
 # # Model Provinsi Domisili
+
+
 class Prov(db.Model, Serializer):
     kode_prov = db.Column(db.Integer, primary_key=True)
     nama_prov = db.Column(db.String(200), nullable=False)
@@ -77,6 +128,8 @@ class Prov(db.Model, Serializer):
         return 'Provinsi {}'.format(self.nama_prov)
 
 # # Model Kab/Kota Domisili
+
+
 class Kabkot(db.Model, Serializer):
     id_kabkot = db.Column(db.Integer, primary_key=True)
     kode_prov = db.Column(db.Integer, db.ForeignKey(
@@ -87,6 +140,8 @@ class Kabkot(db.Model, Serializer):
         return '<Kabupaten/Kota {}>'.format(self.nama_kabkot)
 
 # # Model Status
+
+
 class Status(db.Model, Serializer):
     id_status = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(200), nullable=False)
@@ -95,6 +150,8 @@ class Status(db.Model, Serializer):
         return '<Status {}>'.format(self.nama_kabkot)
 
 # # Model Customer
+
+
 class Customer(db.Model, Serializer):
     id_customer = db.Column(db.Integer, primary_key=True)
     nama = db.Column(db.String(200), nullable=False)
@@ -120,6 +177,8 @@ class Customer(db.Model, Serializer):
         return '<Customer {}>'.format(self.nama)
 
 # # Model Template Email
+
+
 class Template(db.Model, Serializer):
     id_template = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(200), nullable=False)
@@ -133,6 +192,8 @@ class Template(db.Model, Serializer):
         return '<Template {}>'.format(self.subject)
 
 # # Model Log
+
+
 class Log(db.Model, Serializer):
     id_log = db.Column(db.Integer, primary_key=True)
     template_email = db.Column(
@@ -141,6 +202,8 @@ class Log(db.Model, Serializer):
     send_at = db.Column(db.DateTime, default=datetime.now)
 
 # # Model FAQ
+
+
 class Faq(db.Model, Serializer):
     id_faq = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text)
@@ -148,7 +211,6 @@ class Faq(db.Model, Serializer):
 
     def __repr__(self):
         return '<FAQ {}>'.format(self.question)
-
 
 
 @app.route('/')
@@ -166,8 +228,8 @@ def landing():
     provinsi = Prov.query.all()
     customers = Customer.query.all()
     all_kabkot = Kabkot.query.all()
-    print(all_kabkot)
-    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers = customers, all_kabkot=all_kabkot)
+
+    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -196,18 +258,35 @@ def upload_customers():
                 datetime.now(), '%Y%m%d%H%M%S')+'_data_customers.xlsx'
             file_customer.save(os.path.join(folder_target, file_name))
             df_customers = pd.read_excel(
-                os.path.join(folder_target, file_name))
+                os.path.join(folder_target, file_name), dtype={
+                    'phone':str,
+                })
 
-            for customer in df_customers.iterrows():
-                print(customer['nama'])
+            df_customers = df_customers.astype(
+                object).where(pd.notnull(df_customers), None)           
 
-        return make_response('success', 200)
+            global exporting_threads
+
+            thread_id = random.randint(0, 10000)
+            exporting_threads[thread_id] = ExportingThread(df_customers)
+            exporting_threads[thread_id].start()
+
+            return {'thread_id':thread_id}
+
+
+@app.route('/progress_insert/<int:thread_id>')
+def progress(thread_id):
+    def make_prog():
+        global exporting_threads
+        yield "data:"+str(exporting_threads[thread_id].progress)+"\n\n"
+
+    return Response(make_prog(), mimetype='text/event-stream')
 
 
 @app.route('/register_customer', methods=['POST'])
 def register_customer():
     customer = Customer(
-        nama=request.form['name'], 
+        nama=request.form['name'],
         jenis_kelamin=request.form['radioJk'],
         tempat_lahir=request.form['tempat_lahir'],
         tanggal_lahir=request.form['tgl_lahir'],
@@ -220,8 +299,8 @@ def register_customer():
         prov_domisili=request.form['dom_prov'],
         kab_domisili=request.form['dom_kab'],
         alamat_domisili=request.form['alamat'],
-        )
-    
+    )
+
     try:
         db.session.add(customer)
         db.session.commit()
@@ -238,7 +317,14 @@ def edit_customer():
 
 @app.route('/delete_customer', methods=['POST'])
 def delete_customer():
-    pass
+    id_customer = request.form['id_customer']
+    customer = Customer.query.get_or_404(id_customer)
+    try:
+        db.session.delete(customer)
+        db.session.commit()
+        return make_response('success', 200)
+    except:
+        return make_response('delete failed', 200)
 
 
 @app.route('/add_template', methods=['POST'])
@@ -268,9 +354,17 @@ def kabkot():
     if (request.method == 'POST'):
         kode_prov = request.form['kode_prov']
         kabkot = Kabkot.query.filter_by(kode_prov=kode_prov).all()
-        serialized_kabkot =  Kabkot.serialize_list(kabkot)
+        serialized_kabkot = Kabkot.serialize_list(kabkot)
 
         return jsonify(serialized_kabkot)
+
+
+@app.route('/get_customers', methods=['GET'])
+def get_customers():
+    customers = Customer.query.all()
+    serialized_customer = Customer.serialize_list(customers)
+
+    return jsonify(serialized_customer)
 
 
 if __name__ == '__main__':

@@ -180,7 +180,7 @@
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="body-table-customers">
                                         {% for customer in customers%}
                                         <tr>
                                             <td></td>
@@ -266,6 +266,17 @@
                                             </button>
                                         </div>
                                     </div>
+
+                                    <div class="col-12">
+                                        <div id="progress_bar" class="progress" style="visibility: hidden;">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                                role="progressbar" aria-valuemin="0" aria-valuenow="0" aria-valuemax="100"
+                                                style="width: 0%"></div>
+                                        </div>
+                                        <div class="text-center" id="percentageLoading" style="visibility: hidden;">0%
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <!-- register -->
@@ -564,7 +575,7 @@
 
                             <div class="row">
                                 <div>
-                                    <div class="progress mx-auto" data-value='90'>
+                                    <div class="progress progress-round mx-auto" data-value='90'>
                                         <span class="progress-left">
                                             <span class="progress-bar border-success"></span>
                                         </span>
@@ -975,13 +986,14 @@
 
                                     <div class="form-group col-md-4">
                                         <label class="text-muted" for="name">Pekerjaan</label>
-                                        <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
-                                            required value="{{c.pekerjaan}}">
+                                        <input type="text" name="pekerjaan" class="form-control" id="pekerjaan" required
+                                            value="{{c.pekerjaan}}">
                                     </div>
 
                                     <div class="form-group col-md-4">
                                         <label class="text-muted" for="name">Instansi</label>
-                                        <input type="text" name="instansi" class="form-control" id="instansi" value="{{c.instansi}}">
+                                        <input type="text" name="instansi" class="form-control" id="instansi"
+                                            value="{{c.instansi}}">
                                     </div>
 
                                 </div>
@@ -993,7 +1005,8 @@
                                             <span class="input-group-text">
                                                 <i class="fa fa-envelope"></i>
                                             </span>
-                                            <input type="text" name="email" class="form-control" id="email" required value="{{c.email}}">
+                                            <input type="text" name="email" class="form-control" id="email" required
+                                                value="{{c.email}}">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -1155,6 +1168,7 @@
     <script src="../static/assets/js/jquery.richtext.min.js"></script>
     <script src="../static/assets/js/datedropper.pro.min.js"></script>
 
+    <!-- Details Template Email -->
     <script>
         $(document).ready(function () {
             var selected_template = $('#template').val();
@@ -1179,10 +1193,13 @@
 
     <!-- Phone Number -->
     <script>
+        // On Edit Modals
         $('.modal').on("input", "#phone", function () {
             $("#phone-val").val(destroyMask(this.value));
             this.value = createMask($("#phone-val").val());
         });
+
+        // On Register Form
         $('#phone').on("input", function () {
             $("#phone-val").val(destroyMask(this.value));
             this.value = createMask($("#phone-val").val());
@@ -1209,7 +1226,7 @@
         $(document).ready(function () {
             var table_all = $('#table-customers').DataTable({
                 dom: 'Bfrtip',
-                pageLength: 17,
+                pageLength: 10,
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
@@ -1235,7 +1252,7 @@
         $(document).ready(function () {
             var table_templates = $('#table-templates').DataTable({
                 dom: 'Bfrtip',
-                pageLength: 17,
+                pageLength: 10,
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
@@ -1260,6 +1277,7 @@
         });
     </script>
 
+    <!-- Upload & Register Form -->
     <script>
         $(document).ready(function () {
             var add_method = $('input[name = "radioCustomer"]:checked').val();
@@ -1286,7 +1304,9 @@
             $('#add-customer').on('click', '#uploadData', function () {
                 var form_data = new FormData();
                 var file_customers = $('#file_customers')[0].files;
-
+                document.getElementById('progress_bar').style.visibility = 'visible';
+                
+                var thread_id = 0;
                 if (file_customers.length > 0) {
                     form_data.append('file_customers', file_customers[0]);
 
@@ -1297,10 +1317,28 @@
                         contentType: false,
                         processData: false,
                         success: function (response) {
+                            console.log(response.thread_id);
                             document.getElementById('file_customers').value = null;
+                            thread_id = response.thread_id;
+                            
+                            var source = new EventSource('/progress_insert/' + response.thread_id)
+                            source.onmessage = function (event) {
+                                console.log('progress', event);
+                                $('.progress-bar').css('width', event.data + '%').attr('aria-valuenow', event.data);
+                                
 
+                                if (event.data >= 100) {
+                                    source.close();
+                                    setTimeout(function () {
+                                        document.getElementById('progress_bar').style.visibility = 'hidden';
+                                    }, 2000);
+                                }
+                            }
                         },
                     })
+
+                    console.log(thread_id);
+
                 }
             });
 
@@ -1346,10 +1384,9 @@
                 $('#dom_kab').html(options);
             });
 
-            // Fetching Kabupaten/Kota Modals
+            // Fetching Kabupaten/Kota on Modals
             $('.modal').on('change', '#dom_prov', function () {
                 var kode_prov = $(this).closest('#dom_prov').val();
-                console.log(kode_prov);
                 var kabkot = function () {
                     var tmp = null;
 
@@ -1368,7 +1405,6 @@
                     }
                     return tmp;
                 }();
-                console.log(kabkot);
                 var options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
                 kabkot.forEach(element => {
                     var op = '<option value="' + element['id_kabkot'] + '">' + element['nama_kabkot'] +
@@ -1384,7 +1420,7 @@
                 e.preventDefault();
                 const Toast = Swal.mixin({
                     toast: true,
-                    position: 'top-start',
+                    position: 'center',
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true,
@@ -1403,8 +1439,10 @@
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Registrasi berhasil'
-                            })
-                            document.getElementById('register-form').reset();
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
                         } else {
                             Toast.fire({
                                 icon: 'error',
@@ -1415,12 +1453,60 @@
                     }
                 });
 
+            });
+        });
+    </script>
+
+    <!-- Delete Customer -->
+    <script>
+        $(document).ready(function () {
+            $('.modal').on('click', '#delete-customer', function () {
+
+                var id_customer = $(this).siblings('#id-customer-delete').val();
+                console.log(id_customer);
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("delete_customer")}}',
+                    data: { 'id_customer': id_customer },
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Customer berhasil dihapus'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Customer gagal dihapus'
+                            })
+                        }
+                    }
+                });
+
+                $(this).parents('.modal').modal('hide');
 
             });
         });
     </script>
 
-
+    <!-- Progress Sending Email -->
     <script>
         $(function () {
 
