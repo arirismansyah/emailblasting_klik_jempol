@@ -271,7 +271,7 @@ def upload_customers():
             exporting_threads[thread_id] = ExportingThread(df_customers)
             exporting_threads[thread_id].start()
 
-            return {'thread_id':thread_id}
+            return {'thread_id':thread_id, 'rows':len(df_customers)}
 
 
 @app.route('/progress_insert/<int:thread_id>')

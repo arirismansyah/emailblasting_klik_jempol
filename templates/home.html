@@ -270,8 +270,8 @@
                                     <div class="col-12">
                                         <div id="progress_bar" class="progress" style="visibility: hidden;">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
-                                                role="progressbar" aria-valuemin="0" aria-valuenow="0" aria-valuemax="100"
-                                                style="width: 0%"></div>
+                                                role="progressbar" aria-valuemin="0" aria-valuenow="0"
+                                                aria-valuemax="100" style="width: 0%"></div>
                                         </div>
                                         <div class="text-center" id="percentageLoading" style="visibility: hidden;">0%
                                         </div>
@@ -1302,10 +1302,23 @@
 
             // Upload Data Customer
             $('#add-customer').on('click', '#uploadData', function () {
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
                 var form_data = new FormData();
                 var file_customers = $('#file_customers')[0].files;
                 document.getElementById('progress_bar').style.visibility = 'visible';
-                
+
                 var thread_id = 0;
                 if (file_customers.length > 0) {
                     form_data.append('file_customers', file_customers[0]);
@@ -1320,18 +1333,29 @@
                             console.log(response.thread_id);
                             document.getElementById('file_customers').value = null;
                             thread_id = response.thread_id;
-                            
+
                             var source = new EventSource('/progress_insert/' + response.thread_id)
                             source.onmessage = function (event) {
                                 console.log('progress', event);
                                 $('.progress-bar').css('width', event.data + '%').attr('aria-valuenow', event.data);
-                                
+
 
                                 if (event.data >= 100) {
                                     source.close();
                                     setTimeout(function () {
                                         document.getElementById('progress_bar').style.visibility = 'hidden';
-                                    }, 2000);
+                                    }, 1000);
+
+                                    setTimeout(function () {
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: 'Upload data customer berhasil'
+                                        });
+                                    }, 1000);
+                                    
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 4000);
                                 }
                             }
                         },
