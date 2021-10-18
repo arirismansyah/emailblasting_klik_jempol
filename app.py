@@ -228,8 +228,9 @@ def landing():
     provinsi = Prov.query.all()
     customers = Customer.query.all()
     all_kabkot = Kabkot.query.all()
+    all_templates = Template.query.all()
 
-    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot)
+    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot, all_templates=all_templates)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -352,7 +353,20 @@ def delete_customer():
 
 @app.route('/add_template', methods=['POST'])
 def add_template():
-    pass
+    template_email = Template(
+        subject = request.form['subject'],
+        nama_produk = request.form['nama_produk'],
+        lampiran = request.form['lampiran'],
+        body = request.form['body-email'],
+    )
+
+    try:
+        db.session.add(template_email)
+        db.session.commit()
+        return ('success', 200)
+    except:
+        return ('failed', 200)
+
 
 
 @app.route('/edit_template', methods=['POST'])

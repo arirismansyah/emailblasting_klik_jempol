@@ -462,38 +462,43 @@
                         <div class="card">
                             <div class="row d-flex justify-content-center" id="formTemplateEmail">
                                 <h3>Add Template</h3>
-                                <div class="row d-flex align-items-stretch mb-2">
-                                    <div class="form-group">
-                                        <label for="name">Subject</label>
-                                        <input type="text" class="form-control" name="subject" id="subject" required>
-                                    </div>
-                                </div>
-                                <div class="row d-flex align-items-stretch">
-                                    <div class="form-group col-md-6">
-                                        <label for="name">Nama Produk</label>
-                                        <input type="text" name="name" class="form-control" id="name" required>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="name">Link Lampiran</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="fa fa-link"></i>
-                                            </span>
-                                            <input type="email" class="form-control" name="email" id="email" required>
+                                <form id="add-template-form">
+                                    <div class="row d-flex align-items-stretch mb-2">
+                                        <div class="form-group">
+                                            <label for="name">Subject</label>
+                                            <input type="text" class="form-control" name="subject" id="subject"
+                                                required>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row d-flex align-items-stretch mb-2">
-                                    <div class="form-group">
-                                        <label for="name">Body</label>
-                                        <textarea id="body-email" class="form-control" name="message" rows="10"
-                                            required></textarea>
+                                    <div class="row d-flex align-items-stretch">
+                                        <div class="form-group col-md-6">
+                                            <label for="nama_produk">Nama Produk</label>
+                                            <input type="text" name="nama_produk" class="form-control" id="nama_produk"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="lampiran">Link Lampiran</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-link"></i>
+                                                </span>
+                                                <input type="text" class="form-control" name="lampiran" id="lampiran"
+                                                    required>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="row d-flex align-items-stretch mb-2">
+                                        <div class="form-group">
+                                            <label for="body-email">Body</label>
+                                            <textarea id="body-email" class="form-control" name="body-email" rows="10"
+                                                required></textarea>
+                                        </div>
+                                    </div>
 
-                                <div class="text-center mt-4">
-                                    <button class="button-primary" type="submit">Save Template</button>
-                                </div>
+                                    <div class="text-center mt-4">
+                                        <button class="button-primary" id="add-template-email">Save Template</button>
+                                    </div>
+                                </form>
                             </div>
 
                             <div class="row border-bottom border-4 mt-4 mb-4"></div>
@@ -504,22 +509,67 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Produk</th>
-                                            <th scope="col">Lampiran</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col" class="text-center">Subject</th>
+                                            <th scope="col" class="text-left">Produk</th>
+                                            <th scope="col" class="text-center">Lampiran</th>
+                                            <th scope="col" class="text-center">Status</th>
+                                            <th scope="col" class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for template in all_templates %}
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td class="align-middle"></td>
+                                            <td class="align-middle">{{template.subject}}</td>
+                                            <td class="align-middle">{{template.nama_produk}}</td>
+                                            <td class="text-center align-middle">
+                                                <a href="{{template.lampiran}}" target="_blank" type="button"
+                                                    class="btn btn-success btn-icon-text">
+                                                    <i class="bi bi-link-45deg btn-icon-prepend"></i>
+                                                    Lampiran
+                                                </a>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                {% if(template.status==0) %}
+                                                <h5>
+                                                    <span class="badge rounded-pill bg-secondary">
+                                                        Belum Dikirim
+                                                    </span>
+                                                </h5>
+                                                {% elif (template.status==1) %}
+                                                <h5>
+                                                    <span class="badge rounded-pill bg-success">
+                                                        Sudah Terikirim
+                                                    </span>
+                                                </h5>
+                                                {% elif (template.status==2) %}
+                                                <h5>
+                                                    <span class="badge rounded-pill bg-danger">
+                                                        Gagal Terikirim
+                                                    </span>
+                                                </h5>
+                                                {% else %}
+                                                <h5>
+                                                    <span class="badge rounded-pill bg-info">
+                                                        Dalam Proses
+                                                    </span>
+                                                </h5>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editTemplate_{{template.id_template}}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteTemplate_{{template.id_template}}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                                            </td>
                                         </tr>
+                                        {% endfor %}
 
                                     </tbody>
                                 </table>
@@ -844,7 +894,7 @@
         </section>
         <!-- End Contact Section -->
 
-        <!-- Modal -->
+        <!-- Modal Customer -->
         {% for c in customers %}
 
         <!-- Modals Delete -->
@@ -1061,7 +1111,8 @@
                                             rows="5">{{c.alamat_domisili}}</textarea>
                                     </div>
                                 </div>
-                                <input type="text" name="id_customer" id="id_customer" value="{{c.id_customer}}" style="display: none;">
+                                <input type="text" name="id_customer" id="id_customer" value="{{c.id_customer}}"
+                                    style="display: none;">
                             </form>
 
                         </div>
@@ -1069,6 +1120,103 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button id="update-customer" type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Modal Templates -->
+        {% for t in all_templates %}
+
+        <!-- Modals Delete -->
+        <div class="modal fade" id="deleteTemplate_{{t.id_template}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete - {{t.subject}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex justify-content center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                            <p class="text-muted text-center">
+                                <strong>
+                                    Anda yakin ingin menghapus template ini?
+                                </strong>
+                            </p>
+                            <p class="text-muted text-center">Subject : {{t.subject}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="text" name="id-template-delete" id="id-template-delete" readonly
+                            style="display: none;" value="{{t.id_template}}">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="delete-customer" type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals Edit -->
+        <div class="modal fade" id="editTemplate_{{t.id_template}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit - {{t.subject}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex justify-content-center" id="editTemplate">
+                            <form id="edit-template-form">
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group">
+                                        <label for="name">Subject</label>
+                                        <input type="text" class="form-control" name="subject" id="subject" required>
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-stretch">
+                                    <div class="form-group col-md-6">
+                                        <label for="nama_produk">Nama Produk</label>
+                                        <input type="text" name="nama_produk" class="form-control" id="nama_produk"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="lampiran">Link Lampiran</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-link"></i>
+                                            </span>
+                                            <input type="text" class="form-control" name="lampiran" id="lampiran"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group">
+                                        <label for="body-email">Body</label>
+                                        <textarea id="body-email" class="form-control" name="body-email" rows="10"
+                                            required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <button class="button-primary" id="add-template-email">Save Template</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="update-template" type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -1352,7 +1500,7 @@
                                             title: 'Upload data customer berhasil'
                                         });
                                     }, 1000);
-                                    
+
                                     setTimeout(function () {
                                         location.reload();
                                     }, 4000);
@@ -1532,8 +1680,8 @@
 
     <!-- Edit Customer -->
     <script>
-        $(document).ready(function(){
-            $('.modal').on('click', '#update-customer', function(e){
+        $(document).ready(function () {
+            $('.modal').on('click', '#update-customer', function (e) {
                 e.preventDefault();
 
                 const Toast = Swal.mixin({
@@ -1569,11 +1717,54 @@
                         }
 
                     }
-                    
+
                 });
 
                 $(this).parents('.modal').modal('hide');
 
+            });
+        });
+    </script>
+
+    <!-- Add Template Email -->
+    <script>
+        $(document).ready(function () {
+            $('#formTemplateEmail').on('submit', '#add-template-form', function (e) {
+                e.preventDefault();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("add_template")}}',
+                    data: $('#add-template-form').serialize(),
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Template berhasil ditambahkan'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Template gagal ditambahkan'
+                            })
+                        }
+
+                    }
+                });
             });
         });
     </script>
