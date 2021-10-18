@@ -218,6 +218,8 @@ def home():
     pendidikan = Pendidikan.query.all()
     jenis_pekerjaan = Pekerjaan.query.all()
     provinsi = Prov.query.all()
+    all_kabkot = Kabkot.query.all()
+
     return render_template('landing.html', title='KLIK JEMPOL', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot)
 
 
