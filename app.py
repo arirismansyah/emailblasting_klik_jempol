@@ -337,10 +337,6 @@ def update_customer():
     except:
         return make_response('failed', 200)
 
-
-
-
-
 @app.route('/delete_customer', methods=['POST'])
 def delete_customer():
     id_customer = request.form['id_customer']
@@ -373,12 +369,31 @@ def add_template():
 
 @app.route('/edit_template', methods=['POST'])
 def edit_template():
-    pass
+    id_template = request.form['id_template']
+    template = Template.query.get_or_404(id_template)
+
+    try:
+        template.subject = request.form['subject']
+        template.nama_produk = request.form['nama_produk']
+        template.lampiran = request.form['lampiran']
+        template.body = request.form['body-email']
+        db.session.commit()
+        return make_response('success', 200)
+    except:
+        return make_response('failed', 200)
+
 
 
 @app.route('/delete_template', methods=['POST'])
 def delete_template():
-    pass
+    id_template = request.form['id_template']
+    template = Template.query.get_or_404(id_template)
+    try:
+        db.session.delete(template)
+        db.session.commit()
+        return make_response('success', 200)
+    except:
+        return make_response('delete failed', 200)
 
 
 @app.route('/send', methods=['POST'])

@@ -1158,7 +1158,7 @@
                         <input type="text" name="id-template-delete" id="id-template-delete" readonly
                             style="display: none;" value="{{t.id_template}}">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button id="delete-customer" type="button" class="btn btn-danger">Delete</button>
+                        <button id="delete-template" type="button" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
@@ -1179,14 +1179,14 @@
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group">
                                         <label for="name">Subject</label>
-                                        <input type="text" class="form-control" name="subject" id="subject" required>
+                                        <input type="text" class="form-control" name="subject" id="subject" required value="{{t.subject}}">
                                     </div>
                                 </div>
                                 <div class="row d-flex align-items-stretch">
                                     <div class="form-group col-md-6">
                                         <label for="nama_produk">Nama Produk</label>
                                         <input type="text" name="nama_produk" class="form-control" id="nama_produk"
-                                            required>
+                                            required value="{{t.nama_produk}}">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label for="lampiran">Link Lampiran</label>
@@ -1195,7 +1195,7 @@
                                                 <i class="fa fa-link"></i>
                                             </span>
                                             <input type="text" class="form-control" name="lampiran" id="lampiran"
-                                                required>
+                                                required value="{{t.lampiran}}">
                                         </div>
                                     </div>
                                 </div>
@@ -1203,13 +1203,12 @@
                                     <div class="form-group">
                                         <label for="body-email">Body</label>
                                         <textarea id="body-email" class="form-control" name="body-email" rows="10"
-                                            required></textarea>
+                                            required>{{t.body}}</textarea>
                                     </div>
                                 </div>
 
-                                <div class="text-center mt-4">
-                                    <button class="button-primary" id="add-template-email">Save Template</button>
-                                </div>
+                                <input type="text" name="id_template" id="id_template" value="{{t.id_template}}"
+                                    style="display: none;">
                             </form>
 
                         </div>
@@ -1366,7 +1365,7 @@
     <script>
         $(document).ready(function () {
             $('#body-email').richText();
-            $('.modal').find('#body').richText();
+            $('.modal').find('#body-email').richText();
         });
     </script>
 
@@ -1770,6 +1769,103 @@
         });
     </script>
 
+    <!-- Edit Template Email -->
+    <script>
+        $(document).ready(function(){
+            $('.modal').on('click', '#update-template', function (e) {
+                e.preventDefault();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("edit_template")}}',
+                    data: $('#edit-template-form').serialize(),
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Update template berhasil'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Update template gagal'
+                            })
+                        }
+
+                    }
+
+                });
+
+                $(this).parents('.modal').modal('hide');
+
+            });
+        });
+    </script>
+    
+    <!-- Delete Template Email -->
+    <script>
+        $(document).ready(function () {
+            $('.modal').on('click', '#delete-template', function () {
+
+                var id_template = $(this).siblings('#id-template-delete').val();
+                console.log(id_template);
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("delete_template")}}',
+                    data: { 'id_template': id_template },
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Template berhasil dihapus'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Template gagal dihapus'
+                            })
+                        }
+                    }
+                });
+
+                $(this).parents('.modal').modal('hide');
+
+            });
+        });
+    </script>
+    
     <!-- Progress Sending Email -->
     <script>
         $(function () {
