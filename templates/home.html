@@ -165,54 +165,6 @@
                     <div class="tab-pane fade show active" id="pills-customers" role="tabpanel"
                         aria-labelledby="pills-customers-tab">
                         <div class="card">
-                            <!-- table customer -->
-                            <div class="row mb-4">
-                                <h3>Data Customers Klik Jempol</h3>
-                                <p>Jumlah customer : </p>
-                                <table class="table table-striped" id="table-customers">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Jenis Kelamin</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">No. Handphone</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="body-table-customers">
-                                        {% for customer in customers%}
-                                        <tr>
-                                            <td></td>
-                                            <td>{{customer.nama}}</td>
-                                            <td>{{customer.jenis_kelamin}}</td>
-                                            <td>{{customer.email}}</td>
-                                            <td>{{customer.phone}}</td>
-                                            <td class="d-flex justify-content-around">
-                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editCustomer_{{customer.id_customer}}">
-                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
-                                                </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteCustomer_{{customer.id_customer}}">
-                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-
-                                    </tbody>
-                                </table>
-
-
-                            </div>
-                            <!-- end table customer -->
-
-                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
-
-
                             <!-- add customer -->
                             <div class="row d-flex justify-content-center" id="add-customer">
                                 <h3>Add Customer Data</h3>
@@ -454,6 +406,54 @@
 
                                 </div>
                             </div>
+
+                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
+
+                            <!-- table customer -->
+                            <div class="row mb-4">
+                                <h3>Data Customers Klik Jempol</h3>
+                                <p>Jumlah customer : </p>
+                                <table class="table table-striped" id="table-customers">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Jenis Kelamin</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">No. Handphone</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body-table-customers">
+                                        {% for customer in customers%}
+                                        <tr>
+                                            <td></td>
+                                            <td>{{customer.nama}}</td>
+                                            <td>{{customer.jenis_kelamin}}</td>
+                                            <td>{{customer.email}}</td>
+                                            <td>{{customer.phone}}</td>
+                                            <td class="d-flex justify-content-around">
+                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editCustomer_{{customer.id_customer}}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteCustomer_{{customer.id_customer}}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                            <!-- end table customer -->
+
                         </div>
                     </div>
 
@@ -588,14 +588,16 @@
                                         <label for="template">Template Email</label>
                                         <select class="form-select" name="template" id="template">
                                             <option selected disabled value="">Pilih Template Email</option>
-                                            <option value="1">Template #1</option>
+                                            {% for template in all_templates %}
+                                            <option value="{{template.id_template}}">{{template.subject}}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                 </div>
 
                                 <div id="container-detail" class="row d-flex justify-content-center mt-2">
                                     <div id="detail-template" class="col-lg-12 d-flex justify-content-center">
-                                        <table class="table">
+                                        <table class="table" id="table-template-send">
                                             <thead>
                                                 <tr>
                                                     <th>Subject</th>
@@ -603,12 +605,8 @@
                                                     <th>Link Lampiran</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
+                                            <tbody id="tbody-template-send">
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -1179,7 +1177,8 @@
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group">
                                         <label for="name">Subject</label>
-                                        <input type="text" class="form-control" name="subject" id="subject" required value="{{t.subject}}">
+                                        <input type="text" class="form-control" name="subject" id="subject" required
+                                            value="{{t.subject}}">
                                     </div>
                                 </div>
                                 <div class="row d-flex align-items-stretch">
@@ -1252,7 +1251,7 @@
 
                     <div class="col-lg-3 col-md-6 footer-links">
                         <h4>Our Social Networks</h4>
-                        <p>FOllow us on our social medias:</p>
+                        <p>Follow us on our social medias:</p>
                         <div class="social-links mt-3">
                             <a href="https://twitter.com/bpssumsel" class="twitter"><i class="bx bxl-twitter"></i></a>
                             <a href="https://www.facebook.com/bpsprovsumsel/" class="facebook"><i
@@ -1323,16 +1322,34 @@
             if (selected_template != null && selected_template != '') {
                 console.log(selected_template);
             } else {
-                $('#detail-template').remove();
+                $('#detail-template').attr("display", "none");
             }
             $('#template').change(function () {
                 var selected_template = $('#template').val();
+                //console.log(selected_template);
                 if (selected_template != null || selected_template != '') {
-                    console.log(selected_template);
-                    $('#detail-template').remove();
-                    $('#container-detail').append(detail_template_clone);
-                } else {
-                    $('#detail-template').remove();
+                    var template = function () {
+                        var tmp = null;
+
+                        if (selected_template != null) {
+                            $.ajax({
+                                async: false,
+                                method: "POST",
+                                url: "{{url_for('get_template')}}",
+                                data: {
+                                    'id_template': selected_template,
+                                },
+                                success: function (response) {
+                                    tmp = response;
+                                }
+                            });
+                        }
+                        return tmp;
+                    }();
+
+                    //console.log(template);
+                    var tbody = '<td>'+template['subject']+'</td><td>'+template['nama_produk']+'</td><td>'+template['lampiran']+'</td>';
+                    $('#tbody-template-send').html(tbody);
                 }
             });
         });
@@ -1771,7 +1788,7 @@
 
     <!-- Edit Template Email -->
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.modal').on('click', '#update-template', function (e) {
                 e.preventDefault();
 
@@ -1816,7 +1833,7 @@
             });
         });
     </script>
-    
+
     <!-- Delete Template Email -->
     <script>
         $(document).ready(function () {
@@ -1865,7 +1882,7 @@
             });
         });
     </script>
-    
+
     <!-- Progress Sending Email -->
     <script>
         $(function () {

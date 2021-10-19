@@ -1,5 +1,6 @@
 from enum import unique
 from genericpath import isdir
+from re import template
 import smtplib
 import ssl
 
@@ -7,6 +8,7 @@ import email
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 
 import os
@@ -25,7 +27,7 @@ from decimal import Decimal
 from flask import Flask, app, redirect, url_for, stream_with_context, render_template, Response, jsonify, request, make_response, send_file, send_from_directory, session
 from flask_ngrok import run_with_ngrok
 from flask_migrate import Migrate
-from werkzeug.utils import secure_filename
+from werkzeug.utils import html, secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mysqldb import MySQL
 from flask_sqlalchemy import SQLAlchemy
@@ -40,11 +42,74 @@ app.config.from_object(Config)
 
 exporting_threads = {}
 
+send_threads = {}
+
 # Database
 db = SQLAlchemy(app)
 
 # Migration
 migrate = Migrate(app, db)
+
+# Send Email Thread
+class SendMailThread(threading.Thread):
+    def __init__(self, customers, template):
+        self.progress = 0
+        self.customers = customers
+        self.template = template
+        super().__init__()
+    
+    def run(self):
+        total = len(self.customers)
+        success_send = 0
+        failed_send = 0
+        for customer in self.customers:
+            
+            message = MIMEMultipart()
+            message['From'] = Config.EMAIL
+            message['To'] = customer['email']
+            message['Subject'] = self.template['subject']
+
+            email_template = EmailTemplate(receiver=customer['nama'], body=self.template['body'], product=self.template['nama_produk'], attachment=self.template['lampiran'])
+
+            email_template_html = email_template.create_template()
+
+            part_html = MIMEText(email_template_html, html)
+            message.attach(part_html)
+
+            text_mail = message.as_string()
+
+            context = ssl.create_default_context()
+            try:
+                with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
+                    server.login(Config.EMAIL, Config.PASSWORD_EMAIL)
+                    server.sendmail(Config.EMAIL, customer['email'], text_mail)
+                
+                input_log = Log(
+                    template_email = self.template['id_template'],
+                    customer = customer['id_customer'],
+                    status = 1,
+                )
+
+                db.session.add(input_log)
+                db.session.commit()
+                success_send += 1
+            except:
+                input_log = Log(
+                    template_email = self.template['id_template'],
+                    customer = customer['id_customer'],
+                    status = 2,
+                )
+
+                db.session.add(input_log)
+                db.session.commit()
+                failed_send += 1
+
+            self.progress =+ ((success_send+failed_send)/total)*100
+            
+            if((success_send % 500)==0):
+                time.sleep(60*60*24)
+
+            
 
 # Exporting Thread
 
@@ -199,6 +264,7 @@ class Log(db.Model, Serializer):
     template_email = db.Column(
         db.Integer, db.ForeignKey('template.id_template'))
     customer = db.Column(db.Integer, db.ForeignKey('customer.id_customer'))
+    status = db.Column(db.Integer, db.ForeignKey('status.id_status'), nullable=False, default=0)
     send_at = db.Column(db.DateTime, default=datetime.now)
 
 # # Model FAQ
@@ -212,6 +278,14 @@ class Faq(db.Model, Serializer):
     def __repr__(self):
         return '<FAQ {}>'.format(self.question)
 
+# # Model Admin
+class Admin(db.Model, Serializer):
+    id_admin = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(200))
+    password = db.Column(db.String(200))
+
+    def __repr__(self):
+        return '<Admin {}>'.format(self.username)
 
 @app.route('/')
 def home():
@@ -398,8 +472,38 @@ def delete_template():
 
 @app.route('/send', methods=['POST'])
 def send():
-    pass
+    if (request.method == 'POST'):
+        id_template = request.form['id_template']
+        template = Template.query.get_or_404(id_template)
+        customers = Customer.query.filter((Customer.email!=None)|(Customer.email!="")).all()
 
+        global send_threads
+        thread_id = random.randint(0, 10000)
+        send_threads[thread_id] = SendMailThread(customers=customers, template=template)
+        send_threads[thread_id].start()
+
+        return {'thread_id':thread_id, 'rows':len(customers)}
+
+
+
+@app.route('/progress_send/<int:thread_id>')
+def progress_send(thread_id):
+    def make_prog():
+        global send_threads
+        yield "data:"+str(send_threads[thread_id].progress)+"\n\n"
+
+    return Response(make_prog(), mimetype='text/event-stream')
+
+@app.route('/get_template', methods=['POST'])
+def get_template():
+    id_template = None
+
+    if(request.method == 'POST'):
+        id_template = request.form['id_template']
+        template = Template.query.get_or_404(id_template)
+        serialized_template = Template.serialize(template)
+
+        return jsonify(serialized_template)
 
 @app.route('/kabkot', methods=['POST'])
 def kabkot():
@@ -411,7 +515,6 @@ def kabkot():
         serialized_kabkot = Kabkot.serialize_list(kabkot)
 
         return jsonify(serialized_kabkot)
-
 
 @app.route('/get_customers', methods=['GET'])
 def get_customers():

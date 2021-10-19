@@ -70,6 +70,7 @@ class EmailTemplate:
 
             </style>
             """
+    
     def __init__(self, receiver, body, product, attachment):
         self.receiver = receiver
         self.body = body
