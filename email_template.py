@@ -1,76 +1,76 @@
+css_template = """
+        <style type="text/css">
+            table, td { color: #000000; } a { color: #0000ee; text-decoration: underline; }
+        @media only screen and (min-width: 620px) {
+        .u-row {
+            width: 600px !important;
+        }
+        .u-row .u-col {
+            vertical-align: top;
+        }
+
+        .u-row .u-col-100 {
+            width: 600px !important;
+        }
+
+        }
+
+        @media (max-width: 620px) {
+        .u-row-container {
+            max-width: 100% !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+        .u-row .u-col {
+            min-width: 320px !important;
+            max-width: 100% !important;
+            display: block !important;
+        }
+        .u-row {
+            width: calc(100% - 40px) !important;
+        }
+        .u-col {
+            width: 100% !important;
+        }
+        .u-col > div {
+            margin: 0 auto;
+        }
+        }
+        body {
+        margin: 0;
+        padding: 0;
+        }
+
+        table,
+        tr,
+        td {
+        vertical-align: top;
+        border-collapse: collapse;
+        }
+
+        p {
+        margin: 0;
+        }
+
+        .ie-container table,
+        .mso-container table {
+        table-layout: fixed;
+        }
+
+        * {
+        line-height: inherit;
+        }
+
+        a[x-apple-data-detectors='true'] {
+        color: inherit !important;
+        text-decoration: none !important;
+        }
+
+        </style>
+        """
+
 class EmailTemplate:
 
-    css_template = """
-            <style type="text/css">
-                table, td { color: #000000; } a { color: #0000ee; text-decoration: underline; }
-            @media only screen and (min-width: 620px) {
-            .u-row {
-                width: 600px !important;
-            }
-            .u-row .u-col {
-                vertical-align: top;
-            }
-
-            .u-row .u-col-100 {
-                width: 600px !important;
-            }
-
-            }
-
-            @media (max-width: 620px) {
-            .u-row-container {
-                max-width: 100% !important;
-                padding-left: 0px !important;
-                padding-right: 0px !important;
-            }
-            .u-row .u-col {
-                min-width: 320px !important;
-                max-width: 100% !important;
-                display: block !important;
-            }
-            .u-row {
-                width: calc(100% - 40px) !important;
-            }
-            .u-col {
-                width: 100% !important;
-            }
-            .u-col > div {
-                margin: 0 auto;
-            }
-            }
-            body {
-            margin: 0;
-            padding: 0;
-            }
-
-            table,
-            tr,
-            td {
-            vertical-align: top;
-            border-collapse: collapse;
-            }
-
-            p {
-            margin: 0;
-            }
-
-            .ie-container table,
-            .mso-container table {
-            table-layout: fixed;
-            }
-
-            * {
-            line-height: inherit;
-            }
-
-            a[x-apple-data-detectors='true'] {
-            color: inherit !important;
-            text-decoration: none !important;
-            }
-
-            </style>
-            """
-    
     def __init__(self, receiver, body, product, attachment):
         self.receiver = receiver
         self.body = body
@@ -78,8 +78,8 @@ class EmailTemplate:
         self.attachment = attachment
 
     def create_template(self):
-
-        html_template = """
+        global css_template
+        html_template = f"""
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
         <head>

@@ -24,7 +24,7 @@ import threading
 import random
 from decimal import Decimal
 
-from flask import Flask, app, redirect, url_for, stream_with_context, render_template, Response, jsonify, request, make_response, send_file, send_from_directory, session
+from flask import Flask, app, redirect, url_for, flash, stream_with_context, render_template, Response, jsonify, request, make_response, send_file, send_from_directory, session
 from flask_ngrok import run_with_ngrok
 from flask_migrate import Migrate
 from werkzeug.utils import html, secure_filename
@@ -54,16 +54,15 @@ migrate = Migrate(app, db)
 class SendMailThread(threading.Thread):
     def __init__(self, customers, template):
         self.progress = 0
+        self.success_send = 0
+        self.failed_send = 0
         self.customers = customers
         self.template = template
         super().__init__()
     
     def run(self):
         total = len(self.customers)
-        success_send = 0
-        failed_send = 0
         for customer in self.customers:
-            
             message = MIMEMultipart()
             message['From'] = Config.EMAIL
             message['To'] = customer['email']
@@ -73,7 +72,7 @@ class SendMailThread(threading.Thread):
 
             email_template_html = email_template.create_template()
 
-            part_html = MIMEText(email_template_html, html)
+            part_html = MIMEText(email_template_html, 'html')
             message.attach(part_html)
 
             text_mail = message.as_string()
@@ -92,7 +91,7 @@ class SendMailThread(threading.Thread):
 
                 db.session.add(input_log)
                 db.session.commit()
-                success_send += 1
+                self.success_send += 1
             except:
                 input_log = Log(
                     template_email = self.template['id_template'],
@@ -102,13 +101,22 @@ class SendMailThread(threading.Thread):
 
                 db.session.add(input_log)
                 db.session.commit()
-                failed_send += 1
+                self.failed_send += 1
 
-            self.progress =+ ((success_send+failed_send)/total)*100
+            self.progress =+ ((self.success_send+self.failed_send)/total)*100
             
-            if((success_send % 500)==0):
+            if((self.success_send!=0) and (self.success_send % 500)==0):
                 time.sleep(60*60*24)
 
+            if(self.success_send+self.failed_send == total):
+                try:
+                    update_template = Template.query.get_or_404(self.template['id_template'])
+                    update_template.status = 1
+                    db.session.commit()
+                except:
+                    update_template = Template.query.get_or_404(self.template['id_template'])
+                    update_template.status = 2
+                    db.session.commit()
             
 
 # Exporting Thread
@@ -293,33 +301,60 @@ def home():
     jenis_pekerjaan = Pekerjaan.query.all()
     provinsi = Prov.query.all()
     all_kabkot = Kabkot.query.all()
+    all_faq = Faq.query.all()
 
-    return render_template('landing.html', title='KLIK JEMPOL', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot)
+    return render_template('landing.html', title='KLIK JEMPOL', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot, faq=all_faq)
 
 
 @app.route('/admin')
-def landing():
-    pendidikan = Pendidikan.query.all()
-    jenis_pekerjaan = Pekerjaan.query.all()
-    provinsi = Prov.query.all()
-    customers = Customer.query.all()
-    all_kabkot = Kabkot.query.all()
-    all_templates = Template.query.all()
+def admin():
+    if 'loggedin' in session:
+        pendidikan = Pendidikan.query.all()
+        jenis_pekerjaan = Pekerjaan.query.all()
+        provinsi = Prov.query.all()
+        customers = Customer.query.all()
+        all_kabkot = Kabkot.query.all()
+        all_templates = Template.query.all()
+        all_faq = Faq.query.all()
 
-    return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot, all_templates=all_templates)
+        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq)
+    else:
+        return redirect(url_for('home'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    pass
+    if(request.method == 'POST'):
+        username = request.form['username']
+        password = request.form['password']
 
+        admin = Admin.query.filter_by(username=username).first()
+        if ((admin != None)):
+            if(password == admin.password):
+                session['loggedin'] = True
+                session['username'] = admin.username
+                return redirect(url_for('admin'))
+            else:
+                flash("Username/password salah!", "error")
+                return render_template('login.html')    
+        else:
+                flash("Username/password salah!", "error")
+                return render_template('login.html')                
+    else:
+        return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('username', None)
+    return redirect(url_for('home'))
 
 @app.route('/download_template', methods=['GET', 'POST'])
 def download_template():
     path = 'static/template/template.xlsx'
     return send_file(path, attachment_filename='template.xlsx', as_attachment=True)
 
-
+# Route for Customer
 @app.route('/upload_customers', methods=['GET', 'POST'])
 def upload_customers():
     if request.method == 'POST':
@@ -350,7 +385,6 @@ def upload_customers():
 
             return {'thread_id':thread_id, 'rows':len(df_customers)}
 
-
 @app.route('/progress_insert/<int:thread_id>')
 def progress(thread_id):
     def make_prog():
@@ -358,7 +392,6 @@ def progress(thread_id):
         yield "data:"+str(exporting_threads[thread_id].progress)+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
-
 
 @app.route('/register_customer', methods=['POST'])
 def register_customer():
@@ -385,7 +418,6 @@ def register_customer():
         return make_response('success', 200)
     except:
         return make_response('register failed', 200)
-
 
 @app.route('/update_customer', methods=['POST'])
 def update_customer():
@@ -423,6 +455,7 @@ def delete_customer():
         return make_response('delete failed', 200)
 
 
+# Route for Template
 @app.route('/add_template', methods=['POST'])
 def add_template():
     template_email = Template(
@@ -439,8 +472,6 @@ def add_template():
     except:
         return ('failed', 200)
 
-
-
 @app.route('/edit_template', methods=['POST'])
 def edit_template():
     id_template = request.form['id_template']
@@ -456,14 +487,51 @@ def edit_template():
     except:
         return make_response('failed', 200)
 
-
-
 @app.route('/delete_template', methods=['POST'])
 def delete_template():
     id_template = request.form['id_template']
     template = Template.query.get_or_404(id_template)
     try:
         db.session.delete(template)
+        db.session.commit()
+        return make_response('success', 200)
+    except:
+        return make_response('delete failed', 200)
+
+# Route for FAQ
+@app.route('/add_faq', methods=['POST'])
+def add_faq():
+    faq = Faq(
+        question = request.form['question'],
+        answer = request.form['answer'],
+    )
+
+    try:
+        db.session.add(faq)
+        db.session.commit()
+        return ('success', 200)
+    except:
+        return ('failed', 200)
+
+@app.route('/edit_faq', methods=['POST'])
+def edit_faq():
+    id_faq = request.form['id_faq']
+    faq = Faq.query.get_or_404(id_faq)
+
+    try:
+        faq.question = request.form['question']
+        faq.answer = request.form['answer']
+        db.session.commit()
+        return make_response('success', 200)
+    except:
+        return make_response('failed', 200)
+
+@app.route('/delete_faq', methods=['POST'])
+def delete_faq():
+    id_faq = request.form['id_faq']
+    faq = Faq.query.get_or_404(id_faq)
+    try:
+        db.session.delete(faq)
         db.session.commit()
         return make_response('success', 200)
     except:
@@ -476,13 +544,15 @@ def send():
         id_template = request.form['id_template']
         template = Template.query.get_or_404(id_template)
         customers = Customer.query.filter((Customer.email!=None)|(Customer.email!="")).all()
+        serialized_customers = Customer.serialize_list(customers)
+        serialized_template = Template.serialize(template)
 
         global send_threads
         thread_id = random.randint(0, 10000)
-        send_threads[thread_id] = SendMailThread(customers=customers, template=template)
+        send_threads[thread_id] = SendMailThread(customers=serialized_customers, template=serialized_template)
         send_threads[thread_id].start()
 
-        return {'thread_id':thread_id, 'rows':len(customers)}
+        return {'thread_id':thread_id, 'rows':len(serialized_customers)}
 
 
 
@@ -490,7 +560,7 @@ def send():
 def progress_send(thread_id):
     def make_prog():
         global send_threads
-        yield "data:"+str(send_threads[thread_id].progress)+"\n\n"
+        yield "data:"+str({"progress":send_threads[thread_id].progress, "success_send":send_threads[thread_id].success_send, "failed_send":send_threads[thread_id].failed_send})+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
 

@@ -60,6 +60,7 @@
                     <li><a class="nav-link scrollto" href="#tools">Tools</a></li>
                     <li><a class="nav-link scrollto" href="#team">Team</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                    <li><a class="nav-link scrollto" href="{{url_for('logout')}}">Logout</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -160,6 +161,12 @@
                             Send Email
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-send-tab" data-bs-toggle="pill" data-bs-target="#pills-faq"
+                            type="button" role="tab" aria-controls="pills-faq" aria-selected="false">
+                            Add FAQ
+                        </button>
+                    </li>
                 </ul>
                 <div class="row tab-content d-flex justify-content-center" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-customers" role="tabpanel"
@@ -172,13 +179,13 @@
                                 <div class="mb-4">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="radioCustomer"
-                                            id="radioCustomer2" value="upload">
-                                        <label class="form-check-label">Upload Data Customer</label>
+                                        id="radioCustomer1" value="register" checked>
+                                        <label class="form-check-label">Register Customer</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="radioCustomer"
-                                            id="radioCustomer1" value="register" checked>
-                                        <label class="form-check-label">Register Customer</label>
+                                            id="radioCustomer2" value="upload">
+                                        <label class="form-check-label">Upload Data Customer</label>
                                     </div>
                                 </div>
 
@@ -613,7 +620,7 @@
                                 </div>
 
                                 <div class="text-center mt-4">
-                                    <button class="button-primary" type="submit">Send Email to Customers</button>
+                                    <button class="button-primary" id="send-email-btn">Send Email to Customers</button>
                                 </div>
 
                             </div>
@@ -623,7 +630,7 @@
 
                             <div class="row">
                                 <div>
-                                    <div class="progress progress-round mx-auto" data-value='90'>
+                                    <div id="send-progress-bar" class="progress progress-round mx-auto" data-value='0'>
                                         <span class="progress-left">
                                             <span class="progress-bar border-success"></span>
                                         </span>
@@ -632,22 +639,113 @@
                                         </span>
                                         <div
                                             class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                                            <div class="h2 font-weight-bold">90 <small>%</small></div>
+                                            <div id="send-progress-label" class="h2 font-weight-bold">0<small>%</small>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row d-flex justify-content-center text-center mt-4">
                                         <div class="col-3 border-right">
-                                            <div class="h4 font-weight-bold mb-0">28%</div><span
-                                                class="small text-gray">Last week</span>
+                                            <div id="succed-send-label" class="h4 font-weight-bold mb-0">0</div><span
+                                                class="small text-gray">Succed Send</span>
                                         </div>
                                         <div class="col-3">
-                                            <div class="h4 font-weight-bold mb-0">60%</div><span
-                                                class="small text-gray">Last month</span>
+                                            <div id="failed-send-label" class="h4 font-weight-bold mb-0">0</div><span
+                                                class="small text-gray">Failed Send</span>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- add faq -->
+                    <div class="tab-pane fade" id="pills-faq" role="tabpanel"
+                        aria-labelledby="pills-customers-tab">
+                        <div class="card">
+                            <!-- add customer -->
+                            <div class="row d-flex justify-content-center" id="add-faq">
+                                <h3>Add FAQ</h3>
+
+                                
+
+                                <!-- add faq -->
+                                <div class="row d-flex justify-content-center" id="addFAQ">
+
+                                    <form id="faq-form">
+                                        
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="text-muted" for="question">Pertanyaan</label>
+                                                <textarea name="question" class="form-control" id="question" required
+                                                    rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row d-flex align-items-stretch mb-2">
+                                            <div class="form-group col-md-12">
+                                                <label class="text-muted" for="answer">Jawaban</label>
+                                                <textarea name="answer" class="form-control" id="answer" required
+                                                    rows="5"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mb-2">
+                                            <div class="col-auto">
+                                                <button id="btn-add-faq" class="button-primary">Submit</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row d-flex justify-content-center mb-2" id="errorMsg">
+
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
+
+                            <!-- table FAQ -->
+                            <div class="row mb-4">
+                                <h3>Data FAQ Klik Jempol</h3>
+                                <table class="table table-striped" id="table-faq">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th class="col-5 text-center" scope="col">Pertanyaan</th>
+                                            <th class="col-5 text-center" scope="col">Jawaban</th>
+                                            <th class="col-1 text-center" scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body-table-faq">
+                                        {% for f in faq%}
+                                        <tr>
+                                            <td></td>
+                                            <td class="col-5">{{f.question}}</td>
+                                            <td class="col-5">{{f.answer}}</td>
+                                            <td class="col-1 text-center align-middle">
+                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editFAQ_{{f.id_faq}}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteFAQ_{{f.id_faq}}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                            <!-- end table customer -->
+
                         </div>
                     </div>
                 </div>
@@ -663,80 +761,48 @@
 
                 <div class="section-title">
                     <h2>Team</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                    <p>Berikut ini adalah team yang terlibat dalam pembangunan layanan KLIK JEMPOL.</p>
                 </div>
 
                 <div class="row">
 
                     <div class="col-lg-6">
                         <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="pic"><img src="../static/assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                            <div class="pic"><img src="../static/assets/img/team/trio.jpg" class="img-fluid" alt="">
                             </div>
                             <div class="member-info">
-                                <h4>Walter White</h4>
-                                <span>Chief Executive Officer</span>
-                                <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
-                                <div class="social">
-                                    <a href=""><i class="ri-twitter-fill"></i></a>
-                                    <a href=""><i class="ri-facebook-fill"></i></a>
-                                    <a href=""><i class="ri-instagram-fill"></i></a>
-                                    <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                                </div>
+                                <h4>Trio Wira Dharma SST</h4>
+                                <span>Subkoordinator Fungsi</span>
+                                <p>Diseminasi dan Layanan Statistik</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-lg-6 mt-4 mt-lg-0">
                         <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="200">
-                            <div class="pic"><img src="../static/assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                            <div class="pic"><img src="../static/assets/img/team/nitatri.jpg" class="img-fluid" alt="">
                             </div>
                             <div class="member-info">
-                                <h4>Sarah Jhonson</h4>
-                                <span>Product Manager</span>
-                                <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
-                                <div class="social">
-                                    <a href=""><i class="ri-twitter-fill"></i></a>
-                                    <a href=""><i class="ri-facebook-fill"></i></a>
-                                    <a href=""><i class="ri-instagram-fill"></i></a>
-                                    <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                                </div>
+                                <h4>Nita Tri Andini SST</h4>
+                                <span>Staf</span>
+                                <p>Diseminasi dan Layanan Statistik</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-lg-6 mt-4">
                         <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="300">
-                            <div class="pic"><img src="../static/assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                            <div class="pic"><img src="../static/assets/img/team/ari.jpg" class="img-fluid" alt="">
                             </div>
                             <div class="member-info">
-                                <h4>William Anderson</h4>
-                                <span>CTO</span>
-                                <p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
+                                <h4>Ari Rismansyah</h4>
+                                <span>Staf</span>
+                                <p> Integrasi Pengolahan Data</p>
                                 <div class="social">
-                                    <a href=""><i class="ri-twitter-fill"></i></a>
-                                    <a href=""><i class="ri-facebook-fill"></i></a>
-                                    <a href=""><i class="ri-instagram-fill"></i></a>
-                                    <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 mt-4">
-                        <div class="member d-flex align-items-start" data-aos="zoom-in" data-aos-delay="400">
-                            <div class="pic"><img src="../static/assets/img/team/team-4.jpg" class="img-fluid" alt="">
-                            </div>
-                            <div class="member-info">
-                                <h4>Amanda Jepson</h4>
-                                <span>Accountant</span>
-                                <p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
-                                <div class="social">
-                                    <a href=""><i class="ri-twitter-fill"></i></a>
-                                    <a href=""><i class="ri-facebook-fill"></i></a>
-                                    <a href=""><i class="ri-instagram-fill"></i></a>
-                                    <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                                    <a href="https://github.com/arirismansyah/emailblasting_klik_jempol" target="_blank">
+                                        <i class="ri-github-fill"></i>
+                                        
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -754,86 +820,24 @@
 
                 <div class="section-title">
                     <h2>Frequently Asked Questions</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                    <p>Berikut ini merupakan daftar pertanyaan terkait dengan KLIK JEMPOL</p>
                 </div>
 
                 <div class="faq-list">
                     <ul>
+                        {%for f in faq%}
                         <li data-aos="fade-up" data-aos-delay="100">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse"
-                                data-bs-target="#faq-list-1">Non consectetur a erat nam at lectus urna duis? <i
+                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapsed"
+                                data-bs-target="#faq-list-{{f.id_faq}}">{{f.question}}<i
                                     class="bx bx-chevron-down icon-show"></i><i
                                     class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+                            <div id="faq-list-{{f.id_faq}}" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet
-                                    non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor
-                                    purus non.
+                                    {{f.answer}}
                                 </p>
                             </div>
                         </li>
-
-                        <li data-aos="fade-up" data-aos-delay="200">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-2" class="collapsed">Feugiat scelerisque varius morbi enim
-                                nunc? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum
-                                    velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend
-                                    donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in
-                                    cursus turpis massa tincidunt dui.
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="300">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-3" class="collapsed">Dolor sit amet consectetur adipiscing
-                                elit? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus
-                                    pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit.
-                                    Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis
-                                    tellus. Urna molestie at elementum eu facilisis sed odio morbi quis
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="400">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-4" class="collapsed">Tempus quam pellentesque nec nam aliquam
-                                sem et tortor consequat? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in
-                                    est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl
-                                    suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in.
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="500">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-5" class="collapsed">Tortor vitae purus faucibus ornare.
-                                Varius vel pharetra vel turpis nunc eget lorem dolor? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Laoreet sit amet cursus sit amet dictum sit amet justo. Mauris vitae ultricies leo
-                                    integer malesuada nunc vel. Tincidunt eget nullam non nisi est sit amet. Turpis nunc
-                                    eget lorem dolor sed. Ut venenatis tellus in metus vulputate eu scelerisque.
-                                </p>
-                            </div>
-                        </li>
-
+                        {%endfor%}
                     </ul>
                 </div>
 
@@ -847,9 +851,7 @@
 
                 <div class="section-title">
                     <h2>Contact</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                    <p>Anda dapat mengunjungi kami dan menghubungi kami melalui alamat dan kontak di bawah ini:</p>
                 </div>
 
                 <div class="row d-flex justify-content-center">
@@ -1123,6 +1125,8 @@
             </div>
         </div>
         {% endfor %}
+        <!-- End Modal Customer -->
+
         <!-- Modal Templates -->
         {% for t in all_templates %}
 
@@ -1220,6 +1224,90 @@
             </div>
         </div>
         {% endfor %}
+        <!-- End Modal Template -->
+
+        <!-- Modal FAQ -->
+        {%for f in faq%}
+        <!-- Modal Delete -->
+        <div class="modal fade" id="deleteFAQ_{{f.id_faq}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Delete - FAQ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex justify-content center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                            <p class="text-muted text-center">
+                                <strong>
+                                    Anda yakin ingin menghapus FAQ ini?
+                                </strong>
+                            </p>
+                            <p class="text-muted text-center">Pertanyaan : {{f.question}}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="text" name="id-faq-delete" id="id-faq-delete" readonly
+                            style="display: none;" value="{{f.id_faq}}">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="delete-faq" type="button" class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Edit -->
+        <div class="modal fade" id="editFAQ_{{f.id_faq}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit - FAQ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex justify-content-center" id="editFAQ">
+                            <form id="edit-faq-form">
+                                
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-12">
+                                        <label class="text-muted" for="question">Pertanyaan</label>
+                                        <textarea name="question" class="form-control" id="question" required
+                                            rows="5">{{f.question}}</textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-12">
+                                        <label class="text-muted" for="answer">Jawaban</label>
+                                        <textarea name="answer" class="form-control" id="answer" required
+                                            rows="5">{{f.answer}}</textarea>
+                                    </div>
+                                </div>
+
+                                <input type="text" name="id_faq" id="id_faq" value="{{f.id_faq}}"
+                                    style="display: none;">
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="update-faq" type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+        <!-- End Modal FAQ -->
 
     </main><!-- End #main -->
 
@@ -1236,29 +1324,28 @@
 
         <div class="footer-top">
             <div class="container">
-                <div class="row">
+                <div class="row d-flex justify-content-center">
 
-                    <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>Arsha</h3>
+                    <div class="col-lg-6 col-md-6 footer-contact">
+                        <h3>BPS Provinsi Sumatera Selatan</h3>
                         <p>
-                            A108 Adam Street <br>
-                            New York, NY 535022<br>
-                            United States <br><br>
-                            <strong>Phone:</strong> +1 5589 55488 55<br>
-                            <strong>Email:</strong> info@example.com<br>
+                            Jalan Kapten Anwar Sastro No. 1694/1131, Sungai Pangeran, Ilir Timur I, Sungai
+                            Pangeran, Kec. Ilir Tim. I, Kota Palembang, Sumatera Selatan 30114<br><br>
+                            <strong>Phone:</strong> (0711) 351665<br>
+                            <strong>Email:</strong> bps1600@bps.go.id<br>
                         </p>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 footer-links">
+                    <div class="col-lg-6 col-md-6 footer-links">
                         <h4>Our Social Networks</h4>
                         <p>Follow us on our social medias:</p>
                         <div class="social-links mt-3">
-                            <a href="https://twitter.com/bpssumsel" class="twitter"><i class="bx bxl-twitter"></i></a>
-                            <a href="https://www.facebook.com/bpsprovsumsel/" class="facebook"><i
+                            <a href="https://twitter.com/bpssumsel" class="twitter" target="_blank"><i class="bx bxl-twitter"></i></a>
+                            <a href="https://www.facebook.com/bpsprovsumsel/" class="facebook" target="_blank"><i
                                     class="bx bxl-facebook"></i></a>
-                            <a href="https://www.instagram.com/bpssumsel/" class="instagram"><i
+                            <a href="https://www.instagram.com/bpssumsel/" class="instagram" target="_blank"><i
                                     class="bx bxl-instagram"></i></a>
-                            <a href="#" class="linkedin"><i class="bx bxl-youtube"></i></a>
+                            <a href="#" class="linkedin"><i class="bx bxl-youtube" target="_blank"></i></a>
                         </div>
                     </div>
 
@@ -1318,7 +1405,6 @@
     <script>
         $(document).ready(function () {
             var selected_template = $('#template').val();
-            var detail_template_clone = $('#detail-template').clone();
             if (selected_template != null && selected_template != '') {
                 console.log(selected_template);
             } else {
@@ -1348,7 +1434,7 @@
                     }();
 
                     //console.log(template);
-                    var tbody = '<td>'+template['subject']+'</td><td>'+template['nama_produk']+'</td><td>'+template['lampiran']+'</td>';
+                    var tbody = '<td>' + template['subject'] + '</td><td>' + template['nama_produk'] + '</td><td>' + template['lampiran'] + '</td>';
                     $('#tbody-template-send').html(tbody);
                 }
             });
@@ -1433,6 +1519,32 @@
 
             table_templates.on('order.dt search.dt', function () {
                 table_templates.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }).draw();
+        });
+        $(document).ready(function () {
+            var table_faq = $('#table-faq').DataTable({
+                dom: 'Bfrtip',
+                pageLength: 10,
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                "columnDefs": [{
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [1, 'asc']
+                ]
+            });
+
+            table_faq.on('order.dt search.dt', function () {
+                table_faq.column(0, {
                     search: 'applied',
                     order: 'applied'
                 }).nodes().each(function (cell, i) {
@@ -1883,32 +1995,199 @@
         });
     </script>
 
-    <!-- Progress Sending Email -->
+    <!-- Add Faq -->
     <script>
-        $(function () {
-
-            $(".progress").each(function () {
-                var value = $(this).attr('data-value');
-                var left = $(this).find('.progress-left .progress-bar');
-                var right = $(this).find('.progress-right .progress-bar');
-
-                if (value > 0) {
-                    if (value <= 50) {
-                        right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
-                    } else {
-                        right.css('transform', 'rotate(180deg)')
-                        left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+        $(document).ready(function(){
+            $('#addFAQ').on('submit', '#faq-form', function(e){
+                e.preventDefault();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
                     }
-                }
+                });
 
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("add_faq")}}',
+                    data: $('#faq-form').serialize(),
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'FAQ berhasil ditambahkan'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'FAQ gagal ditambahkan'
+                            })
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- Edit Faq -->
+    <script>
+        $(document).ready(function(){
+            $('.modal').on('click', '#update-faq', function(e){
+                e.preventDefault();
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("edit_faq")}}',
+                    data: $('#edit-faq-form').serialize(),
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Update FAQ berhasil'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Update FAQ gagal'
+                            })
+                        }
+
+                    }
+
+                });
+
+                $(this).parents('.modal').modal('hide');
             })
+        });
+    </script>
 
+    <!-- Delete Faq -->
+    <script>
+        $(document).ready(function () {
+            $('.modal').on('click', '#delete-faq', function () {
+
+                var id_faq = $(this).siblings('#id-faq-delete').val();
+                console.log(id_faq);
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("delete_faq")}}',
+                    data: { 'id_faq': id_faq },
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'FAQ berhasil dihapus'
+                            });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'FAQ gagal dihapus'
+                            })
+                        }
+                    }
+                });
+
+                $(this).parents('.modal').modal('hide');
+
+            });
+        });
+    </script>
+
+    <!-- Sending Email -->
+    <script>
+        $(document).ready(function () {
             function percentageToDegrees(percentage) {
-
                 return percentage / 100 * 360
-
             }
+            $('#send-email-btn').click(function (e) {
+                e.preventDefault();
+                var id_template = $('#template').val();
+                console.log(id_template);
+                if (id_template !== null || id_template != "") {
+                    $.ajax({
+                        url: "{{url_for('send')}}",
+                        type: 'POST',
+                        data: {
+                            "id_template": id_template,
+                        },
+                        success: function (response) {
+                            console.log(response.thread_id);
+                            var thread_id = response.thread_id;
 
+                            var source = new EventSource('/progress_send/' + response.thread_id)
+                            source.onmessage = function (event) {
+                                console.log(event.data)
+                                var data_json = JSON.parse((event.data.replace(/'/g, '"')));
+                                console.log(data_json)
+                                $('#send-progress-bar').attr('data-value', data_json['progress'])
+
+                                var value = data_json['progress'];
+                                var left = $('#send-progress-bar').find('.progress-left .progress-bar');
+                                var right = $('#send-progress-bar').find('.progress-right .progress-bar');
+
+                                $('#send-progress-label').html(''+data_json['progress']+'<small>%</small>');
+                                $('#succed-send-label').html(data_json['success_send']);
+                                $('#failed-send-label').html(data_json['failed_send']);
+
+                                if (value > 0) {
+                                    if (value <= 50) {
+                                        right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
+                                    } else {
+                                        right.css('transform', 'rotate(180deg)')
+                                        left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+                                    }
+                                }
+
+                                if (data_json['progress'] >= 100) {
+                                    source.close();
+
+                                }
+                            }
+                        },
+                    })
+                }
+            });
         });
     </script>
 

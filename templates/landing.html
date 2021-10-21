@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Klik Jempol</title>
+    <title>{{title}}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -55,13 +55,12 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto" href="#tools">Get Started</a></li>
+                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
+                    <li><a class="nav-link scrollto" href="#tools">Getting Started</a></li>
                     <li><a class="nav-link scrollto" href="#faq">FAQ</a></li>
-                    <li><a class="nav-link scrollto" href="#">Admin Access</a></li>
-                    
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                    
+                    <li><a class="nav-link scrollto" href="{{url_for('login')}}">Admin Access</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -95,358 +94,6 @@
 
     <main id="main">
 
-        
-        <!-- ======= Tools Section ======= -->
-        <section id="tools" class="portfolio">
-            <div class="container" data-aos="fade-up">
-
-                <div class="section-title">
-                    <h2>Registrasi</h2>
-                    <p>Registrasi untuk menikmati layanan KLIK JEMPOL</p>
-                </div>
-
-                <ul class="nav nav-pills mb-3 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100"
-                    id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="pills-customers-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-customers" type="button" role="tab" aria-controls="pills-customers"
-                            aria-selected="true">Add Customers</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-template-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-template" type="button" role="tab" aria-controls="pills-template"
-                            aria-selected="false">Email Template</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-send-tab" data-bs-toggle="pill" data-bs-target="#pills-send"
-                            type="button" role="tab" aria-controls="pills-send" aria-selected="false">
-                            Send Email
-                        </button>
-                    </li>
-                </ul>
-                <div class="row tab-content d-flex justify-content-center" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-customers" role="tabpanel"
-                        aria-labelledby="pills-customers-tab">
-                        <div class="card">
-                            <!-- table customer -->
-                            <div class="row mb-4">
-                                <h3>Data Customers Klik Jempol</h3>
-                                <p>Jumlah customer : </p>
-                                <table class="table table-striped" id="table-customers">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Jenis Kelamin</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">No. Handphone</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- end table customer -->
-
-                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
-
-
-                            <!-- add customer -->
-                            <div class="row" id="add-customer">
-                                <h3>Add Customer Data</h3>
-
-                                <div class="mb-4">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="radioCustomer"
-                                            id="radioCustomer2" value="upload">
-                                        <label class="form-check-label">Upload Data Customer</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="radioCustomer"
-                                            id="radioCustomer1" value="register" checked>
-                                        <label class="form-check-label">Register Customer</label>
-                                    </div>
-                                </div>
-
-                                <!-- upload -->
-                                <div id="uploadCustomer" class="row d-flex justify-content-center mb-4">
-
-                                    <div class="col-auto d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success btn-icon-text">
-                                            <!-- <i class="fa fa-facebook-square"></i> -->
-                                            <i class="fa fa-download btn-icon-prepend"></i>
-                                            Download Template .xlsx
-                                        </button>
-                                    </div>
-                                    <div class="col-4 d-flex justify-content-center">
-                                        <!-- <label for="formFile" class="form-label">Upload file</label> -->
-                                        <input class="form-control form-control-lg" type="file" id="formFile">
-                                    </div>
-                                    <div class="col-auto">
-                                        <button class="btn button-primary">
-                                            Submit
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- register -->
-                                <div class="row d-flex justify-content-center" id="registerCustomer">
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Nama</label>
-                                            <input type="text" name="name" class="form-control" id="name" required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Jenis Kelamin</label>
-                                            <div class="form-control-plaintext align-middle">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="radioJk"
-                                                        id="radioJk1" value="L">
-                                                    <label class="form-check-label" for="radioJk1">Laki-laki</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="radioJk"
-                                                        id="radioJk2" value="P">
-                                                    <label class="form-check-label" for="radioJk2">Perempuan</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="tempat-lahir">Tempat Lahir</label>
-                                            <input type="text" name="tempat-lahir" class="form-control"
-                                                id="tempat-lahir" required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Tanggal Lahir</label>
-                                            <input data-datedropper data-dd-format="Y-m-d" data-dd-fx="true"
-                                                data-dd-large="true" data-dd-large-default="true"
-                                                data-provide="datepicker" data-dd-theme="blue" placeholder="yyyy-mm-dd"
-                                                type="text" name="tgl-lahir" class="form-control" id="tgl-lahir"
-                                                required>
-                                        </div>
-                                    </div>
-
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Pendidikan</label>
-                                            <select class="form-control form-select" name="pendidikan" id="pendidikan">
-                                                <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Pekerjaan</label>
-                                            <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
-                                                required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="text-muted" for="name">Jenis Pekerjaan</label>
-                                            <select class="form-control form-select" name="j-pekerjaan"
-                                                id="j-pekerjaan">
-                                                <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <label class="text-muted mt-2"><strong>Keterangan Domisili :</strong></label>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Provinsi</label>
-                                            <select class="form-control form-select" name="dom-prov" id="dom-prov">
-                                                <option value="" selected disabled>Pilih Provinsi</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label class="text-muted" for="name">Kabupaten/Kota</label>
-                                            <select class="form-control form-select" name="dom-kab" id="dom-kab">
-                                                <option value="" selected disabled>Pilih Kabupaten/Kota</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="form-group col-md-12">
-                                            <label class="text-muted" for="name">Alamat</label>
-                                            <textarea name="alamat" class="form-control" id="alamat" required
-                                                rows="5"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex align-items-stretch mb-2">
-                                        <div class="col-auto">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value=""
-                                                    id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Saya setuju
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex justify-content-center mb-2">
-                                        <div class="col-auto">
-                                            <button class="button-primary">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- template email -->
-                    <div class="tab-pane fade" id="pills-template" role="tabpanel" aria-labelledby="pills-template-tab">
-                        <div class="card">
-                            <div class="row d-flex justify-content-center" id="formTemplateEmail">
-                                <h3>Add Template</h3>
-                                <div class="row d-flex align-items-stretch mb-2">
-                                    <div class="form-group">
-                                        <label for="name">Subject</label>
-                                        <input type="text" class="form-control" name="subject" id="subject" required>
-                                    </div>
-                                </div>
-                                <div class="row d-flex align-items-stretch">
-                                    <div class="form-group col-md-6">
-                                        <label for="name">Nama Produk</label>
-                                        <input type="text" name="name" class="form-control" id="name" required>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="name">Link Lampiran</label>
-                                        <input type="email" class="form-control" name="email" id="email" required>
-                                    </div>
-                                </div>
-                                <div class="row d-flex align-items-stretch mb-2">
-                                    <div class="form-group">
-                                        <label for="name">Body</label>
-                                        <textarea id="body-email" class="form-control" name="message" rows="10"
-                                            required></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="text-center mt-4">
-                                    <button class="button-primary" type="submit">Save Template</button>
-                                </div>
-                            </div>
-
-                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
-
-                            <div class="row mb-4">
-                                <h3>Data Template Email</h3>
-                                <table class="table table-striped" id="table-templates">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Subject</th>
-                                            <th scope="col">Produk</th>
-                                            <th scope="col">Lampiran</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- send email -->
-                    <div class="tab-pane fade" id="pills-send" role="tabpanel" aria-labelledby="pills-send-tab">
-                        <div class="card">
-                            <div class="row d-flex justify-content-center mb-4">
-
-                                <div class="row d-flex align-items-stretch mb-2">
-                                    <div class="form-group">
-                                        <label for="template">Template Email</label>
-                                        <select class="form-select" name="template" id="template">
-                                            <option selected disabled value="">Pilih Template Email</option>
-                                            <option value="1">Template #1</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div id="container-detail" class="row d-flex justify-content-around mt-2">
-                                    <div id="detail-template" class="row d-flex align-items-stretch">
-                                        <div class="form-group col-md-4">
-                                            <label for="name">Subject</label>
-                                            <input readonly type="text" name="name" class="form-control" id="name"
-                                                required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="name">Nama Produk</label>
-                                            <input readonly type="text" name="name" class="form-control" id="name"
-                                                required>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label for="name">Link Lampiran</label>
-                                            <input readonly type="text" class="form-control" name="email" id="email"
-                                                required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="text-center mt-4">
-                                    <button class="button-primary" type="submit">Send Email to Customers</button>
-                                </div>
-
-                            </div>
-
-                            <!-- divider -->
-                            <div class="row border-bottom border-4 mt-4 mb-4"></div>
-
-                            <div class="row">
-                                <div>
-                                    <div class="progress mx-auto" data-value='90'>
-                                        <span class="progress-left">
-                                            <span class="progress-bar border-success"></span>
-                                        </span>
-                                        <span class="progress-right">
-                                            <span class="progress-bar border-success"></span>
-                                        </span>
-                                        <div
-                                            class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">
-                                            <div class="h2 font-weight-bold">90 <small>%</small></div>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex justify-content-center text-center mt-4">
-                                        <div class="col-3 border-right">
-                                            <div class="h4 font-weight-bold mb-0">28%</div><span
-                                                class="small text-gray">Last week</span>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="h4 font-weight-bold mb-0">60%</div><span
-                                                class="small text-gray">Last month</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section><!-- End Tools Section -->
-
         <!-- ======= About Us Section ======= -->
         <section id="about" class="about">
             <div class="container" data-aos="fade-up">
@@ -456,35 +103,231 @@
                 </div>
 
                 <div class="row content">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 text-justify">
+                        <p style="text-align: justify;">
+                            <strong>KLIK JEMPOL</strong>
+                            merupakan bentuk Inovasi BPS Provinsi Sumatera Selatan untuk meningkatkan kualitas pelayanan
+                            dengan memberikan informasi terkini mengenai produk BPS Provinsi Sumatera Selatan kepada
+                            para konsumen data.
+                        </p>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore
-                            magna aliqua.
+                            Data/informasi yang akan diterima dari layanan KLIK JEMPOL antara lain:
                         </p>
                         <ul>
-                            <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat</li>
-                            <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate
-                                velit</li>
-                            <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat</li>
+                            <li><i class="ri-check-double-line"></i> Softcopy publikasi</li>
+                            <li><i class="ri-check-double-line"></i> Tabel data</li>
+                            <li><i class="ri-check-double-line"></i> Unsur kegiatan</li>
+                            <li><i class="ri-check-double-line"></i> Berita</li>
+                            <li><i class="ri-check-double-line"></i> etc.</li>
                         </ul>
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0">
-                        <p>
-                            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate
-                            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in
-                            culpa qui officia deserunt mollit anim id est laborum.
+                        <p style="text-align: justify;">
+                            Untuk menerima layanan KLIK JEMPOL dari kami Bapak/Ibu harus bersedia menerima dan
+                            memperoleh secara terus-menerus informasi terkini terkait data statistik, dengan melakukan
+                            pendaftaran dengan mengisi form yang disediakan. <strong>Layanan ini tidak dipungut biaya
+                                (gratis).</strong>
                         </p>
-                        <a href="#" class="btn-learn-more">Learn More</a>
+                        <a href="#tools" class="btn-learn-more">Get Started</a>
                     </div>
                 </div>
 
             </div>
         </section><!-- End About Us Section -->
+
+        <!-- ======= Tools Section ======= -->
+        <section id="tools" class="portfolio">
+            <div class="container" data-aos="fade-up">
+
+                <div class="section-title">
+                    <h2>Getting Started</h2>
+                    <p>Untuk mulai menikmati layanan KLIK JEMPOL anda harus melakukan registrasi terlebih dahulu</p>
+                </div>
+
+                <div class="card">
+                    <!-- add customer -->
+                    <div class="row d-flex justify-content-center" id="add-customer">
+                        <h3>Register</h3>
+                        <!-- register -->
+                        <div class="row d-flex justify-content-center" id="registerCustomer">
+
+                            <form id="register-form">
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Nama</label>
+                                        <input type="text" name="name" class="form-control" id="name" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="radioJk">Jenis Kelamin</label>
+                                        <div class="form-control-plaintext align-middle">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="radioJk"
+                                                    id="radioJk1" value="L" required>
+                                                <label class="form-check-label" for="radioJk1">Laki-laki</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="radioJk"
+                                                    id="radioJk2" value="P">
+                                                <label class="form-check-label" for="radioJk2">Perempuan</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="tempat-lahir">Tempat Lahir</label>
+                                        <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir"
+                                            required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Tanggal Lahir</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input placeholder="yyyy-mm-dd" type="text" name="tgl_lahir"
+                                                class="form-control datedropper" id="tgl_lahir" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Pendidikan</label>
+                                        <select class="form-control form-select" name="pendidikan" id="pendidikan"
+                                            required>
+                                            <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
+                                            {% for p in pendidikan %}
+                                            <option value="{{ p.id_pendidikan }}">{{ p.tingkat_pendidikan }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Jenis Pekerjaan</label>
+                                        <select class="form-control form-select" name="j_pekerjaan" id="j_pekerjaan"
+                                            required>
+                                            <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
+                                            {% for pekerjaan in jenis_pekerjaan %}
+                                            <option value="{{pekerjaan.id_pekerjaan}}">
+                                                {{pekerjaan.jenis_pekerjaan}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Pekerjaan</label>
+                                        <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
+                                            required>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label class="text-muted" for="name">Instansi</label>
+                                        <input type="text" name="instansi" class="form-control" id="instansi">
+                                    </div>
+
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="email">Email</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-envelope"></i>
+                                            </span>
+                                            <input type="text" name="email" class="form-control" id="email" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Nomor Hp/Whatsaap</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-phone"></i>
+                                            </span>
+                                            <input type="text" name="phone" class="form-control" id="phone" required,
+                                                minlength="10" , maxlength="14">
+                                            <input type="text" name="phone-val" class="form-control" id="phone-val"
+                                                style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <label class="text-muted mt-2"><strong>Keterangan Domisili
+                                            :</strong></label>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Provinsi</label>
+                                        <select class="form-control form-select" name="dom_prov" id="dom_prov" required>
+                                            <option value="" selected disabled>Pilih Provinsi</option>
+                                            {% for prov in provinsi %}
+                                            <option value="{{ prov.kode_prov }}">{{ prov.nama_prov }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-muted" for="name">Kabupaten/Kota</label>
+                                        <select class="form-control form-select" name="dom_kab" id="dom_kab" required>
+                                            <option value="" selected disabled>Pilih Kabupaten/Kota</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="form-group col-md-12">
+                                        <label class="text-muted" for="name">Alamat</label>
+                                        <textarea name="alamat" class="form-control" id="alamat" required
+                                            rows="5"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-info" role="alert">
+                                            <h4 class="alert-heading">Persetujuan</h4>
+                                            <hr>
+                                            <p>
+                                                Saya bersedia untuk menerima dan memperoleh secara terus-menerus
+                                                informasi terkini terkait data statistik berupa softcopy
+                                                publikasi, tabel data, unsur kegiatan, berita, dll. Layanan ini
+                                                tidak dipungut biaya (gratis).
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex align-items-stretch mb-2">
+                                    <div class="col-auto">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="persetujuan"
+                                                name="persetujuan" required>
+                                            <label class="form-check-label" for="flexCheckDefault">
+                                                Saya setuju
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row d-flex justify-content-center mb-2">
+                                    <div class="col-auto">
+                                        <button id="btn-register" class="button-primary">Submit</button>
+                                    </div>
+                                </div>
+
+                                <div class="row d-flex justify-content-center mb-2" id="errorMsg">
+
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+        </section><!-- End Tools Section -->
 
         <!-- ======= Frequently Asked Questions Section ======= -->
         <section id="faq" class="faq section-bg">
@@ -492,86 +335,24 @@
 
                 <div class="section-title">
                     <h2>Frequently Asked Questions</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                    <p>Berikut ini merupakan daftar pertanyaan terkait dengan KLIK JEMPOL</p>
                 </div>
 
                 <div class="faq-list">
                     <ul>
+                        {%for f in faq%}
                         <li data-aos="fade-up" data-aos-delay="100">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse"
-                                data-bs-target="#faq-list-1">Non consectetur a erat nam at lectus urna duis? <i
+                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapsed"
+                                data-bs-target="#faq-list-{{f.id_faq}}">{{f.question}}<i
                                     class="bx bx-chevron-down icon-show"></i><i
                                     class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+                            <div id="faq-list-{{f.id_faq}}" class="collapse" data-bs-parent=".faq-list">
                                 <p>
-                                    Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet
-                                    non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor
-                                    purus non.
+                                    {{f.answer}}
                                 </p>
                             </div>
                         </li>
-
-                        <li data-aos="fade-up" data-aos-delay="200">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-2" class="collapsed">Feugiat scelerisque varius morbi enim
-                                nunc? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum
-                                    velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend
-                                    donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in
-                                    cursus turpis massa tincidunt dui.
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="300">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-3" class="collapsed">Dolor sit amet consectetur adipiscing
-                                elit? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus
-                                    pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit.
-                                    Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis
-                                    tellus. Urna molestie at elementum eu facilisis sed odio morbi quis
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="400">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-4" class="collapsed">Tempus quam pellentesque nec nam aliquam
-                                sem et tortor consequat? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in
-                                    est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl
-                                    suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in.
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="500">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-5" class="collapsed">Tortor vitae purus faucibus ornare.
-                                Varius vel pharetra vel turpis nunc eget lorem dolor? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Laoreet sit amet cursus sit amet dictum sit amet justo. Mauris vitae ultricies leo
-                                    integer malesuada nunc vel. Tincidunt eget nullam non nisi est sit amet. Turpis nunc
-                                    eget lorem dolor sed. Ut venenatis tellus in metus vulputate eu scelerisque.
-                                </p>
-                            </div>
-                        </li>
-
+                        {%endfor%}
                     </ul>
                 </div>
 
@@ -585,9 +366,7 @@
 
                 <div class="section-title">
                     <h2>Contact</h2>
-                    <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+                    <p>Anda dapat mengunjungi kami dan menghubungi kami melalui alamat dan kontak di bawah ini:</p>
                 </div>
 
                 <div class="row d-flex justify-content-center">
@@ -597,21 +376,24 @@
                             <div class="address">
                                 <i class="bi bi-geo-alt"></i>
                                 <h4>Location:</h4>
-                                <p>Jalan Kapten Anwar Sastro No. 1694/1131, Sungai Pangeran, Ilir Timur I, Sungai Pangeran, Kec. Ilir Tim. I, Kota Palembang, Sumatera Selatan 30114</p>
+                                <p>Jalan Kapten Anwar Sastro No. 1694/1131, Sungai Pangeran, Ilir Timur I, Sungai
+                                    Pangeran, Kec. Ilir Tim. I, Kota Palembang, Sumatera Selatan 30114</p>
                             </div>
 
                             <div class="email">
                                 <i class="bi bi-envelope"></i>
                                 <h4>Email:</h4>
                                 <p>bps1600@bps.go.id
-                                <br>diseminasi1600@bps.go.id</p>
+                                    <br>diseminasi1600@bps.go.id
+                                </p>
                             </div>
 
                             <div class="phone">
                                 <i class="bi bi-phone"></i>
                                 <h4>Call:</h4>
                                 <p>BPS Provinsi Sumatera Selatan : (0711) 351665
-                                <br>Diseminasi dan Layanan Statistik : (08128770725)</p>
+                                    <br>Diseminasi dan Layanan Statistik : (08128770725)
+                                </p>
                             </div>
 
                             <iframe
@@ -642,29 +424,29 @@
 
         <div class="footer-top">
             <div class="container">
-                <div class="row">
+                <div class="row d-flex justify-content-center">
 
-                    <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>Arsha</h3>
+                    <div class="col-lg-6 col-md-6 footer-contact">
+                        <h3>BPS Provinsi Sumatera Selatan</h3>
                         <p>
-                            A108 Adam Street <br>
-                            New York, NY 535022<br>
-                            United States <br><br>
-                            <strong>Phone:</strong> +1 5589 55488 55<br>
-                            <strong>Email:</strong> info@example.com<br>
+                            Jalan Kapten Anwar Sastro No. 1694/1131, Sungai Pangeran, Ilir Timur I, Sungai
+                            Pangeran, Kec. Ilir Tim. I, Kota Palembang, Sumatera Selatan 30114<br><br>
+                            <strong>Phone:</strong> (0711) 351665<br>
+                            <strong>Email:</strong> bps1600@bps.go.id<br>
                         </p>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 footer-links">
+                    <div class="col-lg-6 col-md-6 footer-links">
                         <h4>Our Social Networks</h4>
-                        <p>FOllow us on our social medias:</p>
+                        <p>Follow us on our social medias:</p>
                         <div class="social-links mt-3">
-                            <a href="https://twitter.com/bpssumsel" class="twitter"><i class="bx bxl-twitter"></i></a>
-                            <a href="https://www.facebook.com/bpsprovsumsel/" class="facebook"><i
+                            <a href="https://twitter.com/bpssumsel" class="twitter" target="_blank"><i
+                                    class="bx bxl-twitter"></i></a>
+                            <a href="https://www.facebook.com/bpsprovsumsel/" class="facebook" target="_blank"><i
                                     class="bx bxl-facebook"></i></a>
-                            <a href="https://www.instagram.com/bpssumsel/" class="instagram"><i
+                            <a href="https://www.instagram.com/bpssumsel/" class="instagram" target="_blank"><i
                                     class="bx bxl-instagram"></i></a>
-                            <a href="#" class="linkedin"><i class="bx bxl-youtube"></i></a>
+                            <a href="#" class="linkedin"><i class="bx bxl-youtube" target="_blank"></i></a>
                         </div>
                     </div>
 
@@ -678,6 +460,7 @@
             </div>
         </div>
     </footer><!-- End Footer -->
+
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
@@ -694,6 +477,8 @@
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <!-- jquery validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
 
     <!-- datatables css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
@@ -709,7 +494,7 @@
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 
     <!-- sweetalert -->
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"></script>
 
 
     <!-- Template Main JS File -->
@@ -717,142 +502,114 @@
     <script src="../static/assets/js/jquery.richtext.min.js"></script>
     <script src="../static/assets/js/datedropper.pro.min.js"></script>
 
+    <!-- Details Template Email -->
 
+
+    <!-- Phone Number -->
     <script>
-        $(document).ready(function () {
-            var selected_template = $('#template').val();
-            var detail_template_clone = $('#detail-template').clone();
-            if (selected_template != null && selected_template != '') {
-                console.log(selected_template);
-            } else {
-                $('#detail-template').remove();
-            }
-            $('#template').change(function () {
-                var selected_template = $('#template').val();
-                if (selected_template != null || selected_template != '') {
-                    console.log(selected_template);
-                    $('#detail-template').remove();
-                    $('#container-detail').append(detail_template_clone);
-                } else {
-                    $('#detail-template').remove();
-                }
-            });
+
+        // On Register Form
+        $('#phone').on("input", function () {
+            $("#phone-val").val(destroyMask(this.value));
+            this.value = createMask($("#phone-val").val());
         });
+
+        function createMask(string) {
+            return string.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
+        }
+
+        function destroyMask(string) {
+            return string.replace(/\D/g, '').substring(0, 12);
+        }
     </script>
 
+
+    <!-- Upload & Register Form -->
     <script>
         $(document).ready(function () {
-            $('#body-email').richText();
-        });
-    </script>
 
-    <script>
-        $(document).ready(function () {
-            var table_all = $('#table-customers').DataTable({
-                dom: 'Bfrtip',
-                pageLength: 17,
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [1, 'asc']
-                ]
-            });
-
-            table_all.on('order.dt search.dt', function () {
-                table_all.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
+            // Datedropper
+            $('#add-customer').on('focus', '.datedropper', function () {
+                $('.datedropper').dateDropper('destroy');
+                $('.datedropper').dateDropper({
+                    format: 'Y-m-d',
+                    theme: 'blue',
+                    large: true,
+                    largeDefault: true,
                 });
-            }).draw();
-        });
-        $(document).ready(function () {
-            var table_templates = $('#table-templates').DataTable({
-                dom: 'Bfrtip',
-                pageLength: 17,
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [1, 'asc']
-                ]
             });
 
-            table_templates.on('order.dt search.dt', function () {
-                table_templates.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function (cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw();
-        });
-    </script>
+            // Fetching Kabupaten/Kota
+            $('#add-customer').on('change', '#dom_prov', function () {
+                var kode_prov = $('#dom_prov').val();
+                var kabkot = function () {
+                    var tmp = null;
 
-    <script>
-        $(document).ready(function () {
-            var add_method = $('input[name = "radioCustomer"]:checked').val();
-            var uploadCustomer_clone = $('#uploadCustomer').clone();
-            var registerCustomer_clone = $('#registerCustomer').clone();
-            if (add_method == 'register') {
-                $('#uploadCustomer').remove()
-            } else {
-                $('#registerCustomer').remove()
-            }
-
-            $('input[name = "radioCustomer"]').change(function () {
-                var add_method = $('input[name = "radioCustomer"]:checked').val();
-                if (add_method == 'register') {
-                    $('#uploadCustomer').remove();
-                    $('#add-customer').append(registerCustomer_clone);
-                } else {
-                    $('#registerCustomer').remove();
-                    $('#add-customer').append(uploadCustomer_clone);
-                }
-            });
-
-        });
-    </script>
-
-
-    <script>
-        $(function () {
-
-            $(".progress").each(function () {
-
-                var value = $(this).attr('data-value');
-                var left = $(this).find('.progress-left .progress-bar');
-                var right = $(this).find('.progress-right .progress-bar');
-
-                if (value > 0) {
-                    if (value <= 50) {
-                        right.css('transform', 'rotate(' + percentageToDegrees(value) + 'deg)')
-                    } else {
-                        right.css('transform', 'rotate(180deg)')
-                        left.css('transform', 'rotate(' + percentageToDegrees(value - 50) + 'deg)')
+                    if (kode_prov != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('kabkot')}}",
+                            data: {
+                                'kode_prov': kode_prov,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
                     }
-                }
+                    return tmp;
+                }();
+                var options = '<option value="" selected disabled>Pilih Kabupaten/Kota</option>';
+                kabkot.forEach(element => {
+                    var op = '<option value="' + element['id_kabkot'] + '">' + element['nama_kabkot'] +
+                        '</option>';
+                    options += op;
+                });
 
-            })
+                $('#dom_kab').html(options);
+            });
 
-            function percentageToDegrees(percentage) {
+            // register customer
+            $('#add-customer').on('submit', '#register-form', function (e) {
+                e.preventDefault();
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
 
-                return percentage / 100 * 360
+                $.ajax({
+                    type: 'post',
+                    url: '{{url_for("register_customer")}}',
+                    data: $('#register-form').serialize(),
+                    success: function (response) {
+                        if (response == 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Registrasi berhasil'
+                            });
+                            $('#register-form').reset();
+                            setTimeout(function () {
+                                location.href = '{{url_for("home")}}';
+                            }, 3000);
+                        } else {
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Registrasi gagal'
+                            })
+                        }
 
-            }
+                    }
+                });
 
+            });
         });
     </script>
 
