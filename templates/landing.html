@@ -10,7 +10,7 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/logo.png" rel="icon">
     <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -60,7 +60,7 @@
                     <li><a class="nav-link scrollto" href="#tools">Getting Started</a></li>
                     <li><a class="nav-link scrollto" href="#faq">FAQ</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                    <li><a class="nav-link scrollto" href="{{url_for('login')}}">Admin Access</a></li>
+                    <li><a class="nav-link scrollto" href="{{url_for('admin')}}">Admin Access</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -224,7 +224,7 @@
                                             required>
                                     </div>
 
-                                    <div class="form-group col-md-4">
+                                    <div id="form-grup-instansi" class="form-group col-md-4">
                                         <label class="text-muted" for="name">Instansi</label>
                                         <input type="text" name="instansi" class="form-control" id="instansi">
                                     </div>
@@ -611,6 +611,58 @@
 
             });
         });
+    </script>
+
+    <!-- Instansi -->
+    <script>
+        $(document).ready(function(){
+            var jenis_pekerjaan = $('#j_pekerjaan').val();
+            if (jenis_pekerjaan!= null || jenis_pekerjaan!=""){
+                if(jenis_pekerjaan==2){
+                    $('#form-grup-instansi').show();
+                } else {
+                    $('#form-grup-instansi').hide();
+                }
+            } else{
+                $('#form-grup-instansi').hide();
+            }
+
+            $('#j_pekerjaan').change(function(){
+                var j_pekerjaan = $('#j_pekerjaan').val();
+                if (j_pekerjaan!= null || j_pekerjaan!=""){
+                    if(j_pekerjaan==2){
+                        $('#form-grup-instansi').show();
+                    } else{
+                        $('#form-grup-instansi').hide();
+                    }
+                } 
+            });
+        });
+
+        $(document).ready(function(){
+            var jenis_pekerjaan = $('.modal').find('#j_pekerjaan').val();
+            if (jenis_pekerjaan!= null || jenis_pekerjaan!=""){
+                if(jenis_pekerjaan==2){
+                    $('.modal').find('#form-grup-instansi').show();
+                } else {
+                    $('.modal').find('#form-grup-instansi').hide();
+                }
+            } else{
+                $('.modal').find('#form-grup-instansi').hide();
+            }
+
+            $('.modal').on('change', '#j_pekerjaan',function(){
+                var j_pekerjaan = $(this).parents('.modal').find('#j_pekerjaan').val();
+                
+                if (j_pekerjaan!= null || j_pekerjaan!=""){
+                    if(j_pekerjaan==2){
+                        $(this).parents('.modal').find('#form-grup-instansi').show();
+                    } else{
+                        $(this).parents('.modal').find('#form-grup-instansi').hide();
+                    }
+                } 
+            }); 
+        })
     </script>
 
 </body>

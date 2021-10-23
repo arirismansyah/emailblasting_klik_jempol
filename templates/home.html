@@ -10,7 +10,7 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="../static/assets/img/favicon.png" rel="icon">
+    <link href="../static/assets/img/logo.png" rel="icon">
     <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -314,7 +314,7 @@
                                                     required>
                                             </div>
 
-                                            <div class="form-group col-md-4">
+                                            <div id="form-grup-instansi" class="form-group col-md-4">
                                                 <label class="text-muted" for="name">Instansi</label>
                                                 <input type="text" name="instansi" class="form-control" id="instansi">
                                             </div>
@@ -419,7 +419,7 @@
                             <!-- table customer -->
                             <div class="row mb-4">
                                 <h3>Data Customers Klik Jempol</h3>
-                                <p>Jumlah customer : </p>
+                                <p>Jumlah customer : {{jumlah_customers}}</p>
                                 <table class="table table-striped" id="table-customers">
                                     <thead>
                                         <tr>
@@ -594,8 +594,8 @@
                                     <div class="form-group">
                                         <label for="template">Template Email</label>
                                         <select class="form-select" name="template" id="template">
-                                            <option selected disabled value="">Pilih Template Email</option>
-                                            {% for template in all_templates %}
+                                            <option selected disabled value="">Pilih Template Email (hanya template yang belum terkirim) </option>
+                                            {% for template in template_not_send %}
                                             <option value="{{template.id_template}}">{{template.subject}}</option>
                                             {% endfor %}
                                         </select>
@@ -646,7 +646,7 @@
                                     <div class="row d-flex justify-content-center text-center mt-4">
                                         <div class="col-3 border-right">
                                             <div id="succed-send-label" class="h4 font-weight-bold mb-0">0</div><span
-                                                class="small text-gray">Succed Send</span>
+                                                class="small text-gray">Success Send</span>
                                         </div>
                                         <div class="col-3">
                                             <div id="failed-send-label" class="h4 font-weight-bold mb-0">0</div><span
@@ -1040,7 +1040,7 @@
                                             value="{{c.pekerjaan}}">
                                     </div>
 
-                                    <div class="form-group col-md-4">
+                                    <div id="form-grup-instansi" class="form-group col-md-4">
                                         <label class="text-muted" for="name">Instansi</label>
                                         <input type="text" name="instansi" class="form-control" id="instansi"
                                             value="{{c.instansi}}">
@@ -1406,7 +1406,7 @@
         $(document).ready(function () {
             var selected_template = $('#template').val();
             if (selected_template != null && selected_template != '') {
-                console.log(selected_template);
+                //console.log(selected_template);
             } else {
                 $('#detail-template').attr("display", "none");
             }
@@ -1638,7 +1638,7 @@
                         },
                     })
 
-                    console.log(thread_id);
+                    //console.log(thread_id);
 
                 }
             });
@@ -1713,7 +1713,7 @@
                     options += op;
                 });
                 $(this).parents('.modal').find('#dom_kab').html(options);
-                console.log($(this).parents('.modal').find('#dom_kab'));
+                //console.log($(this).parents('.modal').find('#dom_kab'));
             });
 
             // register customer
@@ -1764,7 +1764,7 @@
             $('.modal').on('click', '#delete-customer', function () {
 
                 var id_customer = $(this).siblings('#id-customer-delete').val();
-                console.log(id_customer);
+                //console.log(id_customer);
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -1952,7 +1952,7 @@
             $('.modal').on('click', '#delete-template', function () {
 
                 var id_template = $(this).siblings('#id-template-delete').val();
-                console.log(id_template);
+                //console.log(id_template);
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -2091,7 +2091,7 @@
             $('.modal').on('click', '#delete-faq', function () {
 
                 var id_faq = $(this).siblings('#id-faq-delete').val();
-                console.log(id_faq);
+                //console.log(id_faq);
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -2143,7 +2143,7 @@
             $('#send-email-btn').click(function (e) {
                 e.preventDefault();
                 var id_template = $('#template').val();
-                console.log(id_template);
+                //console.log(id_template);
                 if (id_template !== null || id_template != "") {
                     $.ajax({
                         url: "{{url_for('send')}}",
@@ -2152,14 +2152,14 @@
                             "id_template": id_template,
                         },
                         success: function (response) {
-                            console.log(response.thread_id);
+                            //console.log(response.thread_id);
                             var thread_id = response.thread_id;
 
                             var source = new EventSource('/progress_send/' + response.thread_id)
                             source.onmessage = function (event) {
-                                console.log(event.data)
+                                //console.log(event.data)
                                 var data_json = JSON.parse((event.data.replace(/'/g, '"')));
-                                console.log(data_json)
+                                //console.log(data_json)
                                 $('#send-progress-bar').attr('data-value', data_json['progress'])
 
                                 var value = data_json['progress'];
@@ -2189,6 +2189,58 @@
                 }
             });
         });
+    </script>
+
+    <!-- Instansi -->
+    <script>
+        $(document).ready(function(){
+            var jenis_pekerjaan = $('#j_pekerjaan').val();
+            if (jenis_pekerjaan!= null || jenis_pekerjaan!=""){
+                if(jenis_pekerjaan==2){
+                    $('#form-grup-instansi').show();
+                } else {
+                    $('#form-grup-instansi').hide();
+                }
+            } else{
+                $('#form-grup-instansi').hide();
+            }
+
+            $('#j_pekerjaan').change(function(){
+                var j_pekerjaan = $('#j_pekerjaan').val();
+                if (j_pekerjaan!= null || j_pekerjaan!=""){
+                    if(j_pekerjaan==2){
+                        $('#form-grup-instansi').show();
+                    } else{
+                        $('#form-grup-instansi').hide();
+                    }
+                } 
+            });
+        });
+
+        $(document).ready(function(){
+            var jenis_pekerjaan = $('.modal').find('#j_pekerjaan').val();
+            if (jenis_pekerjaan!= null || jenis_pekerjaan!=""){
+                if(jenis_pekerjaan==2){
+                    $('.modal').find('#form-grup-instansi').show();
+                } else {
+                    $('.modal').find('#form-grup-instansi').hide();
+                }
+            } else{
+                $('.modal').find('#form-grup-instansi').hide();
+            }
+
+            $('.modal').on('change', '#j_pekerjaan',function(){
+                var j_pekerjaan = $(this).parents('.modal').find('#j_pekerjaan').val();
+                
+                if (j_pekerjaan!= null || j_pekerjaan!=""){
+                    if(j_pekerjaan==2){
+                        $(this).parents('.modal').find('#form-grup-instansi').show();
+                    } else{
+                        $(this).parents('.modal').find('#form-grup-instansi').hide();
+                    }
+                } 
+            }); 
+        })
     </script>
 
 </body>

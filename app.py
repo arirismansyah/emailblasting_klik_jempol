@@ -39,6 +39,7 @@ from config import Config
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 app.config.from_object(Config)
+# run_with_ngrok(app)
 
 exporting_threads = {}
 
@@ -88,10 +89,6 @@ class SendMailThread(threading.Thread):
                     customer = customer['id_customer'],
                     status = 1,
                 )
-
-                db.session.add(input_log)
-                db.session.commit()
-                self.success_send += 1
             except:
                 input_log = Log(
                     template_email = self.template['id_template'],
@@ -102,6 +99,10 @@ class SendMailThread(threading.Thread):
                 db.session.add(input_log)
                 db.session.commit()
                 self.failed_send += 1
+            else:
+                db.session.add(input_log)
+                db.session.commit()
+                self.success_send += 1
 
             self.progress =+ ((self.success_send+self.failed_send)/total)*100
             
@@ -132,13 +133,18 @@ class ExportingThread(threading.Thread):
         total = len(self.df_customers)
         success_input = 0
         failed_input = 0
+
         for index, customer in self.df_customers.iterrows():
+            if(customer['tanggal_lahir']!=None) and (customer['tanggal_lahir']!=""):
+                tanggal_lahir = customer['tanggal_lahir'].strftime('%Y-%m-%d')
+            else:
+                tanggal_lahir = None
+
             input_customer = Customer(
                 nama=customer['nama'],
                 jenis_kelamin=customer['jenis_kelamin'],
                 tempat_lahir=customer['tempat_lahir'],
-                tanggal_lahir=customer['tanggal_lahir'].strftime(
-                    '%Y-%m-%d'),
+                tanggal_lahir=tanggal_lahir,
                 pendidikan=customer['pendidikan'],
                 jenis_pekerjaan=customer['jenis_pekerjaan'],
                 pekerjaan=customer['pekerjaan'],
@@ -152,12 +158,13 @@ class ExportingThread(threading.Thread):
 
             try:
                 db.session.add(input_customer)
-                db.session.commit()
-                success_input += 1
             except:
                 failed_input += 1
+            else:
+                db.session.commit()
+                success_input += 1
 
-            self.progress =+ (success_input/total)*100
+            self.progress =+ ((success_input+failed_input)/total)*100
 
 
 # Serialize Class
@@ -206,7 +213,7 @@ class Prov(db.Model, Serializer):
 class Kabkot(db.Model, Serializer):
     id_kabkot = db.Column(db.Integer, primary_key=True)
     kode_prov = db.Column(db.Integer, db.ForeignKey(
-        'prov.kode_prov'), nullable=False)
+        'prov.kode_prov', ondelete='CASCADE', onupdate='CASCADE'), nullable=False)
     nama_kabkot = db.Column(db.String(200), nullable=False)
 
     def __repr__(self):
@@ -230,20 +237,20 @@ class Customer(db.Model, Serializer):
     nama = db.Column(db.String(200), nullable=False)
     jenis_kelamin = db.Column(db.String(1), nullable=True)
     phone = db.Column(db.String(20), nullable=True)
-    email = db.Column(db.String(200), nullable=True, unique=True)
+    email = db.Column(db.String(200), nullable=True)
     tempat_lahir = db.Column(db.String(200), nullable=True)
     tanggal_lahir = db.Column(db.Date, nullable=True)
     pendidikan = db.Column(db.Integer, db.ForeignKey(
-        'pendidikan.id_pendidikan'), nullable=True)
+        'pendidikan.id_pendidikan', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     pekerjaan = db.Column(db.String(200), nullable=True)
     jenis_pekerjaan = db.Column(db.Integer, db.ForeignKey(
-        'pekerjaan.id_pekerjaan'), nullable=True)
+        'pekerjaan.id_pekerjaan', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     instansi = db.Column(db.String(200), nullable=True)
     alamat_domisili = db.Column(db.Text, nullable=True)
     prov_domisili = db.Column(db.Integer, db.ForeignKey(
-        'prov.kode_prov'), nullable=True)
+        'prov.kode_prov', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     kab_domisili = db.Column(db.Integer, db.ForeignKey(
-        'kabkot.id_kabkot'), nullable=True)
+        'kabkot.id_kabkot', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
 
     # create string
     def __repr__(self):
@@ -259,7 +266,7 @@ class Template(db.Model, Serializer):
     nama_produk = db.Column(db.String(200), nullable=False)
     lampiran = db.Column(db.String(200), nullable=False)
     status = db.Column(db.Integer, db.ForeignKey(
-        'status.id_status'), nullable=False, default=0)
+        'status.id_status', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, default=0)
 
     def __repr__(self):
         return '<Template {}>'.format(self.subject)
@@ -271,8 +278,8 @@ class Log(db.Model, Serializer):
     id_log = db.Column(db.Integer, primary_key=True)
     template_email = db.Column(
         db.Integer, db.ForeignKey('template.id_template'))
-    customer = db.Column(db.Integer, db.ForeignKey('customer.id_customer'))
-    status = db.Column(db.Integer, db.ForeignKey('status.id_status'), nullable=False, default=0)
+    customer = db.Column(db.Integer, db.ForeignKey('customer.id_customer', ondelete='CASCADE', onupdate='CASCADE'))
+    status = db.Column(db.Integer, db.ForeignKey('status.id_status', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, default=0)
     send_at = db.Column(db.DateTime, default=datetime.now)
 
 # # Model FAQ
@@ -316,10 +323,13 @@ def admin():
         all_kabkot = Kabkot.query.all()
         all_templates = Template.query.all()
         all_faq = Faq.query.all()
+        jumlah_customers = len(customers)
 
-        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq)
+        template_not_send = Template.query.filter_by(status=0)
+
+        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq, jumlah_customers = jumlah_customers, template_not_send=template_not_send)
     else:
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -341,7 +351,7 @@ def login():
                 flash("Username/password salah!", "error")
                 return render_template('login.html')                
     else:
-        return render_template('login.html')
+        return render_template('login.html', title='KLIK JEMPOL - Login')
 
 @app.route('/logout')
 def logout():
@@ -389,7 +399,7 @@ def upload_customers():
 def progress(thread_id):
     def make_prog():
         global exporting_threads
-        yield "data:"+str(exporting_threads[thread_id].progress)+"\n\n"
+        yield "data:"+str(round(exporting_threads[thread_id].progress,1))+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
 
@@ -413,11 +423,11 @@ def register_customer():
 
     try:
         db.session.add(customer)
-        db.session.commit()
-
-        return make_response('success', 200)
     except:
-        return make_response('register failed', 200)
+        return make_response('Register failed. Pastikan customer/email belum terdaftar.', 200)
+    else:
+        db.session.commit()
+        return make_response('success', 200)
 
 @app.route('/update_customer', methods=['POST'])
 def update_customer():
@@ -505,7 +515,6 @@ def add_faq():
         question = request.form['question'],
         answer = request.form['answer'],
     )
-
     try:
         db.session.add(faq)
         db.session.commit()
@@ -560,7 +569,7 @@ def send():
 def progress_send(thread_id):
     def make_prog():
         global send_threads
-        yield "data:"+str({"progress":send_threads[thread_id].progress, "success_send":send_threads[thread_id].success_send, "failed_send":send_threads[thread_id].failed_send})+"\n\n"
+        yield "data:"+str({"progress":round(send_threads[thread_id].progress,1), "success_send":send_threads[thread_id].success_send, "failed_send":send_threads[thread_id].failed_send})+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
 
@@ -596,3 +605,4 @@ def get_customers():
 
 if __name__ == '__main__':
     app.run(host='localhost', debug=True, threaded=True)
+    # app.run()
