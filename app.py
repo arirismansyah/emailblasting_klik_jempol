@@ -327,7 +327,7 @@ def admin():
 
         template_not_send = Template.query.filter_by(status=0)
 
-        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, customers=customers, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq, jumlah_customers = jumlah_customers, template_not_send=template_not_send)
+        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq, jumlah_customers = jumlah_customers, template_not_send=template_not_send)
     else:
         return redirect(url_for('login'))
 
@@ -365,6 +365,32 @@ def download_template():
     return send_file(path, attachment_filename='template.xlsx', as_attachment=True)
 
 # Route for Customer
+@app.route('/get_customers', methods=['GET', 'POST'])
+def get_customers():
+    if request.method == 'POST':
+        draw = request.form['draw'] 
+        row = int(request.form['start'])
+        rowperpage = int(request.form['length'])
+        searchValue = request.form["search[value]"]
+        print(draw)
+        print(row)
+        print(rowperpage)
+        print(searchValue)
+
+        # total customers without filter
+        total_count = Customer.query.all().count()
+        
+        # total customers filter name, email
+        likeString = "%" + searchValue +"%"
+        total_count_filtered = Customer.query.filter((Customer.nama.like(likeString))).all().count()
+
+        print('total_count',total_count)
+        print('total_count_filtered',total_count_filtered)
+
+        if (searchValue==''):
+            customers = Customer.query.limit(row)
+
+
 @app.route('/upload_customers', methods=['GET', 'POST'])
 def upload_customers():
     if request.method == 'POST':
