@@ -388,7 +388,13 @@ def get_customers():
         print('total_count_filtered',total_count_filtered)
 
         if (searchValue==''):
-            customers = Customer.query.limit(row)
+            customers = Customer.query.limit(row, rowperpage).all()
+            customers_list = Customer.serialize_list(customers)
+        else :
+            customers = Customer.query.filter((Customer.nama.like(likeString))).limit(row, rowperpage).all()
+            customers_list = Customer.serialize_list(customers)
+        
+        return jsonify(customers_list)
 
 
 @app.route('/upload_customers', methods=['GET', 'POST'])
@@ -621,12 +627,12 @@ def kabkot():
 
         return jsonify(serialized_kabkot)
 
-@app.route('/get_customers', methods=['GET'])
-def get_customers():
-    customers = Customer.query.all()
-    serialized_customer = Customer.serialize_list(customers)
+# @app.route('/get_customers', methods=['GET'])
+# def get_customers():
+#     customers = Customer.query.all()
+#     serialized_customer = Customer.serialize_list(customers)
 
-    return jsonify(serialized_customer)
+#     return jsonify(serialized_customer)
 
 
 if __name__ == '__main__':
