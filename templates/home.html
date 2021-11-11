@@ -179,7 +179,7 @@
                                 <div class="mb-4">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="radioCustomer"
-                                        id="radioCustomer1" value="register" checked>
+                                            id="radioCustomer1" value="register" checked>
                                         <label class="form-check-label">Register Customer</label>
                                     </div>
                                     <div class="form-check form-check-inline">
@@ -594,7 +594,8 @@
                                     <div class="form-group">
                                         <label for="template">Template Email</label>
                                         <select class="form-select" name="template" id="template">
-                                            <option selected disabled value="">Pilih Template Email (hanya template yang belum terkirim) </option>
+                                            <option selected disabled value="">Pilih Template Email (hanya template yang
+                                                belum terkirim) </option>
                                             {% for template in template_not_send %}
                                             <option value="{{template.id_template}}">{{template.subject}}</option>
                                             {% endfor %}
@@ -660,20 +661,19 @@
                     </div>
 
                     <!-- add faq -->
-                    <div class="tab-pane fade" id="pills-faq" role="tabpanel"
-                        aria-labelledby="pills-customers-tab">
+                    <div class="tab-pane fade" id="pills-faq" role="tabpanel" aria-labelledby="pills-customers-tab">
                         <div class="card">
                             <!-- add customer -->
                             <div class="row d-flex justify-content-center" id="add-faq">
                                 <h3>Add FAQ</h3>
 
-                                
+
 
                                 <!-- add faq -->
                                 <div class="row d-flex justify-content-center" id="addFAQ">
 
                                     <form id="faq-form">
-                                        
+
                                         <div class="row d-flex align-items-stretch mb-2">
                                             <div class="form-group col-md-12">
                                                 <label class="text-muted" for="question">Pertanyaan</label>
@@ -681,7 +681,7 @@
                                                     rows="5"></textarea>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row d-flex align-items-stretch mb-2">
                                             <div class="form-group col-md-12">
                                                 <label class="text-muted" for="answer">Jawaban</label>
@@ -726,13 +726,11 @@
                                             <td class="col-5">{{f.answer}}</td>
                                             <td class="col-1 text-center align-middle">
                                                 <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editFAQ_{{f.id_faq}}">
+                                                    data-bs-toggle="modal" data-bs-target="#editFAQ_{{f.id_faq}}">
                                                     <i class="bi bi-pencil-fill btn-icon-prepend"></i>
                                                 </button>
                                                 <button class="badge btn-rounded btn-icon btn-danger btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteFAQ_{{f.id_faq}}">
+                                                    data-bs-toggle="modal" data-bs-target="#deleteFAQ_{{f.id_faq}}">
                                                     <i class="bi bi-trash-fill btn-icon-prepend"></i>
                                                 </button>
                                             </td>
@@ -799,9 +797,10 @@
                                 <span>Staf</span>
                                 <p> Integrasi Pengolahan Data</p>
                                 <div class="social">
-                                    <a href="https://github.com/arirismansyah/emailblasting_klik_jempol" target="_blank">
+                                    <a href="https://github.com/arirismansyah/emailblasting_klik_jempol"
+                                        target="_blank">
                                         <i class="ri-github-fill"></i>
-                                        
+
                                     </a>
                                 </div>
                             </div>
@@ -1255,8 +1254,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="text" name="id-faq-delete" id="id-faq-delete" readonly
-                            style="display: none;" value="{{f.id_faq}}">
+                        <input type="text" name="id-faq-delete" id="id-faq-delete" readonly style="display: none;"
+                            value="{{f.id_faq}}">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button id="delete-faq" type="button" class="btn btn-danger">Delete</button>
                     </div>
@@ -1276,7 +1275,7 @@
                     <div class="modal-body">
                         <div class="row d-flex justify-content-center" id="editFAQ">
                             <form id="edit-faq-form">
-                                
+
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group col-md-12">
                                         <label class="text-muted" for="question">Pertanyaan</label>
@@ -1284,7 +1283,7 @@
                                             rows="5">{{f.question}}</textarea>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group col-md-12">
                                         <label class="text-muted" for="answer">Jawaban</label>
@@ -1340,7 +1339,8 @@
                         <h4>Our Social Networks</h4>
                         <p>Follow us on our social medias:</p>
                         <div class="social-links mt-3">
-                            <a href="https://twitter.com/bpssumsel" class="twitter" target="_blank"><i class="bx bxl-twitter"></i></a>
+                            <a href="https://twitter.com/bpssumsel" class="twitter" target="_blank"><i
+                                    class="bx bxl-twitter"></i></a>
                             <a href="https://www.facebook.com/bpsprovsumsel/" class="facebook" target="_blank"><i
                                     class="bx bxl-facebook"></i></a>
                             <a href="https://www.instagram.com/bpssumsel/" class="instagram" target="_blank"><i
@@ -1474,6 +1474,7 @@
 
     <!-- Datatables -->
     <script>
+        // Table Customers
         $(document).ready(function () {
             var table_all = $('#table-customers').DataTable({
                 dom: 'Bfrtip',
@@ -1481,13 +1482,23 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [1, 'asc']
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'POST',
+                'ajax': {
+                    'url': "{{url_for('get_customers')}}"
+                },
+                'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                searching: true,
+                sort: false,
+                "serverSide": true,
+                'columns': [
+                    { data: 'no' },
+                    { data: 'nama' },
+                    { data: 'jenis_kelamin' },
+                    { data: 'email' },
+                    { data: 'phone' },
+                    { data: 'action' },
                 ]
             });
 
@@ -1500,6 +1511,8 @@
                 });
             }).draw();
         });
+
+        // Table Templates
         $(document).ready(function () {
             var table_templates = $('#table-templates').DataTable({
                 dom: 'Bfrtip',
@@ -1526,6 +1539,8 @@
                 });
             }).draw();
         });
+
+        // table FAQ
         $(document).ready(function () {
             var table_faq = $('#table-faq').DataTable({
                 dom: 'Bfrtip',
@@ -1997,8 +2012,8 @@
 
     <!-- Add Faq -->
     <script>
-        $(document).ready(function(){
-            $('#addFAQ').on('submit', '#faq-form', function(e){
+        $(document).ready(function () {
+            $('#addFAQ').on('submit', '#faq-form', function (e) {
                 e.preventDefault();
                 const Toast = Swal.mixin({
                     toast: true,
@@ -2040,8 +2055,8 @@
 
     <!-- Edit Faq -->
     <script>
-        $(document).ready(function(){
-            $('.modal').on('click', '#update-faq', function(e){
+        $(document).ready(function () {
+            $('.modal').on('click', '#update-faq', function (e) {
                 e.preventDefault();
 
                 const Toast = Swal.mixin({
@@ -2166,7 +2181,7 @@
                                 var left = $('#send-progress-bar').find('.progress-left .progress-bar');
                                 var right = $('#send-progress-bar').find('.progress-right .progress-bar');
 
-                                $('#send-progress-label').html(''+data_json['progress']+'<small>%</small>');
+                                $('#send-progress-label').html('' + data_json['progress'] + '<small>%</small>');
                                 $('#succed-send-label').html(data_json['success_send']);
                                 $('#failed-send-label').html(data_json['failed_send']);
 
@@ -2193,53 +2208,53 @@
 
     <!-- Instansi -->
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             var jenis_pekerjaan = $('#j_pekerjaan').val();
-            if (jenis_pekerjaan!= null || jenis_pekerjaan!=""){
-                if(jenis_pekerjaan==2){
+            if (jenis_pekerjaan != null || jenis_pekerjaan != "") {
+                if (jenis_pekerjaan == 2) {
                     $('#form-grup-instansi').show();
                 } else {
                     $('#form-grup-instansi').hide();
                 }
-            } else{
+            } else {
                 $('#form-grup-instansi').hide();
             }
 
-            $('#j_pekerjaan').change(function(){
+            $('#j_pekerjaan').change(function () {
                 var j_pekerjaan = $('#j_pekerjaan').val();
-                if (j_pekerjaan!= null || j_pekerjaan!=""){
-                    if(j_pekerjaan==2){
+                if (j_pekerjaan != null || j_pekerjaan != "") {
+                    if (j_pekerjaan == 2) {
                         $('#form-grup-instansi').show();
-                    } else{
+                    } else {
                         $('#form-grup-instansi').hide();
                     }
-                } 
+                }
             });
         });
 
-        $(document).ready(function(){
+        $(document).ready(function () {
             var jenis_pekerjaan = $('.modal').find('#j_pekerjaan').val();
-            if (jenis_pekerjaan!= null || jenis_pekerjaan!=""){
-                if(jenis_pekerjaan==2){
+            if (jenis_pekerjaan != null || jenis_pekerjaan != "") {
+                if (jenis_pekerjaan == 2) {
                     $('.modal').find('#form-grup-instansi').show();
                 } else {
                     $('.modal').find('#form-grup-instansi').hide();
                 }
-            } else{
+            } else {
                 $('.modal').find('#form-grup-instansi').hide();
             }
 
-            $('.modal').on('change', '#j_pekerjaan',function(){
+            $('.modal').on('change', '#j_pekerjaan', function () {
                 var j_pekerjaan = $(this).parents('.modal').find('#j_pekerjaan').val();
-                
-                if (j_pekerjaan!= null || j_pekerjaan!=""){
-                    if(j_pekerjaan==2){
+
+                if (j_pekerjaan != null || j_pekerjaan != "") {
+                    if (j_pekerjaan == 2) {
                         $(this).parents('.modal').find('#form-grup-instansi').show();
-                    } else{
+                    } else {
                         $(this).parents('.modal').find('#form-grup-instansi').hide();
                     }
-                } 
-            }); 
+                }
+            });
         })
     </script>
 

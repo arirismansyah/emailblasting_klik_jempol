@@ -52,6 +52,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # Send Email Thread
+
+
 class SendMailThread(threading.Thread):
     def __init__(self, customers, template):
         self.progress = 0
@@ -60,7 +62,7 @@ class SendMailThread(threading.Thread):
         self.customers = customers
         self.template = template
         super().__init__()
-    
+
     def run(self):
         total = len(self.customers)
         for customer in self.customers:
@@ -69,7 +71,8 @@ class SendMailThread(threading.Thread):
             message['To'] = customer['email']
             message['Subject'] = self.template['subject']
 
-            email_template = EmailTemplate(receiver=customer['nama'], body=self.template['body'], product=self.template['nama_produk'], attachment=self.template['lampiran'])
+            email_template = EmailTemplate(
+                receiver=customer['nama'], body=self.template['body'], product=self.template['nama_produk'], attachment=self.template['lampiran'])
 
             email_template_html = email_template.create_template()
 
@@ -83,17 +86,17 @@ class SendMailThread(threading.Thread):
                 with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
                     server.login(Config.EMAIL, Config.PASSWORD_EMAIL)
                     server.sendmail(Config.EMAIL, customer['email'], text_mail)
-                
+
                 input_log = Log(
-                    template_email = self.template['id_template'],
-                    customer = customer['id_customer'],
-                    status = 1,
+                    template_email=self.template['id_template'],
+                    customer=customer['id_customer'],
+                    status=1,
                 )
             except:
                 input_log = Log(
-                    template_email = self.template['id_template'],
-                    customer = customer['id_customer'],
-                    status = 2,
+                    template_email=self.template['id_template'],
+                    customer=customer['id_customer'],
+                    status=2,
                 )
 
                 db.session.add(input_log)
@@ -104,21 +107,23 @@ class SendMailThread(threading.Thread):
                 db.session.commit()
                 self.success_send += 1
 
-            self.progress =+ ((self.success_send+self.failed_send)/total)*100
-            
-            if((self.success_send!=0) and (self.success_send % 500)==0):
+            self.progress = + ((self.success_send+self.failed_send)/total)*100
+
+            if((self.success_send != 0) and (self.success_send % 500) == 0):
                 time.sleep(60*60*24)
 
             if(self.success_send+self.failed_send == total):
                 try:
-                    update_template = Template.query.get_or_404(self.template['id_template'])
+                    update_template = Template.query.get_or_404(
+                        self.template['id_template'])
                     update_template.status = 1
                     db.session.commit()
                 except:
-                    update_template = Template.query.get_or_404(self.template['id_template'])
+                    update_template = Template.query.get_or_404(
+                        self.template['id_template'])
                     update_template.status = 2
                     db.session.commit()
-            
+
 
 # Exporting Thread
 
@@ -135,7 +140,7 @@ class ExportingThread(threading.Thread):
         failed_input = 0
 
         for index, customer in self.df_customers.iterrows():
-            if(customer['tanggal_lahir']!=None) and (customer['tanggal_lahir']!=""):
+            if(customer['tanggal_lahir'] != None) and (customer['tanggal_lahir'] != ""):
                 tanggal_lahir = customer['tanggal_lahir'].strftime('%Y-%m-%d')
             else:
                 tanggal_lahir = None
@@ -164,7 +169,7 @@ class ExportingThread(threading.Thread):
                 db.session.commit()
                 success_input += 1
 
-            self.progress =+ ((success_input+failed_input)/total)*100
+            self.progress = + ((success_input+failed_input)/total)*100
 
 
 # Serialize Class
@@ -278,8 +283,10 @@ class Log(db.Model, Serializer):
     id_log = db.Column(db.Integer, primary_key=True)
     template_email = db.Column(
         db.Integer, db.ForeignKey('template.id_template'))
-    customer = db.Column(db.Integer, db.ForeignKey('customer.id_customer', ondelete='CASCADE', onupdate='CASCADE'))
-    status = db.Column(db.Integer, db.ForeignKey('status.id_status', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, default=0)
+    customer = db.Column(db.Integer, db.ForeignKey(
+        'customer.id_customer', ondelete='CASCADE', onupdate='CASCADE'))
+    status = db.Column(db.Integer, db.ForeignKey(
+        'status.id_status', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, default=0)
     send_at = db.Column(db.DateTime, default=datetime.now)
 
 # # Model FAQ
@@ -294,6 +301,8 @@ class Faq(db.Model, Serializer):
         return '<FAQ {}>'.format(self.question)
 
 # # Model Admin
+
+
 class Admin(db.Model, Serializer):
     id_admin = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200))
@@ -301,6 +310,7 @@ class Admin(db.Model, Serializer):
 
     def __repr__(self):
         return '<Admin {}>'.format(self.username)
+
 
 @app.route('/')
 def home():
@@ -327,7 +337,7 @@ def admin():
 
         template_not_send = Template.query.filter_by(status=0)
 
-        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq, jumlah_customers = jumlah_customers, template_not_send=template_not_send)
+        return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq, jumlah_customers=jumlah_customers, template_not_send=template_not_send)
     else:
         return redirect(url_for('login'))
 
@@ -346,12 +356,13 @@ def login():
                 return redirect(url_for('admin'))
             else:
                 flash("Username/password salah!", "error")
-                return render_template('login.html')    
+                return render_template('login.html')
         else:
-                flash("Username/password salah!", "error")
-                return render_template('login.html')                
+            flash("Username/password salah!", "error")
+            return render_template('login.html')
     else:
         return render_template('login.html', title='KLIK JEMPOL - Login')
+
 
 @app.route('/logout')
 def logout():
@@ -359,42 +370,79 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
 
+
 @app.route('/download_template', methods=['GET', 'POST'])
 def download_template():
     path = 'static/template/template.xlsx'
     return send_file(path, attachment_filename='template.xlsx', as_attachment=True)
 
 # Route for Customer
+
+
 @app.route('/get_customers', methods=['GET', 'POST'])
 def get_customers():
     if request.method == 'POST':
-        draw = request.form['draw'] 
+        draw = request.form['draw']
         row = int(request.form['start'])
         rowperpage = int(request.form['length'])
         searchValue = request.form["search[value]"]
-        print(draw)
-        print(row)
-        print(rowperpage)
-        print(searchValue)
+
+        page_n = (row / rowperpage)+1
+        print('draw : ', draw)
+        print('row : ', row)
+        print('rowperpage : ', rowperpage)
+        print("search : ", searchValue)
 
         # total customers without filter
-        total_count = Customer.query.all().count()
-        
+        total_count = Customer.query.count()
+
         # total customers filter name, email
-        likeString = "%" + searchValue +"%"
-        total_count_filtered = Customer.query.filter((Customer.nama.like(likeString))).all().count()
+        likeString = "%" + searchValue + "%"
+        total_count_filtered = Customer.query.filter(
+            (Customer.nama.like(likeString))).count()
 
-        print('total_count',total_count)
-        print('total_count_filtered',total_count_filtered)
+        print('total_count', total_count)
+        print('total_count_filtered', total_count_filtered)
+        print("page : ", page_n)
 
-        if (searchValue==''):
-            customers = Customer.query.limit(row, rowperpage).all()
-            customers_list = Customer.serialize_list(customers)
-        else :
-            customers = Customer.query.filter((Customer.nama.like(likeString))).limit(row, rowperpage).all()
-            customers_list = Customer.serialize_list(customers)
-        
-        return jsonify(customers_list)
+        if (searchValue == ''):
+            customers = Customer.query.paginate(
+                per_page=rowperpage, page=page_n)
+        else:
+            customers = Customer.query.filter((Customer.nama.like(likeString))).paginate(
+                per_page=rowperpage, page=page_n)
+
+        data = []
+        number = row+1
+        for customer in customers.items:
+            data.append({
+                'no': number,
+                'nama': customer.nama,
+                'jenis_kelamin': customer.jenis_kelamin,
+                'email': customer.email,
+                'phone': customer.phone,
+                'action': f"""
+                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editCustomer_{customer.id_customer}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteCustomer_{customer.id_customer}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                """,
+            })
+            number += 1
+
+        response = {
+            'draw': draw,
+            'iTotalRecords': total_count,
+            'iTotalDisplayRecords': total_count_filtered,
+            'aaData': data,
+        }
+        return jsonify(response)
 
 
 @app.route('/upload_customers', methods=['GET', 'POST'])
@@ -413,11 +461,11 @@ def upload_customers():
             file_customer.save(os.path.join(folder_target, file_name))
             df_customers = pd.read_excel(
                 os.path.join(folder_target, file_name), dtype={
-                    'phone':str,
+                    'phone': str,
                 })
 
             df_customers = df_customers.astype(
-                object).where(pd.notnull(df_customers), None)           
+                object).where(pd.notnull(df_customers), None)
 
             global exporting_threads
 
@@ -425,15 +473,17 @@ def upload_customers():
             exporting_threads[thread_id] = ExportingThread(df_customers)
             exporting_threads[thread_id].start()
 
-            return {'thread_id':thread_id, 'rows':len(df_customers)}
+            return {'thread_id': thread_id, 'rows': len(df_customers)}
+
 
 @app.route('/progress_insert/<int:thread_id>')
 def progress(thread_id):
     def make_prog():
         global exporting_threads
-        yield "data:"+str(round(exporting_threads[thread_id].progress,1))+"\n\n"
+        yield "data:"+str(round(exporting_threads[thread_id].progress, 1))+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
+
 
 @app.route('/register_customer', methods=['POST'])
 def register_customer():
@@ -461,29 +511,31 @@ def register_customer():
         db.session.commit()
         return make_response('success', 200)
 
+
 @app.route('/update_customer', methods=['POST'])
 def update_customer():
     id_customer = request.form['id_customer']
     customer = Customer.query.get_or_404(id_customer)
 
-    try :
-        customer.nama=request.form['name']
-        customer.jenis_kelamin=request.form['radioJk']
-        customer.tempat_lahir=request.form['tempat_lahir']
-        customer.tanggal_lahir=request.form['tgl_lahir']
-        customer.pendidikan=request.form['pendidikan']
-        customer.jenis_pekerjaan=request.form['j_pekerjaan']
-        customer.pekerjaan=request.form['pekerjaan']
-        customer.instansi=request.form['instansi']
-        customer.email=request.form['email']
-        customer.phone=request.form['phone-val']
-        customer.prov_domisili=request.form['dom_prov']
-        customer.kab_domisili=request.form['dom_kab']
-        customer.alamat_domisili=request.form['alamat']
+    try:
+        customer.nama = request.form['name']
+        customer.jenis_kelamin = request.form['radioJk']
+        customer.tempat_lahir = request.form['tempat_lahir']
+        customer.tanggal_lahir = request.form['tgl_lahir']
+        customer.pendidikan = request.form['pendidikan']
+        customer.jenis_pekerjaan = request.form['j_pekerjaan']
+        customer.pekerjaan = request.form['pekerjaan']
+        customer.instansi = request.form['instansi']
+        customer.email = request.form['email']
+        customer.phone = request.form['phone-val']
+        customer.prov_domisili = request.form['dom_prov']
+        customer.kab_domisili = request.form['dom_kab']
+        customer.alamat_domisili = request.form['alamat']
         db.session.commit()
         return make_response('success', 200)
     except:
         return make_response('failed', 200)
+
 
 @app.route('/delete_customer', methods=['POST'])
 def delete_customer():
@@ -501,10 +553,10 @@ def delete_customer():
 @app.route('/add_template', methods=['POST'])
 def add_template():
     template_email = Template(
-        subject = request.form['subject'],
-        nama_produk = request.form['nama_produk'],
-        lampiran = request.form['lampiran'],
-        body = request.form['body-email'],
+        subject=request.form['subject'],
+        nama_produk=request.form['nama_produk'],
+        lampiran=request.form['lampiran'],
+        body=request.form['body-email'],
     )
 
     try:
@@ -513,6 +565,7 @@ def add_template():
         return ('success', 200)
     except:
         return ('failed', 200)
+
 
 @app.route('/edit_template', methods=['POST'])
 def edit_template():
@@ -529,6 +582,7 @@ def edit_template():
     except:
         return make_response('failed', 200)
 
+
 @app.route('/delete_template', methods=['POST'])
 def delete_template():
     id_template = request.form['id_template']
@@ -541,11 +595,13 @@ def delete_template():
         return make_response('delete failed', 200)
 
 # Route for FAQ
+
+
 @app.route('/add_faq', methods=['POST'])
 def add_faq():
     faq = Faq(
-        question = request.form['question'],
-        answer = request.form['answer'],
+        question=request.form['question'],
+        answer=request.form['answer'],
     )
     try:
         db.session.add(faq)
@@ -553,6 +609,7 @@ def add_faq():
         return ('success', 200)
     except:
         return ('failed', 200)
+
 
 @app.route('/edit_faq', methods=['POST'])
 def edit_faq():
@@ -566,6 +623,7 @@ def edit_faq():
         return make_response('success', 200)
     except:
         return make_response('failed', 200)
+
 
 @app.route('/delete_faq', methods=['POST'])
 def delete_faq():
@@ -584,26 +642,28 @@ def send():
     if (request.method == 'POST'):
         id_template = request.form['id_template']
         template = Template.query.get_or_404(id_template)
-        customers = Customer.query.filter((Customer.email!=None)|(Customer.email!="")).all()
+        customers = Customer.query.filter(
+            (Customer.email != None) | (Customer.email != "")).all()
         serialized_customers = Customer.serialize_list(customers)
         serialized_template = Template.serialize(template)
 
         global send_threads
         thread_id = random.randint(0, 10000)
-        send_threads[thread_id] = SendMailThread(customers=serialized_customers, template=serialized_template)
+        send_threads[thread_id] = SendMailThread(
+            customers=serialized_customers, template=serialized_template)
         send_threads[thread_id].start()
 
-        return {'thread_id':thread_id, 'rows':len(serialized_customers)}
-
+        return {'thread_id': thread_id, 'rows': len(serialized_customers)}
 
 
 @app.route('/progress_send/<int:thread_id>')
 def progress_send(thread_id):
     def make_prog():
         global send_threads
-        yield "data:"+str({"progress":round(send_threads[thread_id].progress,1), "success_send":send_threads[thread_id].success_send, "failed_send":send_threads[thread_id].failed_send})+"\n\n"
+        yield "data:"+str({"progress": round(send_threads[thread_id].progress, 1), "success_send": send_threads[thread_id].success_send, "failed_send": send_threads[thread_id].failed_send})+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
+
 
 @app.route('/get_template', methods=['POST'])
 def get_template():
@@ -615,6 +675,7 @@ def get_template():
         serialized_template = Template.serialize(template)
 
         return jsonify(serialized_template)
+
 
 @app.route('/kabkot', methods=['POST'])
 def kabkot():
