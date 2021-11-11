@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 25, 2021 at 11:10 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.8
+-- Waktu pembuatan: 11 Nov 2021 pada 14.18
+-- Versi server: 10.4.20-MariaDB
+-- Versi PHP: 8.0.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Struktur dari tabel `admin`
 --
 
 CREATE TABLE `admin` (
@@ -34,7 +34,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `admin`
+-- Dumping data untuk tabel `admin`
 --
 
 INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
@@ -43,7 +43,7 @@ INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `alembic_version`
+-- Struktur dari tabel `alembic_version`
 --
 
 CREATE TABLE `alembic_version` (
@@ -51,7 +51,7 @@ CREATE TABLE `alembic_version` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `alembic_version`
+-- Dumping data untuk tabel `alembic_version`
 --
 
 INSERT INTO `alembic_version` (`version_num`) VALUES
@@ -60,7 +60,7 @@ INSERT INTO `alembic_version` (`version_num`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer`
+-- Struktur dari tabel `customer`
 --
 
 CREATE TABLE `customer` (
@@ -81,7 +81,7 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `customer`
+-- Dumping data untuk tabel `customer`
 --
 
 INSERT INTO `customer` (`id_customer`, `nama`, `jenis_kelamin`, `phone`, `email`, `tempat_lahir`, `tanggal_lahir`, `pendidikan`, `pekerjaan`, `jenis_pekerjaan`, `instansi`, `alamat_domisili`, `prov_domisili`, `kab_domisili`) VALUES
@@ -4431,7 +4431,7 @@ INSERT INTO `customer` (`id_customer`, `nama`, `jenis_kelamin`, `phone`, `email`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `faq`
+-- Struktur dari tabel `faq`
 --
 
 CREATE TABLE `faq` (
@@ -4441,7 +4441,7 @@ CREATE TABLE `faq` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `faq`
+-- Dumping data untuk tabel `faq`
 --
 
 INSERT INTO `faq` (`id_faq`, `question`, `answer`) VALUES
@@ -4453,7 +4453,7 @@ INSERT INTO `faq` (`id_faq`, `question`, `answer`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kabkot`
+-- Struktur dari tabel `kabkot`
 --
 
 CREATE TABLE `kabkot` (
@@ -4463,7 +4463,7 @@ CREATE TABLE `kabkot` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `kabkot`
+-- Dumping data untuk tabel `kabkot`
 --
 
 INSERT INTO `kabkot` (`id_kabkot`, `kode_prov`, `nama_kabkot`) VALUES
@@ -4987,7 +4987,7 @@ INSERT INTO `kabkot` (`id_kabkot`, `kode_prov`, `nama_kabkot`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `log`
+-- Struktur dari tabel `log`
 --
 
 CREATE TABLE `log` (
@@ -4999,7 +4999,7 @@ CREATE TABLE `log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `log`
+-- Dumping data untuk tabel `log`
 --
 
 INSERT INTO `log` (`id_log`, `template_email`, `customer`, `send_at`, `status`) VALUES
@@ -5367,7 +5367,7 @@ INSERT INTO `log` (`id_log`, `template_email`, `customer`, `send_at`, `status`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pekerjaan`
+-- Struktur dari tabel `pekerjaan`
 --
 
 CREATE TABLE `pekerjaan` (
@@ -5376,7 +5376,7 @@ CREATE TABLE `pekerjaan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `pekerjaan`
+-- Dumping data untuk tabel `pekerjaan`
 --
 
 INSERT INTO `pekerjaan` (`id_pekerjaan`, `jenis_pekerjaan`) VALUES
@@ -5389,7 +5389,7 @@ INSERT INTO `pekerjaan` (`id_pekerjaan`, `jenis_pekerjaan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pendidikan`
+-- Struktur dari tabel `pendidikan`
 --
 
 CREATE TABLE `pendidikan` (
@@ -5398,7 +5398,7 @@ CREATE TABLE `pendidikan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `pendidikan`
+-- Dumping data untuk tabel `pendidikan`
 --
 
 INSERT INTO `pendidikan` (`id_pendidikan`, `tingkat_pendidikan`) VALUES
@@ -5413,7 +5413,7 @@ INSERT INTO `pendidikan` (`id_pendidikan`, `tingkat_pendidikan`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `prov`
+-- Struktur dari tabel `prov`
 --
 
 CREATE TABLE `prov` (
@@ -5422,7 +5422,7 @@ CREATE TABLE `prov` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `prov`
+-- Dumping data untuk tabel `prov`
 --
 
 INSERT INTO `prov` (`kode_prov`, `nama_prov`) VALUES
@@ -5464,7 +5464,7 @@ INSERT INTO `prov` (`kode_prov`, `nama_prov`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `status`
+-- Struktur dari tabel `status`
 --
 
 CREATE TABLE `status` (
@@ -5473,7 +5473,7 @@ CREATE TABLE `status` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `status`
+-- Dumping data untuk tabel `status`
 --
 
 INSERT INTO `status` (`id_status`, `status`) VALUES
@@ -5485,7 +5485,7 @@ INSERT INTO `status` (`id_status`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `template`
+-- Struktur dari tabel `template`
 --
 
 CREATE TABLE `template` (
@@ -5498,7 +5498,7 @@ CREATE TABLE `template` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `template`
+-- Dumping data untuk tabel `template`
 --
 
 INSERT INTO `template` (`id_template`, `subject`, `body`, `nama_produk`, `lampiran`, `status`) VALUES
@@ -5520,19 +5520,19 @@ INSERT INTO `template` (`id_template`, `subject`, `body`, `nama_produk`, `lampir
 --
 
 --
--- Indexes for table `admin`
+-- Indeks untuk tabel `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`);
 
 --
--- Indexes for table `alembic_version`
+-- Indeks untuk tabel `alembic_version`
 --
 ALTER TABLE `alembic_version`
   ADD PRIMARY KEY (`version_num`);
 
 --
--- Indexes for table `customer`
+-- Indeks untuk tabel `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`id_customer`),
@@ -5543,20 +5543,20 @@ ALTER TABLE `customer`
   ADD KEY `kab_domisili` (`kab_domisili`);
 
 --
--- Indexes for table `faq`
+-- Indeks untuk tabel `faq`
 --
 ALTER TABLE `faq`
   ADD PRIMARY KEY (`id_faq`);
 
 --
--- Indexes for table `kabkot`
+-- Indeks untuk tabel `kabkot`
 --
 ALTER TABLE `kabkot`
   ADD PRIMARY KEY (`id_kabkot`),
   ADD KEY `kode_prov` (`kode_prov`);
 
 --
--- Indexes for table `log`
+-- Indeks untuk tabel `log`
 --
 ALTER TABLE `log`
   ADD PRIMARY KEY (`id_log`),
@@ -5565,106 +5565,106 @@ ALTER TABLE `log`
   ADD KEY `status` (`status`);
 
 --
--- Indexes for table `pekerjaan`
+-- Indeks untuk tabel `pekerjaan`
 --
 ALTER TABLE `pekerjaan`
   ADD PRIMARY KEY (`id_pekerjaan`);
 
 --
--- Indexes for table `pendidikan`
+-- Indeks untuk tabel `pendidikan`
 --
 ALTER TABLE `pendidikan`
   ADD PRIMARY KEY (`id_pendidikan`);
 
 --
--- Indexes for table `prov`
+-- Indeks untuk tabel `prov`
 --
 ALTER TABLE `prov`
   ADD PRIMARY KEY (`kode_prov`);
 
 --
--- Indexes for table `status`
+-- Indeks untuk tabel `status`
 --
 ALTER TABLE `status`
   ADD PRIMARY KEY (`id_status`);
 
 --
--- Indexes for table `template`
+-- Indeks untuk tabel `template`
 --
 ALTER TABLE `template`
   ADD PRIMARY KEY (`id_template`),
   ADD KEY `status` (`status`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `customer`
+-- AUTO_INCREMENT untuk tabel `customer`
 --
 ALTER TABLE `customer`
   MODIFY `id_customer` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5624;
 
 --
--- AUTO_INCREMENT for table `faq`
+-- AUTO_INCREMENT untuk tabel `faq`
 --
 ALTER TABLE `faq`
   MODIFY `id_faq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `kabkot`
+-- AUTO_INCREMENT untuk tabel `kabkot`
 --
 ALTER TABLE `kabkot`
   MODIFY `id_kabkot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=517;
 
 --
--- AUTO_INCREMENT for table `log`
+-- AUTO_INCREMENT untuk tabel `log`
 --
 ALTER TABLE `log`
   MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=399;
 
 --
--- AUTO_INCREMENT for table `pekerjaan`
+-- AUTO_INCREMENT untuk tabel `pekerjaan`
 --
 ALTER TABLE `pekerjaan`
   MODIFY `id_pekerjaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `pendidikan`
+-- AUTO_INCREMENT untuk tabel `pendidikan`
 --
 ALTER TABLE `pendidikan`
   MODIFY `id_pendidikan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `prov`
+-- AUTO_INCREMENT untuk tabel `prov`
 --
 ALTER TABLE `prov`
   MODIFY `kode_prov` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
--- AUTO_INCREMENT for table `status`
+-- AUTO_INCREMENT untuk tabel `status`
 --
 ALTER TABLE `status`
   MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `template`
+-- AUTO_INCREMENT untuk tabel `template`
 --
 ALTER TABLE `template`
   MODIFY `id_template` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- Constraints for dumped tables
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Constraints for table `customer`
+-- Ketidakleluasaan untuk tabel `customer`
 --
 ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_1` FOREIGN KEY (`jenis_pekerjaan`) REFERENCES `pekerjaan` (`id_pekerjaan`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -5673,13 +5673,13 @@ ALTER TABLE `customer`
   ADD CONSTRAINT `customer_ibfk_4` FOREIGN KEY (`kab_domisili`) REFERENCES `kabkot` (`id_kabkot`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `kabkot`
+-- Ketidakleluasaan untuk tabel `kabkot`
 --
 ALTER TABLE `kabkot`
   ADD CONSTRAINT `kabkot_ibfk_1` FOREIGN KEY (`kode_prov`) REFERENCES `prov` (`kode_prov`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `log`
+-- Ketidakleluasaan untuk tabel `log`
 --
 ALTER TABLE `log`
   ADD CONSTRAINT `log_ibfk_2` FOREIGN KEY (`template_email`) REFERENCES `template` (`id_template`),
@@ -5687,7 +5687,7 @@ ALTER TABLE `log`
   ADD CONSTRAINT `log_ibfk_4` FOREIGN KEY (`status`) REFERENCES `status` (`id_status`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `template`
+-- Ketidakleluasaan untuk tabel `template`
 --
 ALTER TABLE `template`
   ADD CONSTRAINT `template_ibfk_1` FOREIGN KEY (`status`) REFERENCES `status` (`id_status`) ON DELETE CASCADE ON UPDATE CASCADE;
