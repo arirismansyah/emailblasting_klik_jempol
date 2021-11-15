@@ -422,14 +422,14 @@ def get_customers():
                 'email': customer.email,
                 'phone': customer.phone,
                 'action': f"""
-                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editCustomer_{customer.id_customer}">
+                <button class=" badge btn-rounded btn-icon btn-primary btn-sm modal-edit-customer"
+                                                    data-bs-toggle="modal" id_customer = "{customer.id_customer}"
+                                                    data-bs-target="#editCustomer">
                                                     <i class="bi bi-pencil-fill btn-icon-prepend"></i>
                                                 </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteCustomer_{customer.id_customer}">
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm modal-delete-customer"
+                                                    data-bs-toggle="modal" id_customer = "{customer.id_customer}"
+                                                    data-bs-target="#deleteCustomer">
                                                     <i class="bi bi-trash-fill btn-icon-prepend"></i>
                                                 </button>
                 """,
@@ -511,6 +511,13 @@ def register_customer():
         db.session.commit()
         return make_response('success', 200)
 
+@app.route('/get_customer_byid', methods=['POST'])
+def get_customer_byid():
+    id_customer = request.form['id_customer']
+    customer = Customer.query.get_or_404(id_customer)
+    
+    serialized_customer = Customer.serialize(customer)
+    return jsonify(serialized_customer)
 
 @app.route('/update_customer', methods=['POST'])
 def update_customer():

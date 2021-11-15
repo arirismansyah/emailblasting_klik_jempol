@@ -894,15 +894,15 @@
         <!-- End Contact Section -->
 
         <!-- Modal Customer -->
-        <!-- {% for c in customers %} -->
+   
 
         <!-- Modals Delete -->
-        <!-- <div class="modal fade" id="deleteCustomer_{{c.id_customer}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="deleteCustomer" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete - {{c.nama}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Delete - </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -919,26 +919,27 @@
                                     Anda yakin ingin menghapus data customer?
                                 </strong>
                             </p>
-                            <p class="text-muted text-center">Atas nama : {{c.nama}}</p>
+                            <p id="nama-customer-delete" class="text-muted text-center">Atas nama : </p>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <input type="text" name="id-customer-delete" id="id-customer-delete" readonly
-                            style="display: none;" value="{{c.id_customer}}">
+                            style="display: none;" value="">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button id="delete-customer" type="button" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
 
+        <!-- Modal Edit -->
         <!-- Modals Edit -->
-        <!-- <div class="modal fade" id="editCustomer_{{c.id_customer}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit - {{c.nama}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit - </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -948,31 +949,15 @@
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group col-md-6">
                                         <label class="text-muted" for="name">Nama</label>
-                                        <input type="text" name="name" class="form-control" id="name" value="{{c.nama}}"
+                                        <input type="text" name="name" class="form-control" id="name"
                                             required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="text-muted" for="radioJk">Jenis Kelamin</label>
                                         <div class="form-control-plaintext align-middle">
-                                            <div class="form-check form-check-inline">
-                                                {% if (c.jenis_kelamin=='L') %}
-                                                <input class="form-check-input" type="radio" name="radioJk"
-                                                    id="radioJk1" value="L" required checked>
-                                                {% else %}
-                                                <input class="form-check-input" type="radio" name="radioJk"
-                                                    id="radioJk1" value="L" required>
-                                                {% endif %}
-                                                <label class="form-check-label" for="radioJk1">Laki-laki</label>
+                                            <div id="jenis_kelamin_1" class="form-check form-check-inline">
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                {% if(c.jenis_kelamin=='P') %}
-                                                <input class="form-check-input" type="radio" name="radioJk"
-                                                    id="radioJk2" value="P" checked>
-                                                {% else %}
-                                                <input class="form-check-input" type="radio" name="radioJk"
-                                                    id="radioJk2" value="P">
-                                                {% endif %}
-                                                <label class="form-check-label" for="radioJk2">Perempuan</label>
+                                            <div id="jenis_kelamin_2" class="form-check form-check-inline">
                                             </div>
                                         </div>
                                     </div>
@@ -982,7 +967,7 @@
                                     <div class="form-group col-md-4">
                                         <label class="text-muted" for="tempat-lahir">Tempat Lahir</label>
                                         <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir"
-                                            required value="{{c.tempat_lahir}}">
+                                            required>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label class="text-muted" for="name">Tanggal Lahir</label>
@@ -992,7 +977,7 @@
                                             </span>
                                             <input placeholder="yyyy-mm-dd" type="text" name="tgl_lahir"
                                                 class="form-control datedropper" id="tgl_lahir" required
-                                                value="{{c.tanggal_lahir}}">
+                                                >
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -1001,13 +986,8 @@
                                             required>
                                             <option value="" selected disabled>Pilih Tingkat Pendidikan</option>
                                             {% for p in pendidikan %}
-                                            {% if(c.pendidikan == p.id_pendidikan) %}
-                                            <option value="{{ p.id_pendidikan }}" selected>{{ p.tingkat_pendidikan }}
-                                            </option>
-                                            {% else %}
                                             <option value="{{ p.id_pendidikan }}">{{ p.tingkat_pendidikan }}
                                             </option>
-                                            {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -1022,13 +1002,10 @@
                                             required>
                                             <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
                                             {% for pekerjaan in jenis_pekerjaan %}
-                                            {% if(c.jenis_pekerjaan==pekerjaan.id_pekerjaan) %}
-                                            <option value="{{pekerjaan.id_pekerjaan}}" selected>
-                                                {{pekerjaan.jenis_pekerjaan}}</option>
-                                            {% else %}
+                                            
                                             <option value="{{pekerjaan.id_pekerjaan}}">
                                                 {{pekerjaan.jenis_pekerjaan}}</option>
-                                            {% endif %}
+                                            
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -1036,13 +1013,13 @@
                                     <div class="form-group col-md-4">
                                         <label class="text-muted" for="name">Pekerjaan</label>
                                         <input type="text" name="pekerjaan" class="form-control" id="pekerjaan" required
-                                            value="{{c.pekerjaan}}">
+                                            >
                                     </div>
 
                                     <div id="form-grup-instansi" class="form-group col-md-4">
                                         <label class="text-muted" for="name">Instansi</label>
                                         <input type="text" name="instansi" class="form-control" id="instansi"
-                                            value="{{c.instansi}}">
+                                            >
                                     </div>
 
                                 </div>
@@ -1055,7 +1032,7 @@
                                                 <i class="fa fa-envelope"></i>
                                             </span>
                                             <input type="text" name="email" class="form-control" id="email" required
-                                                value="{{c.email}}">
+                                                >
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -1065,9 +1042,9 @@
                                                 <i class="fa fa-phone"></i>
                                             </span>
                                             <input type="text" name="phone" class="form-control" id="phone" required,
-                                                minlength="10" , maxlength="14" value="{{c.phone}}">
+                                                minlength="10" , maxlength="14" >
                                             <input type="text" name="phone-val" class="form-control" id="phone-val"
-                                                style="display: none;" value="{{c.phone}}">
+                                                style="display: none;" >
                                         </div>
                                     </div>
                                 </div>
@@ -1080,11 +1057,7 @@
                                         <select class="form-control form-select" name="dom_prov" id="dom_prov" required>
                                             <option value="" selected disabled>Pilih Provinsi</option>
                                             {% for prov in provinsi %}
-                                            {% if(c.prov_domisili == prov.kode_prov) %}
-                                            <option value="{{ prov.kode_prov }}" selected>{{ prov.nama_prov }}</option>
-                                            {% else %}
                                             <option value="{{ prov.kode_prov }}">{{ prov.nama_prov }}</option>
-                                            {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -1093,11 +1066,7 @@
                                         <select class="form-control form-select" name="dom_kab" id="dom_kab" required>
                                             <option value="" selected disabled>Pilih Kabupaten/Kota</option>
                                             {% for k in all_kabkot %}
-                                            {% if(k.id_kabkot == c.kab_domisili) %}
-                                            <option value="{{k.id_kabkot}}" selected>{{k.nama_kabkot}}</option>
-                                            {% else %}
                                             <option value="{{k.id_kabkot}}">{{k.nama_kabkot}}</option>
-                                            {% endif %}
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -1107,10 +1076,10 @@
                                     <div class="form-group col-md-12">
                                         <label class="text-muted" for="name">Alamat</label>
                                         <textarea name="alamat" class="form-control" id="alamat" required
-                                            rows="5">{{c.alamat_domisili}}</textarea>
+                                            rows="5"></textarea>
                                     </div>
                                 </div>
-                                <input type="text" name="id_customer" id="id_customer" value="{{c.id_customer}}"
+                                <input type="text" name="id_customer" id="id_customer"
                                     style="display: none;">
                             </form>
 
@@ -1123,7 +1092,8 @@
                 </div>
             </div>
         </div>
-        {% endfor %} -->
+        
+
         <!-- End Modal Customer -->
 
         <!-- Modal Templates -->
@@ -1703,10 +1673,11 @@
             // Fetching Kabupaten/Kota on Modals
             $('.modal').on('change', '#dom_prov', function () {
                 var kode_prov = $(this).closest('#dom_prov').val();
+                console.log(kode_prov);
                 var kabkot = function () {
                     var tmp = null;
 
-                    if (kode_prov != null) {
+                    if (kode_prov != null || kode_prov != "") {
                         $.ajax({
                             async: false,
                             method: "POST",
@@ -1771,6 +1742,101 @@
 
             });
         });
+    </script>
+
+    <!-- Modals Customer -->
+    <script>
+        $(document).ready(function (){
+            $('#table-customers').on('click', '.modal-delete-customer', function(){
+                var id_customer = $(this).attr("id_customer");
+
+                var data_customer = function () {
+                    var tmp = null;
+
+                    if (id_customer != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('get_customer_byid')}}",
+                            data: {
+                                'id_customer': id_customer,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+
+                $('#deleteCustomer').find('.modal-title').html(data_customer['nama']);
+                $('#deleteCustomer').find('#nama-customer-delete').html(data_customer['nama']);
+                $('#id-customer-delete').val(id_customer);
+
+                console.log(id_customer);
+                console.log(data_customer);
+            });
+        })
+        $(document).ready(function (){
+            $('#table-customers').on('click', '.modal-edit-customer', function(){
+                var id_customer = $(this).attr("id_customer");
+
+                var data_customer = function () {
+                    var tmp = null;
+
+                    if (id_customer != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('get_customer_byid')}}",
+                            data: {
+                                'id_customer': id_customer,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+
+                $('#editCustomer').find('.modal-title').html(data_customer['nama']);
+                $('#editCustomer').find('#name').val(data_customer['nama']);
+                $('#editCustomer').find('#tempat_lahir').val(data_customer['tempat_lahir']);
+                $('#editCustomer').find('#tgl_lahir').val(data_customer['tanggal_lahir']);
+                $('#editCustomer').find('#pekerjaan').val(data_customer['pekerjaan']);
+                $('#editCustomer').find('#phone').val(data_customer['phone']);
+                $('#editCustomer').find('#phone_value').val(data_customer['phone']);
+                $('#editCustomer').find('#email').val(data_customer['email']);
+                $('#editCustomer').find('#alamat').html(data_customer['alamat_domisili']);
+                $('#editCustomer').find('#j_pekerjaan').val(data_customer['jenis_pekerjaan']).change();
+                $('#editCustomer').find('#pendidikan').val(data_customer['pendidikan']).change();
+                $('#editCustomer').find('#dom_prov').val(data_customer['prov_domisili']).change();
+                $('#editCustomer').find('#dom_kab').val(data_customer['kab_domisili']).change();
+                $('#editCustomer').find('#id_customer').val(id_customer);
+                
+                if (data_customer['jenis_kelamin']=='L'){
+                    $('#editCustomer').find('#jenis_kelamin_1').html(
+                        '<input class="form-check-input" type="radio" name="radioJk" id="radioJk1" value="L" required checked><label class="form-check-label" for="radioJk1">Laki-laki</label>'
+                    );
+                    $('#editCustomer').find('#jenis_kelamin_2').html(
+                        '<input class="form-check-input" type="radio" name="radioJk" id="radioJk2" value="P"> <label class="form-check-label" for="radioJk2">Perempuan</label>'
+                    );
+                    console.log('Laki');
+                } else {
+                    $('#editCustomer').find('#jenis_kelamin_1').html(
+                        '<input class="form-check-input" type="radio" name="radioJk" id="radioJk1" value="L" required><label class="form-check-label" for="radioJk1">Laki-laki</label>'
+                    );
+                    $('#editCustomer').find('#jenis_kelamin_2').html(
+                        '<input class="form-check-input" type="radio" name="radioJk" id="radioJk2" value="P" checked> <label class="form-check-label" for="radioJk2">Perempuan</label>'
+                    );
+                    console.log('P');
+                    
+                }
+                console.log(id_customer);
+                console.log(data_customer);
+            });
+        })
     </script>
 
     <!-- Delete Customer -->
