@@ -601,6 +601,88 @@ def delete_template():
     except:
         return make_response('delete failed', 200)
 
+
+@app.route('/get_templates', methods=['POST'])
+def get_templates():
+    if request.method == 'POST':
+        draw = request.form['draw']
+        row = int(request.form['start'])
+        rowperpage = int(request.form['length'])
+        searchValue = request.form["search[value]"]
+
+        page_n = (row / rowperpage)+1
+
+        # total customers without filter
+        total_count = Template.query.count()
+
+        # total customers filter name, email
+        likeString = "%" + searchValue + "%"
+        total_count_filtered = Template.query.filter(
+            (Template.subject.like(likeString))|(Template.nama_produk.like(likeString))).count()
+
+        if (searchValue == ''):
+            templates = Template.query.paginate(
+                per_page=rowperpage, page=page_n)
+        else:
+            templates = Template.query.filter((Template.subject.like(likeString))|(Template.nama_produk.like(likeString))).paginate(
+                per_page=rowperpage, page=page_n)
+
+        data = []
+        number = row+1
+        for template in templates.items:
+            if(template.status==0):
+                label_status = """<h5><span class="badge rounded-pill bg-secondary">Belum Dikirim</span></h5>"""
+            elif(template.status==1):
+                label_status = """<h5><span class="badge rounded-pill bg-success">Sudah Terikirim</span></h5>"""
+            elif(template.status==2):
+                label_status = """<h5><span class="badge rounded-pill bg-danger">Gagal Dikirim</span></h5>"""
+            else:
+                label_status = """<h5><span class="badge rounded-pill bg-info">Dalam Proses</span></h5>"""
+                
+            
+            data.append({
+                'no': number,
+                'subject': template.subject,
+                'nama_produk': template.nama_produk,
+                'lampiran':f"""
+                <a href="{template.lampiran}" target="_blank" type="button"
+                                                    class="btn btn-success btn-icon-text">
+                                                    <i class="bi bi-link-45deg btn-icon-prepend"></i>
+                                                    Lampiran
+                                                </a>
+                """,
+                'status':label_status,
+                'action': f"""
+                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editTemplate" id_template="{template.id_template}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteTemplate" id_template="{template.id_template}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                """,
+            })
+            number += 1
+
+        response = {
+            'draw': draw,
+            'iTotalRecords': total_count,
+            'iTotalDisplayRecords': total_count_filtered,
+            'aaData': data,
+        }
+        return jsonify(response)
+
+@app.route('/get_template_byid', method=['POST'])
+def get_template_byid():
+    id_template = request.form['id_tempalate']
+    template = Template.query.get_or_404(id_template)
+    
+    serialized_template = Template.serialize(template)
+    return jsonify(serialized_template)
+
 # Route for FAQ
 
 
@@ -643,6 +725,71 @@ def delete_faq():
     except:
         return make_response('delete failed', 200)
 
+@app.route('/get_faqs', methods=['POST'])
+def get_faqs():
+    if request.method == 'POST':
+        draw = request.form['draw']
+        row = int(request.form['start'])
+        rowperpage = int(request.form['length'])
+        searchValue = request.form["search[value]"]
+
+        page_n = (row / rowperpage)+1
+
+        # total customers without filter
+        total_count = Faq.query.count()
+
+        # total customers filter name, email
+        likeString = "%" + searchValue + "%"
+        total_count_filtered = Faq.query.filter(
+            (Faq.question.like(likeString))|(Faq.answer.like(likeString))).count()
+
+        if (searchValue == ''):
+            faqs = Faq.query.paginate(
+                per_page=rowperpage, page=page_n)
+        else:
+            faqs = Faq.query.filter((Faq.question.like(likeString))|(Faq.answer.like(likeString))).paginate(
+                per_page=rowperpage, page=page_n)
+
+        data = []
+        number = row+1
+        for faq in faqs.items:
+            
+            
+            data.append({
+                'no': number,
+                'question': faq.question,
+                'answer': faq.answer,
+                'action': f"""
+                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editFaq" id_faq="{faq.id_faq}">
+                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
+                                                </button>
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteFaq" id_faq="{faq.id_faq}">
+                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
+                                                </button>
+                """,
+            })
+            number += 1
+
+        response = {
+            'draw': draw,
+            'iTotalRecords': total_count,
+            'iTotalDisplayRecords': total_count_filtered,
+            'aaData': data,
+        }
+        return jsonify(response)
+
+@app.route('/get_faq_byid', method=['POST'])
+def get_faq_byid():
+    id_faq = request.form['id_faq']
+    faq = Faq.query.get_or_404(id_faq)
+    serialized_faq = Faq.serialize(faq)
+    return jsonify(serialized_faq)    
+
+# Route for Send Email
 
 @app.route('/send', methods=['POST'])
 def send():

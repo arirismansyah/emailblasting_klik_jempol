@@ -431,30 +431,7 @@
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                    <!-- <tbody id="body-table-customers">
-                                        {% for customer in customers%}
-                                        <tr>
-                                            <td></td>
-                                            <td>{{customer.nama}}</td>
-                                            <td>{{customer.jenis_kelamin}}</td>
-                                            <td>{{customer.email}}</td>
-                                            <td>{{customer.phone}}</td>
-                                            <td class="d-flex justify-content-around">
-                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editCustomer_{{customer.id_customer}}">
-                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
-                                                </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteCustomer_{{customer.id_customer}}">
-                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
 
-                                    </tbody> -->
                                 </table>
 
 
@@ -512,7 +489,7 @@
 
                             <div class="row mb-4">
                                 <h3>Data Template Email</h3>
-                                <table class="table table-striped" id="table-templates">
+                                <table class="table table-striped" id="table-templates" style="width: 100%;">
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -523,62 +500,7 @@
                                             <th scope="col" class="text-center">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {% for template in all_templates %}
-                                        <tr>
-                                            <td class="align-middle"></td>
-                                            <td class="align-middle">{{template.subject}}</td>
-                                            <td class="align-middle">{{template.nama_produk}}</td>
-                                            <td class="text-center align-middle">
-                                                <a href="{{template.lampiran}}" target="_blank" type="button"
-                                                    class="btn btn-success btn-icon-text">
-                                                    <i class="bi bi-link-45deg btn-icon-prepend"></i>
-                                                    Lampiran
-                                                </a>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                {% if(template.status==0) %}
-                                                <h5>
-                                                    <span class="badge rounded-pill bg-secondary">
-                                                        Belum Dikirim
-                                                    </span>
-                                                </h5>
-                                                {% elif (template.status==1) %}
-                                                <h5>
-                                                    <span class="badge rounded-pill bg-success">
-                                                        Sudah Terikirim
-                                                    </span>
-                                                </h5>
-                                                {% elif (template.status==2) %}
-                                                <h5>
-                                                    <span class="badge rounded-pill bg-danger">
-                                                        Gagal Terikirim
-                                                    </span>
-                                                </h5>
-                                                {% else %}
-                                                <h5>
-                                                    <span class="badge rounded-pill bg-info">
-                                                        Dalam Proses
-                                                    </span>
-                                                </h5>
-                                                {% endif %}
-                                            </td>
-                                            <td class="text-center align-middle">
-                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editTemplate_{{template.id_template}}">
-                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
-                                                </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteTemplate_{{template.id_template}}">
-                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
 
-                                    </tbody>
                                 </table>
                             </div>
 
@@ -709,7 +631,7 @@
                             <!-- table FAQ -->
                             <div class="row mb-4">
                                 <h3>Data FAQ Klik Jempol</h3>
-                                <table class="table table-striped" id="table-faq">
+                                <table class="table table-striped" id="table-faq" style="width: 100%;">
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -718,26 +640,7 @@
                                             <th class="col-1 text-center" scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="body-table-faq">
-                                        {% for f in faq%}
-                                        <tr>
-                                            <td></td>
-                                            <td class="col-5">{{f.question}}</td>
-                                            <td class="col-5">{{f.answer}}</td>
-                                            <td class="col-1 text-center align-middle">
-                                                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#editFAQ_{{f.id_faq}}">
-                                                    <i class="bi bi-pencil-fill btn-icon-prepend"></i>
-                                                </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteFAQ_{{f.id_faq}}">
-                                                    <i class="bi bi-trash-fill btn-icon-prepend"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-
-                                    </tbody>
+                                    
                                 </table>
 
 
@@ -793,7 +696,7 @@
                             <div class="pic"><img src="../static/assets/img/team/ari.jpg" class="img-fluid" alt="">
                             </div>
                             <div class="member-info">
-                                <h4>Ari Rismansyah</h4>
+                                <h4>Ari Rismansyah, S.Tr.Stat.</h4>
                                 <span>Staf</span>
                                 <p> Integrasi Pengolahan Data</p>
                                 <div class="social">
@@ -894,7 +797,7 @@
         <!-- End Contact Section -->
 
         <!-- Modal Customer -->
-   
+
 
         <!-- Modals Delete -->
         <div class="modal fade" id="deleteCustomer" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -902,7 +805,7 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete - </h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Customer </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -934,12 +837,11 @@
 
         <!-- Modal Edit -->
         <!-- Modals Edit -->
-        <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="editCustomer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit - </h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Customer </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -949,8 +851,7 @@
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group col-md-6">
                                         <label class="text-muted" for="name">Nama</label>
-                                        <input type="text" name="name" class="form-control" id="name"
-                                            required>
+                                        <input type="text" name="name" class="form-control" id="name" required>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label class="text-muted" for="radioJk">Jenis Kelamin</label>
@@ -976,8 +877,7 @@
                                                 <i class="fa fa-calendar"></i>
                                             </span>
                                             <input placeholder="yyyy-mm-dd" type="text" name="tgl_lahir"
-                                                class="form-control datedropper" id="tgl_lahir" required
-                                                >
+                                                class="form-control datedropper" id="tgl_lahir" required>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4">
@@ -1002,24 +902,23 @@
                                             required>
                                             <option value="" selected disabled>Pilih Jenis Pekerjaan</option>
                                             {% for pekerjaan in jenis_pekerjaan %}
-                                            
+
                                             <option value="{{pekerjaan.id_pekerjaan}}">
                                                 {{pekerjaan.jenis_pekerjaan}}</option>
-                                            
+
                                             {% endfor %}
                                         </select>
                                     </div>
 
                                     <div class="form-group col-md-4">
                                         <label class="text-muted" for="name">Pekerjaan</label>
-                                        <input type="text" name="pekerjaan" class="form-control" id="pekerjaan" required
-                                            >
+                                        <input type="text" name="pekerjaan" class="form-control" id="pekerjaan"
+                                            required>
                                     </div>
 
                                     <div id="form-grup-instansi" class="form-group col-md-4">
                                         <label class="text-muted" for="name">Instansi</label>
-                                        <input type="text" name="instansi" class="form-control" id="instansi"
-                                            >
+                                        <input type="text" name="instansi" class="form-control" id="instansi">
                                     </div>
 
                                 </div>
@@ -1031,8 +930,7 @@
                                             <span class="input-group-text">
                                                 <i class="fa fa-envelope"></i>
                                             </span>
-                                            <input type="text" name="email" class="form-control" id="email" required
-                                                >
+                                            <input type="text" name="email" class="form-control" id="email" required>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -1042,9 +940,9 @@
                                                 <i class="fa fa-phone"></i>
                                             </span>
                                             <input type="text" name="phone" class="form-control" id="phone" required,
-                                                minlength="10" , maxlength="14" >
+                                                minlength="10" , maxlength="14">
                                             <input type="text" name="phone-val" class="form-control" id="phone-val"
-                                                style="display: none;" >
+                                                style="display: none;">
                                         </div>
                                     </div>
                                 </div>
@@ -1079,8 +977,7 @@
                                             rows="5"></textarea>
                                     </div>
                                 </div>
-                                <input type="text" name="id_customer" id="id_customer"
-                                    style="display: none;">
+                                <input type="text" name="id_customer" id="id_customer" style="display: none;">
                             </form>
 
                         </div>
@@ -1092,7 +989,7 @@
                 </div>
             </div>
         </div>
-        
+
 
         <!-- End Modal Customer -->
 
@@ -1444,8 +1341,15 @@
 
     <!-- Datatables -->
     <script>
+
+        //$(document).on('shown.bs.tab', 'button[data-bs-toggle="pill"]', function (e) {
+        //    console.log('show tab')
+        //});
+
         // Table Customers
         $(document).ready(function () {
+            
+
             var table_all = $('#table-customers').DataTable({
                 dom: 'Bfrtip',
                 pageLength: 10,
@@ -1490,13 +1394,23 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [1, 'asc']
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'POST',
+                'ajax': {
+                    'url': "{{url_for('get_templates')}}"
+                },
+                'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                searching: true,
+                sort: false,
+                "serverSide": true,
+                'columns': [
+                    { data: 'no' },
+                    { data: 'subject' },
+                    { data: 'nama_produk' },
+                    { data: 'lampiran', className: 'text-center' },
+                    { data: 'status', className: 'text-center' },
+                    { data: 'action', className: 'text-center' },
                 ]
             });
 
@@ -1508,6 +1422,7 @@
                     cell.innerHTML = i + 1;
                 });
             }).draw();
+
         });
 
         // table FAQ
@@ -1518,13 +1433,21 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
-                "columnDefs": [{
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [1, 'asc']
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'POST',
+                'ajax': {
+                    'url': "{{url_for('get_faqs')}}"
+                },
+                'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                searching: true,
+                sort: false,
+                "serverSide": true,
+                'columns': [
+                    { data: 'no' },
+                    { data: 'question' },
+                    { data: 'answer' },
+                    { data: 'action', className: 'text-center'},
                 ]
             });
 
@@ -1746,8 +1669,8 @@
 
     <!-- Modals Customer -->
     <script>
-        $(document).ready(function (){
-            $('#table-customers').on('click', '.modal-delete-customer', function(){
+        $(document).ready(function () {
+            $('#table-customers').on('click', '.modal-delete-customer', function () {
                 var id_customer = $(this).attr("id_customer");
 
                 var data_customer = function () {
@@ -1769,7 +1692,6 @@
                     return tmp;
                 }();
 
-                $('#deleteCustomer').find('.modal-title').html(data_customer['nama']);
                 $('#deleteCustomer').find('#nama-customer-delete').html(data_customer['nama']);
                 $('#id-customer-delete').val(id_customer);
 
@@ -1777,8 +1699,8 @@
                 console.log(data_customer);
             });
         })
-        $(document).ready(function (){
-            $('#table-customers').on('click', '.modal-edit-customer', function(){
+        $(document).ready(function () {
+            $('#table-customers').on('click', '.modal-edit-customer', function () {
                 var id_customer = $(this).attr("id_customer");
 
                 var data_customer = function () {
@@ -1800,7 +1722,6 @@
                     return tmp;
                 }();
 
-                $('#editCustomer').find('.modal-title').html(data_customer['nama']);
                 $('#editCustomer').find('#name').val(data_customer['nama']);
                 $('#editCustomer').find('#tempat_lahir').val(data_customer['tempat_lahir']);
                 $('#editCustomer').find('#tgl_lahir').val(data_customer['tanggal_lahir']);
@@ -1814,8 +1735,8 @@
                 $('#editCustomer').find('#dom_prov').val(data_customer['prov_domisili']).change();
                 $('#editCustomer').find('#dom_kab').val(data_customer['kab_domisili']).change();
                 $('#editCustomer').find('#id_customer').val(id_customer);
-                
-                if (data_customer['jenis_kelamin']=='L'){
+
+                if (data_customer['jenis_kelamin'] == 'L') {
                     $('#editCustomer').find('#jenis_kelamin_1').html(
                         '<input class="form-check-input" type="radio" name="radioJk" id="radioJk1" value="L" required checked><label class="form-check-label" for="radioJk1">Laki-laki</label>'
                     );
@@ -1831,7 +1752,7 @@
                         '<input class="form-check-input" type="radio" name="radioJk" id="radioJk2" value="P" checked> <label class="form-check-label" for="radioJk2">Perempuan</label>'
                     );
                     console.log('P');
-                    
+
                 }
                 console.log(id_customer);
                 console.log(data_customer);
