@@ -25,7 +25,6 @@ import random
 from decimal import Decimal
 
 from flask import Flask, app, redirect, url_for, flash, stream_with_context, render_template, Response, jsonify, request, make_response, send_file, send_from_directory, session
-from flask_ngrok import run_with_ngrok
 from flask_migrate import Migrate
 from werkzeug.utils import html, secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -52,7 +51,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # Send Email Thread
-
 
 class SendMailThread(threading.Thread):
     def __init__(self, customers, template):
@@ -127,7 +125,6 @@ class SendMailThread(threading.Thread):
 
 # Exporting Thread
 
-
 class ExportingThread(threading.Thread):
     def __init__(self, df_customers):
         self.progress = 0
@@ -174,7 +171,6 @@ class ExportingThread(threading.Thread):
 
 # Serialize Class
 class Serializer(object):
-
     def serialize(self):
         return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
 
@@ -193,8 +189,6 @@ class Pendidikan(db.Model, Serializer):
         return '<Pendidikan {}>'.format(self.tingkat_pendidikan)
 
 # # Model Pekerjaan
-
-
 class Pekerjaan(db.Model, Serializer):
     id_pekerjaan = db.Column(db.Integer, primary_key=True)
     jenis_pekerjaan = db.Column(db.String(200), nullable=False)
@@ -203,8 +197,6 @@ class Pekerjaan(db.Model, Serializer):
         return '<Pekerjaan {}>'.format(self.jenis_pekerjaan)
 
 # # Model Provinsi Domisili
-
-
 class Prov(db.Model, Serializer):
     kode_prov = db.Column(db.Integer, primary_key=True)
     nama_prov = db.Column(db.String(200), nullable=False)
@@ -213,8 +205,6 @@ class Prov(db.Model, Serializer):
         return 'Provinsi {}'.format(self.nama_prov)
 
 # # Model Kab/Kota Domisili
-
-
 class Kabkot(db.Model, Serializer):
     id_kabkot = db.Column(db.Integer, primary_key=True)
     kode_prov = db.Column(db.Integer, db.ForeignKey(
@@ -225,8 +215,6 @@ class Kabkot(db.Model, Serializer):
         return '<Kabupaten/Kota {}>'.format(self.nama_kabkot)
 
 # # Model Status
-
-
 class Status(db.Model, Serializer):
     id_status = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(200), nullable=False)
@@ -235,8 +223,6 @@ class Status(db.Model, Serializer):
         return '<Status {}>'.format(self.nama_kabkot)
 
 # # Model Customer
-
-
 class Customer(db.Model, Serializer):
     id_customer = db.Column(db.Integer, primary_key=True)
     nama = db.Column(db.String(200), nullable=False)
@@ -262,8 +248,6 @@ class Customer(db.Model, Serializer):
         return '<Customer {}>'.format(self.nama)
 
 # # Model Template Email
-
-
 class Template(db.Model, Serializer):
     id_template = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(200), nullable=False)
@@ -277,8 +261,6 @@ class Template(db.Model, Serializer):
         return '<Template {}>'.format(self.subject)
 
 # # Model Log
-
-
 class Log(db.Model, Serializer):
     id_log = db.Column(db.Integer, primary_key=True)
     template_email = db.Column(
@@ -290,8 +272,6 @@ class Log(db.Model, Serializer):
     send_at = db.Column(db.DateTime, default=datetime.now)
 
 # # Model FAQ
-
-
 class Faq(db.Model, Serializer):
     id_faq = db.Column(db.Integer, primary_key=True)
     question = db.Column(db.Text)
@@ -301,8 +281,6 @@ class Faq(db.Model, Serializer):
         return '<FAQ {}>'.format(self.question)
 
 # # Model Admin
-
-
 class Admin(db.Model, Serializer):
     id_admin = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(200))
@@ -312,6 +290,7 @@ class Admin(db.Model, Serializer):
         return '<Admin {}>'.format(self.username)
 
 
+# Routes
 @app.route('/')
 def home():
     pendidikan = Pendidikan.query.all()
@@ -321,7 +300,6 @@ def home():
     all_faq = Faq.query.all()
 
     return render_template('landing.html', title='KLIK JEMPOL', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot, faq=all_faq)
-
 
 @app.route('/admin')
 def admin():
@@ -340,7 +318,6 @@ def admin():
         return render_template('home.html', title='KLIK JEMPOL - Admin', pendidikan=pendidikan, provinsi=provinsi, jenis_pekerjaan=jenis_pekerjaan, all_kabkot=all_kabkot, all_templates=all_templates, faq=all_faq, jumlah_customers=jumlah_customers, template_not_send=template_not_send)
     else:
         return redirect(url_for('login'))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -363,22 +340,19 @@ def login():
     else:
         return render_template('login.html', title='KLIK JEMPOL - Login')
 
-
 @app.route('/logout')
 def logout():
     session.pop('loggedin', None)
     session.pop('username', None)
     return redirect(url_for('home'))
 
-
 @app.route('/download_template', methods=['GET', 'POST'])
 def download_template():
     path = 'static/template/template.xlsx'
     return send_file(path, attachment_filename='template.xlsx', as_attachment=True)
 
+
 # Route for Customer
-
-
 @app.route('/get_customers', methods=['GET', 'POST'])
 def get_customers():
     if request.method == 'POST':
@@ -437,7 +411,6 @@ def get_customers():
         }
         return jsonify(response)
 
-
 @app.route('/upload_customers', methods=['GET', 'POST'])
 def upload_customers():
     if request.method == 'POST':
@@ -468,7 +441,6 @@ def upload_customers():
 
             return {'thread_id': thread_id, 'rows': len(df_customers)}
 
-
 @app.route('/progress_insert/<int:thread_id>')
 def progress(thread_id):
     def make_prog():
@@ -476,7 +448,6 @@ def progress(thread_id):
         yield "data:"+str(round(exporting_threads[thread_id].progress, 1))+"\n\n"
 
     return Response(make_prog(), mimetype='text/event-stream')
-
 
 @app.route('/register_customer', methods=['POST'])
 def register_customer():
@@ -536,7 +507,6 @@ def update_customer():
     except:
         return make_response('failed', 200)
 
-
 @app.route('/delete_customer', methods=['POST'])
 def delete_customer():
     id_customer = request.form['id_customer']
@@ -566,7 +536,6 @@ def add_template():
     except:
         return ('failed', 200)
 
-
 @app.route('/edit_template', methods=['POST'])
 def edit_template():
     id_template = request.form['id_template']
@@ -582,7 +551,6 @@ def edit_template():
     except:
         return make_response('failed', 200)
 
-
 @app.route('/delete_template', methods=['POST'])
 def delete_template():
     id_template = request.form['id_template']
@@ -593,7 +561,6 @@ def delete_template():
         return make_response('success', 200)
     except:
         return make_response('delete failed', 200)
-
 
 @app.route('/get_templates', methods=['POST'])
 def get_templates():
@@ -676,9 +643,8 @@ def get_template_byid():
     serialized_template = Template.serialize(template)
     return jsonify(serialized_template)
 
+
 # Route for FAQ
-
-
 @app.route('/add_faq', methods=['POST'])
 def add_faq():
     faq = Faq(
@@ -692,7 +658,6 @@ def add_faq():
     except:
         return ('failed', 200)
 
-
 @app.route('/edit_faq', methods=['POST'])
 def edit_faq():
     id_faq = request.form['id_faq']
@@ -705,7 +670,6 @@ def edit_faq():
         return make_response('success', 200)
     except:
         return make_response('failed', 200)
-
 
 @app.route('/delete_faq', methods=['POST'])
 def delete_faq():
@@ -782,8 +746,8 @@ def get_faq_byid():
     serialized_faq = Faq.serialize(faq)
     return jsonify(serialized_faq)    
 
-# Route for Send Email
 
+# Route for Send Email
 @app.route('/send', methods=['POST'])
 def send():
     if (request.method == 'POST'):
@@ -802,7 +766,6 @@ def send():
 
         return {'thread_id': thread_id, 'rows': len(serialized_customers)}
 
-
 @app.route('/progress_send/<int:thread_id>')
 def progress_send(thread_id):
     def make_prog():
@@ -811,7 +774,7 @@ def progress_send(thread_id):
 
     return Response(make_prog(), mimetype='text/event-stream')
 
-
+# Route for Fetching Kab/Kota
 @app.route('/kabkot', methods=['POST'])
 def kabkot():
     kode_prov = None
