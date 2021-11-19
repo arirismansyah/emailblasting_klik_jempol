@@ -994,15 +994,15 @@
         <!-- End Modal Customer -->
 
         <!-- Modal Templates -->
-        {% for t in all_templates %}
+        
 
         <!-- Modals Delete -->
-        <div class="modal fade" id="deleteTemplate_{{t.id_template}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="deleteTemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Delete - {{t.subject}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Delete Template</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -1019,12 +1019,12 @@
                                     Anda yakin ingin menghapus template ini?
                                 </strong>
                             </p>
-                            <p class="text-muted text-center">Subject : {{t.subject}}</p>
+                            <p class="text-muted text-center" id="subject"></p>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <input type="text" name="id-template-delete" id="id-template-delete" readonly
-                            style="display: none;" value="{{t.id_template}}">
+                            style="display: none;">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button id="delete-template" type="button" class="btn btn-danger">Delete</button>
                     </div>
@@ -1033,12 +1033,12 @@
         </div>
 
         <!-- Modals Edit -->
-        <div class="modal fade" id="editTemplate_{{t.id_template}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="editTemplate" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit - {{t.subject}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Template</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -1046,37 +1046,36 @@
                             <form id="edit-template-form">
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group">
-                                        <label for="name">Subject</label>
-                                        <input type="text" class="form-control" name="subject" id="subject" required
-                                            value="{{t.subject}}">
+                                        <label class="text-muted" for="name">Subject</label>
+                                        <input type="text" class="form-control" name="subject" id="subject" required>
                                     </div>
                                 </div>
-                                <div class="row d-flex align-items-stretch">
+                                <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group col-md-6">
-                                        <label for="nama_produk">Nama Produk</label>
+                                        <label class="text-muted" for="nama_produk">Nama Produk</label>
                                         <input type="text" name="nama_produk" class="form-control" id="nama_produk"
-                                            required value="{{t.nama_produk}}">
+                                            required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="lampiran">Link Lampiran</label>
+                                        <label class="text-muted" for="lampiran">Link Lampiran</label>
                                         <div class="input-group">
                                             <span class="input-group-text">
                                                 <i class="fa fa-link"></i>
                                             </span>
                                             <input type="text" class="form-control" name="lampiran" id="lampiran"
-                                                required value="{{t.lampiran}}">
+                                                required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row d-flex align-items-stretch mb-2">
                                     <div class="form-group">
-                                        <label for="body-email">Body</label>
+                                        <label class="text-muted" for="body-email">Body</label>
                                         <textarea id="body-email" class="form-control" name="body-email" rows="10"
-                                            required>{{t.body}}</textarea>
+                                            required></textarea>
                                     </div>
                                 </div>
 
-                                <input type="text" name="id_template" id="id_template" value="{{t.id_template}}"
+                                <input type="text" name="id_template" id="id_template"
                                     style="display: none;">
                             </form>
 
@@ -1089,13 +1088,13 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
+        
         <!-- End Modal Template -->
 
         <!-- Modal FAQ -->
-        {%for f in faq%}
+        
         <!-- Modal Delete -->
-        <div class="modal fade" id="deleteFAQ_{{f.id_faq}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="deleteFAQ" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -1117,12 +1116,11 @@
                                     Anda yakin ingin menghapus FAQ ini?
                                 </strong>
                             </p>
-                            <p class="text-muted text-center">Pertanyaan : {{f.question}}</p>
+                            <p id="question" class="text-muted text-center"></p>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="text" name="id-faq-delete" id="id-faq-delete" readonly style="display: none;"
-                            value="{{f.id_faq}}">
+                        <input type="text" name="id-faq-delete" id="id-faq-delete" readonly style="display: none;">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button id="delete-faq" type="button" class="btn btn-danger">Delete</button>
                     </div>
@@ -1131,7 +1129,7 @@
         </div>
 
         <!-- Modal Edit -->
-        <div class="modal fade" id="editFAQ_{{f.id_faq}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="editFAQ" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
@@ -1147,7 +1145,7 @@
                                     <div class="form-group col-md-12">
                                         <label class="text-muted" for="question">Pertanyaan</label>
                                         <textarea name="question" class="form-control" id="question" required
-                                            rows="5">{{f.question}}</textarea>
+                                            rows="5"></textarea>
                                     </div>
                                 </div>
 
@@ -1155,11 +1153,11 @@
                                     <div class="form-group col-md-12">
                                         <label class="text-muted" for="answer">Jawaban</label>
                                         <textarea name="answer" class="form-control" id="answer" required
-                                            rows="5">{{f.answer}}</textarea>
+                                            rows="5"></textarea>
                                     </div>
                                 </div>
 
-                                <input type="text" name="id_faq" id="id_faq" value="{{f.id_faq}}"
+                                <input type="text" name="id_faq" id="id_faq"
                                     style="display: none;">
                             </form>
 
@@ -1172,7 +1170,6 @@
                 </div>
             </div>
         </div>
-        {%endfor%}
         <!-- End Modal FAQ -->
 
     </main><!-- End #main -->
@@ -1288,7 +1285,7 @@
                             $.ajax({
                                 async: false,
                                 method: "POST",
-                                url: "{{url_for('get_template')}}",
+                                url: "{{url_for('get_template_byid')}}",
                                 data: {
                                     'id_template': selected_template,
                                 },
@@ -1341,10 +1338,6 @@
 
     <!-- Datatables -->
     <script>
-
-        //$(document).on('shown.bs.tab', 'button[data-bs-toggle="pill"]', function (e) {
-        //    console.log('show tab')
-        //});
 
         // Table Customers
         $(document).ready(function () {
@@ -1695,8 +1688,6 @@
                 $('#deleteCustomer').find('#nama-customer-delete').html(data_customer['nama']);
                 $('#id-customer-delete').val(id_customer);
 
-                console.log(id_customer);
-                console.log(data_customer);
             });
         })
         $(document).ready(function () {
@@ -1722,9 +1713,12 @@
                     return tmp;
                 }();
 
+                var date_tgl_lahir = new Date(data_customer['tanggal_lahir']);
+                var tgl_lahir = date_tgl_lahir.toISOString().split('T')[0];
+
                 $('#editCustomer').find('#name').val(data_customer['nama']);
                 $('#editCustomer').find('#tempat_lahir').val(data_customer['tempat_lahir']);
-                $('#editCustomer').find('#tgl_lahir').val(data_customer['tanggal_lahir']);
+                $('#editCustomer').find('#tgl_lahir').val(tgl_lahir);
                 $('#editCustomer').find('#pekerjaan').val(data_customer['pekerjaan']);
                 $('#editCustomer').find('#phone').val(data_customer['phone']);
                 $('#editCustomer').find('#phone_value').val(data_customer['phone']);
@@ -1743,7 +1737,7 @@
                     $('#editCustomer').find('#jenis_kelamin_2').html(
                         '<input class="form-check-input" type="radio" name="radioJk" id="radioJk2" value="P"> <label class="form-check-label" for="radioJk2">Perempuan</label>'
                     );
-                    console.log('Laki');
+                    
                 } else {
                     $('#editCustomer').find('#jenis_kelamin_1').html(
                         '<input class="form-check-input" type="radio" name="radioJk" id="radioJk1" value="L" required><label class="form-check-label" for="radioJk1">Laki-laki</label>'
@@ -1751,13 +1745,26 @@
                     $('#editCustomer').find('#jenis_kelamin_2').html(
                         '<input class="form-check-input" type="radio" name="radioJk" id="radioJk2" value="P" checked> <label class="form-check-label" for="radioJk2">Perempuan</label>'
                     );
-                    console.log('P');
+                
 
                 }
-                console.log(id_customer);
-                console.log(data_customer);
+                
             });
+
+            // Datedropper
+            $('#editCustomer').on('focus', '.datedropper', function () {
+                $('.datedropper').dateDropper('destroy');
+                $('.datedropper').dateDropper({
+                    format: 'Y-m-d',
+                    theme: 'blue',
+                    large: true,
+                    largeDefault: true,
+                });
+            });
+
         })
+
+        
     </script>
 
     <!-- Delete Customer -->
@@ -1855,6 +1862,73 @@
 
             });
         });
+    </script>
+
+    <!-- Modals Template -->
+    <script>
+        // Modal Delete
+        $(document).ready(function () {
+            $('#table-templates').on('click', '.modal-delete-template', function () {
+                var id_template = $(this).attr("id_template");
+
+                var data_template = function () {
+                    var tmp = null;
+
+                    if (id_template != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('get_template_byid')}}",
+                            data: {
+                                'id_template': id_template,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+
+                $('#deleteTemplate').find('#subject').html(data_template['subject']);
+                $('#deleteTemplate').find('#id-template-delete').val(id_template);
+            });
+        })
+
+        // Modal Edit
+        $(document).ready(function () {
+            $('#table-templates').on('click', '.modal-edit-template', function () {
+                var id_template = $(this).attr("id_template");
+
+                var data_template = function () {
+                    var tmp = null;
+
+                    if (id_template != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('get_template_byid')}}",
+                            data: {
+                                'id_template': id_template,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+
+                console.log(data_template);
+
+                $('#editTemplate').find('#subject').val(data_template['subject']);
+                $('#editTemplate').find('#nama_produk').val(data_template['nama_produk']);
+                $('#editTemplate').find('#lampiran').val(data_template['lampiran']);
+                $('#editTemplate').find('.richText-editor').html(data_template['body']);
+                $('#editTemplate').find('#id_template').val(data_template['id_template']);
+            });
+        })
+        
     </script>
 
     <!-- Add Template Email -->
@@ -1995,6 +2069,69 @@
 
             });
         });
+    </script>
+
+    <!-- Modals FAQ -->
+    <script>
+        // Modal Delete
+        $(document).ready(function () {
+            $('#table-faq').on('click', '.modal-delete-faq', function () {
+                var id_faq = $(this).attr("id_faq");
+
+                var data_faq = function () {
+                    var tmp = null;
+
+                    if (id_faq != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('get_faq_byid')}}",
+                            data: {
+                                'id_faq': id_faq,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+
+                $('#deleteFAQ').find('#question').html(data_faq['question']);
+                $('#deleteFAQ').find('#id-faq-delete').val(id_faq);
+            });
+        })
+
+        // Modal Edit
+        $(document).ready(function () {
+            $('#table-faq').on('click', '.modal-edit-faq', function () {
+                var id_faq = $(this).attr("id_faq");
+
+                var data_faq = function () {
+                    var tmp = null;
+
+                    if (id_faq != null) {
+                        $.ajax({
+                            async: false,
+                            method: "POST",
+                            url: "{{url_for('get_faq_byid')}}",
+                            data: {
+                                'id_faq': id_faq,
+                            },
+                            success: function (response) {
+                                tmp = response;
+                            }
+                        });
+                    }
+                    return tmp;
+                }();
+
+                $('#editFAQ').find('#question').html(data_faq['question']);
+                $('#editFAQ').find('#answer').html(data_faq['answer']);
+                $('#editFAQ').find('#id_faq').val(data_faq['id_faq']);
+            });
+        })
+
     </script>
 
     <!-- Add Faq -->

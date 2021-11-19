@@ -388,10 +388,6 @@ def get_customers():
         searchValue = request.form["search[value]"]
 
         page_n = (row / rowperpage)+1
-        print('draw : ', draw)
-        print('row : ', row)
-        print('rowperpage : ', rowperpage)
-        print("search : ", searchValue)
 
         # total customers without filter
         total_count = Customer.query.count()
@@ -401,9 +397,6 @@ def get_customers():
         total_count_filtered = Customer.query.filter(
             (Customer.nama.like(likeString))).count()
 
-        print('total_count', total_count)
-        print('total_count_filtered', total_count_filtered)
-        print("page : ", page_n)
 
         if (searchValue == ''):
             customers = Customer.query.paginate(
@@ -653,12 +646,12 @@ def get_templates():
                 """,
                 'status':label_status,
                 'action': f"""
-                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                <button class=" badge btn-rounded btn-icon btn-primary btn-sm modal-edit-template"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editTemplate" id_template="{template.id_template}">
                                                     <i class="bi bi-pencil-fill btn-icon-prepend"></i>
                                                 </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm modal-delete-template"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#deleteTemplate" id_template="{template.id_template}">
                                                     <i class="bi bi-trash-fill btn-icon-prepend"></i>
@@ -675,9 +668,9 @@ def get_templates():
         }
         return jsonify(response)
 
-@app.route('/get_template_byid', method=['POST'])
+@app.route('/get_template_byid', methods=['POST'])
 def get_template_byid():
-    id_template = request.form['id_tempalate']
+    id_template = request.form['id_template']
     template = Template.query.get_or_404(id_template)
     
     serialized_template = Template.serialize(template)
@@ -760,14 +753,14 @@ def get_faqs():
                 'question': faq.question,
                 'answer': faq.answer,
                 'action': f"""
-                <button class=" badge btn-rounded btn-icon btn-primary btn-sm"
+                <button class=" badge btn-rounded btn-icon btn-primary btn-sm modal-edit-faq"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#editFaq" id_faq="{faq.id_faq}">
+                                                    data-bs-target="#editFAQ" id_faq="{faq.id_faq}">
                                                     <i class="bi bi-pencil-fill btn-icon-prepend"></i>
                                                 </button>
-                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm"
+                                                <button class="badge btn-rounded btn-icon btn-danger btn-sm modal-delete-faq"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#deleteFaq" id_faq="{faq.id_faq}">
+                                                    data-bs-target="#deleteFAQ" id_faq="{faq.id_faq}">
                                                     <i class="bi bi-trash-fill btn-icon-prepend"></i>
                                                 </button>
                 """,
@@ -782,7 +775,7 @@ def get_faqs():
         }
         return jsonify(response)
 
-@app.route('/get_faq_byid', method=['POST'])
+@app.route('/get_faq_byid', methods=['POST'])
 def get_faq_byid():
     id_faq = request.form['id_faq']
     faq = Faq.query.get_or_404(id_faq)
@@ -819,18 +812,6 @@ def progress_send(thread_id):
     return Response(make_prog(), mimetype='text/event-stream')
 
 
-@app.route('/get_template', methods=['POST'])
-def get_template():
-    id_template = None
-
-    if(request.method == 'POST'):
-        id_template = request.form['id_template']
-        template = Template.query.get_or_404(id_template)
-        serialized_template = Template.serialize(template)
-
-        return jsonify(serialized_template)
-
-
 @app.route('/kabkot', methods=['POST'])
 def kabkot():
     kode_prov = None
@@ -841,13 +822,6 @@ def kabkot():
         serialized_kabkot = Kabkot.serialize_list(kabkot)
 
         return jsonify(serialized_kabkot)
-
-# @app.route('/get_customers', methods=['GET'])
-# def get_customers():
-#     customers = Customer.query.all()
-#     serialized_customer = Customer.serialize_list(customers)
-
-#     return jsonify(serialized_customer)
 
 
 if __name__ == '__main__':
