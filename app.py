@@ -254,6 +254,9 @@ class Template(db.Model, Serializer):
     body = db.Column(db.Text, nullable=False)
     nama_produk = db.Column(db.String(200), nullable=False)
     lampiran = db.Column(db.String(200), nullable=False)
+    progress_send = db.Column(db.Integer, nullable=True)
+    succeed_send = db.Column(db.Integer, nullable=True)
+    failed_send = db.Column(db.Integer, nullable=True)
     status = db.Column(db.Integer, db.ForeignKey(
         'status.id_status', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, default=0)
 
