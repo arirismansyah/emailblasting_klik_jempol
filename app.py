@@ -29,6 +29,7 @@ from flask_migrate import Migrate
 from werkzeug.utils import html, secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mysqldb import MySQL
+import MySQLdb
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.inspection import inspect
 
